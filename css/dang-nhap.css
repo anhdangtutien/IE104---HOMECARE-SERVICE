@@ -276,3 +276,125 @@
 .toggle-password:hover {
   color: var(--text);
 }
+
+.forgot-link {
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.error-text {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--error);
+}
+
+/* Khong co loi thi an luon dong nay cho khoi chiem cho */
+.error-text:empty {
+  display: none;
+}
+
+.otp-link {
+  display: block;
+  margin-bottom: 14px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.otp-link:hover,
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.btn-login {
+  padding: 14px;
+  font-size: 16px;
+}
+
+
+/* --- Duong ke "Hoac dang nhap voi" --- */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* 2 duong ke 2 ben chu */
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+/* --- Nut mang xa hoi --- */
+.social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.social-btn:hover {
+  background-color: #f9fafb;
+}
+
+.icon-facebook {
+  color: #1877f2;
+  font-size: 18px;
+}
+
+.icon-google {
+  color: #ea4335;
+  font-size: 17px;
+}
+
+.icon-zalo {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #0068ff;
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.register-text a {
+  margin-left: 12px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
