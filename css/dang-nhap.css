@@ -1,39 +1,39 @@
 /* =========================================================
-   DANG-NHAP.CSS - GIAO DIEN TRANG DANG NHAP
-   Nguoi phu trach: THANH VIEN 3
+   DANG-NHAP.CSS - GIAO DIỆN TRANG ĐĂNG NHẬP
+   Người phụ trách: THÀNH VIÊN 3
    ========================================================= */
 
 
-/* =============== 1. NEN TRANG + KHUNG CHINH =============== */
+/* =============== 1. NỀN TRANG + KHUNG CHÍNH =============== */
 
-/* Dung flex de dat the dang nhap vao chinh giua man hinh */
+/* Dùng flex để đặt thẻ đăng nhập vào chính giữa màn hình */
 .login-page {
-  min-height: 100vh;           /* 100vh = cao bang 100% man hinh */
+  min-height: 100vh;           /* 100vh = cao bằng 100% màn hình */
   display: flex;
-  align-items: center;         /* giua theo chieu doc */
-  justify-content: center;     /* giua theo chieu ngang */
+  align-items: center;         /* giữa theo chiều dọc */
+  justify-content: center;     /* giữa theo chiều ngang */
   padding: 32px 16px;
   background: linear-gradient(135deg, #f7f8fd, #e5eeff);
 }
 
-/* The trang lon chia 2 cot */
+/* Thẻ trắng lớn chia 2 cột */
 .login-card {
   display: flex;
   width: 100%;
   max-width: 980px;
   background-color: var(--white);
   border-radius: 20px;
-  overflow: hidden;            /* cat phan thua de bo goc dep */
+  overflow: hidden;            /* cắt phần thừa để bo góc đẹp */
   box-shadow: 0 20px 50px rgba(15, 60, 45, 0.12);
 }
 
 
-/* =============== 2. COT TRAI (mau xanh) =============== */
+/* =============== 2. CỘT TRÁI (màu xanh) =============== */
 .login-left {
-  position: relative;          /* lam moc cho 2 hinh tron trang tri */
+  position: relative;          /* làm mốc cho 2 hình tròn trang trí */
   overflow: hidden;
   width: 440px;
-  flex-shrink: 0;              /* khong bi co lai */
+  flex-shrink: 0;              /* không bị co lại */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -43,8 +43,8 @@
   color: var(--white);
 }
 
-/* 2 hinh tron mo trang tri, tao bang ::before va ::after
-   (khong can them the HTML nao) */
+/* 2 hình tròn mờ trang trí, tạo bằng ::before và ::after
+   (không cần thêm thẻ HTML nào) */
 .login-left::before,
 .login-left::after {
   content: "";
@@ -67,7 +67,7 @@
   left: -60px;
 }
 
-/* Cho noi dung nam DE LEN hinh tron */
+/* Cho nội dung nằm ĐÈ LÊN hình tròn */
 .login-left > * {
   position: relative;
   z-index: 1;
@@ -99,7 +99,7 @@
   background-color: rgba(255, 255, 255, 0.18);
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 1px;         /* gian chu */
+  letter-spacing: 1px;         /* giãn chữ */
 }
 
 .login-intro h1 {
@@ -122,7 +122,7 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Dau cham tron truoc moi dong */
+/* Dấu chấm tròn trước mỗi dòng */
 .login-features li::before {
   content: "";
   width: 7px;
@@ -132,7 +132,7 @@
 }
 
 
-/* =============== 3. COT PHAI (form) =============== */
+/* =============== 3. CỘT PHẢI (form) =============== */
 .login-right {
   flex: 1;
   padding: 48px;
@@ -149,7 +149,7 @@
   color: var(--text-light);
 }
 
-/* --- The chon vai tro --- */
+/* --- Thẻ chọn vai trò --- */
 .role-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -171,14 +171,14 @@
   transition: all 0.2s;
 }
 
-/* Nut radio dat o goc tren ben phai the */
+/* Nút radio đặt ở góc trên bên phải thẻ */
 .role-card input {
   position: absolute;
   top: 12px;
   right: 12px;
   width: 16px;
   height: 16px;
-  accent-color: var(--primary); /* doi mau radio thanh xanh */
+  accent-color: var(--primary); /* đổi màu radio thành xanh */
 }
 
 .role-icon {
@@ -206,7 +206,7 @@
   line-height: 1.5;
 }
 
-/* The dang duoc chon (JS them class .active) */
+/* Thẻ đang được chọn (JS thêm class .active) */
 .role-card.active {
   background-color: #edfaf4;
   border-color: var(--primary);
@@ -216,8 +216,7 @@
   color: var(--primary);
 }
 
-
-/* --- O nhap lieu --- */
+/* --- Ô nhập liệu --- */
 .form-group {
   margin-bottom: 14px;
 }
@@ -230,7 +229,7 @@
   color: #4b5563;
 }
 
-/* Khung boc icon + o nhap (+ nut con mat) */
+/* Khung bọc icon + ô nhập (+ nút con mắt) */
 .input-box {
   display: flex;
   align-items: center;
@@ -248,21 +247,21 @@
 
 .input-box input {
   flex: 1;
-  min-width: 0;                /* cho phep o nhap co lai tren man hinh nho */
+  min-width: 0;                /* cho phép ô nhập co lại trên màn hình nhỏ */
   padding: 13px 0;
   border: none;
   outline: none;
   background: transparent;
 }
 
-/* :focus-within = khi o input BEN TRONG dang duoc bam vao */
+/* :focus-within = khi ô input BÊN TRONG đang được bấm vào */
 .input-box:focus-within {
   border-color: var(--primary);
   background-color: var(--white);
   box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.15);
 }
 
-/* Khi co loi (JS them class .invalid) */
+/* Khi có lỗi (JS thêm class .invalid) */
 .input-box.invalid {
   border-color: var(--error);
 }
@@ -291,7 +290,7 @@
   color: var(--error);
 }
 
-/* Khong co loi thi an luon dong nay cho khoi chiem cho */
+/* Không có lỗi thì ẩn luôn dòng này cho khỏi chiếm chỗ */
 .error-text:empty {
   display: none;
 }
@@ -316,7 +315,7 @@
 }
 
 
-/* --- Duong ke "Hoac dang nhap voi" --- */
+/* --- Đường kẻ "Hoặc đăng nhập với" --- */
 .divider {
   display: flex;
   align-items: center;
@@ -326,7 +325,7 @@
   color: #9ca3af;
 }
 
-/* 2 duong ke 2 ben chu */
+/* 2 đường kẻ 2 bên chữ */
 .divider::before,
 .divider::after {
   content: "";
@@ -335,7 +334,7 @@
   background-color: var(--border);
 }
 
-/* --- Nut mang xa hoi --- */
+/* --- Nút mạng xã hội --- */
 .social-list {
   display: flex;
   flex-direction: column;
@@ -397,4 +396,41 @@
 
 .register-text a:hover {
   text-decoration: underline;
+}
+
+
+/* =============== 4. RESPONSIVE =============== */
+
+/* Màn hình nhỏ: 2 cột -> xếp chồng, ẩn bớt chữ ở cột trái */
+@media (max-width: 860px) {
+  .login-card {
+    flex-direction: column;
+  }
+
+  .login-left {
+    width: 100%;
+    padding: 32px;
+  }
+
+  .login-features {
+    display: none;
+  }
+
+  .login-intro h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-right {
+    padding: 28px 20px;
+  }
+
+  .role-list {
+    gap: 10px;
+  }
+
+  .role-card {
+    padding: 22px 10px 14px;
+  }
 }
