@@ -130,3 +130,88 @@
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.6);
 }
+
+
+/* =============== 3. COT PHAI (form) =============== */
+.login-right {
+  flex: 1;
+  padding: 48px;
+}
+
+.login-right h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.login-subtitle {
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* --- The chon vai tro --- */
+.role-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.role-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Nut radio dat o goc tren ben phai the */
+.role-card input {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary); /* doi mau radio thanh xanh */
+}
+
+.role-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #e3f5ec;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-icon-blue {
+  background-color: #e3eefb;
+}
+
+.role-card strong {
+  font-size: 15px;
+}
+
+.role-card small {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* The dang duoc chon (JS them class .active) */
+.role-card.active {
+  background-color: #edfaf4;
+  border-color: var(--primary);
+}
+
+.role-card.active strong {
+  color: var(--primary);
+}
