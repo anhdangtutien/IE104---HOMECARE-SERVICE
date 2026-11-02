@@ -76,6 +76,33 @@
           </label>
         </div>
 
+        <!-- --- Ten dang nhap --- -->
+        <div class="form-group">
+          <label for="username" class="form-label">So dien thoai / Ten dang nhap</label>
+          <div class="input-box" id="username-box">
+            <i class="fa-regular fa-user"></i>
+            <input type="text" id="username" placeholder="Nhap so dien thoai hoac ten dang nhap">
+          </div>
+          <p class="error-text" id="username-error"></p>
+        </div>
+
+        <!-- --- Mat khau --- -->
+        <div class="form-group">
+          <label for="password" class="form-label">Mat khau</label>
+          <div class="input-box" id="password-box">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Nhap mat khau">
+            <!-- type="button": de nut nay KHONG gui form -->
+            <button type="button" class="toggle-password" id="toggle-password" title="Hien / An mat khau">
+              <i class="fa-regular fa-eye-slash" id="eye-icon"></i>
+            </button>
+            <a href="#" class="forgot-link coming-soon">Quen?</a>
+          </div>
+          <p class="error-text" id="password-error"></p>
+        </div>
+
+        <a href="#" class="otp-link coming-soon">Dang nhap bang tin nhan OTP</a>
+
       </form>
     </section>
 
