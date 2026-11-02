@@ -53,6 +53,30 @@
 
     <!-- ===================== COT PHAI: FORM DANG NHAP ===================== -->
     <section class="login-right">
+      <h2>Dang nhap vao he thong</h2>
+      <p class="login-subtitle">Chon vai tro cua ban de tiep tuc</p>
+
+      <!-- novalidate: tat kiem tra mac dinh cua trinh duyet, de JS tu kiem tra -->
+      <form id="login-form" novalidate>
+
+        <!-- --- Chon vai tro --- -->
+        <div class="role-list">
+          <label class="role-card active">
+            <input type="radio" name="role" value="khach-hang" checked>
+            <span class="role-icon">👤</span>
+            <strong>Khach Hang</strong>
+            <small>Dat dich vu cham soc tai nha</small>
+          </label>
+
+          <label class="role-card">
+            <input type="radio" name="role" value="bac-si">
+            <span class="role-icon role-icon-blue">👨‍⚕️</span>
+            <strong>Bac Si</strong>
+            <small>Cung cap dich vu y te tai nha</small>
+          </label>
+        </div>
+
+      </form>
     </section>
 
   </main>
