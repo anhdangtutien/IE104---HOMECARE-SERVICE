@@ -1,0 +1,28 @@
+/* =========================================================
+   DANG-NHAP.CSS - GIAO DIEN TRANG DANG NHAP
+   Nguoi phu trach: THANH VIEN 3
+   ========================================================= */
+
+
+/* =============== 1. NEN TRANG + KHUNG CHINH =============== */
+
+/* Dung flex de dat the dang nhap vao chinh giua man hinh */
+.login-page {
+  min-height: 100vh;           /* 100vh = cao bang 100% man hinh */
+  display: flex;
+  align-items: center;         /* giua theo chieu doc */
+  justify-content: center;     /* giua theo chieu ngang */
+  padding: 32px 16px;
+  background: linear-gradient(135deg, #f7f8fd, #e5eeff);
+}
+
+/* The trang lon chia 2 cot */
+.login-card {
+  display: flex;
+  width: 100%;
+  max-width: 980px;
+  background-color: var(--white);
+  border-radius: 20px;
+  overflow: hidden;            /* cat phan thua de bo goc dep */
+  box-shadow: 0 20px 50px rgba(15, 60, 45, 0.12);
+}
