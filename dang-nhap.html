@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <!--
   =========================================================
-  TRANG DANG NHAP - dang-nhap.html
-  Nguoi phu trach: THANH VIEN 3
-  File lien quan: css/dang-nhap.css, js/dang-nhap.js
-  (Trang nay KHONG co header/footer theo thiet ke)
+  TRANG ĐĂNG NHẬP - dang-nhap.html
+  Người phụ trách: THÀNH VIÊN 3
+  File liên quan: css/dang-nhap.css, js/dang-nhap.js
+  (Trang này KHÔNG có header/footer theo thiết kế)
   =========================================================
 -->
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dang nhap - HomeCare</title>
+  <title>Đăng nhập - HomeCare</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- CSS chung (Thanh vien 1) -->
+  <!-- CSS chung (Thành viên 1) -->
   <link rel="stylesheet" href="css/base.css">
-  <!-- CSS rieng cua trang dang nhap (Thanh vien 3) -->
+  <!-- CSS riêng của trang đăng nhập (Thành viên 3) -->
   <link rel="stylesheet" href="css/dang-nhap.css">
 </head>
 
@@ -26,7 +26,7 @@
 
   <main class="login-card">
 
-    <!-- ===================== COT TRAI: GIOI THIEU ===================== -->
+    <!-- ===================== CỘT TRÁI: GIỚI THIỆU ===================== -->
     <section class="login-left">
       <a href="index.html" class="login-logo">
         <span class="login-logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
@@ -34,79 +34,101 @@
       </a>
 
       <div class="login-intro">
-        <span class="login-badge">CHAM SOC TAI NHA</span>
-        <h1>Nen tang y te tai nha hang dau Viet Nam</h1>
+        <span class="login-badge">CHĂM SÓC TẠI NHÀ</span>
+        <h1>Nền tảng y tế tại nhà hàng đầu Việt Nam</h1>
         <p>
-          Ket noi benh nhan voi doi ngu bac si, dieu duong chuyen nghiep.
-          Dat lich nhanh chong, theo doi suc khoe moi luc moi noi.
+          Kết nối bệnh nhân với đội ngũ bác sĩ, điều dưỡng chuyên nghiệp.
+          Đặt lịch nhanh chóng, theo dõi sức khỏe mọi lúc mọi nơi.
         </p>
       </div>
 
       <ul class="login-features">
-        <li>Dat lich kham trong vai giay</li>
-        <li>Bac si duoc xac thuc &amp; kiem duyet</li>
-        <li>Theo doi ho so suc khoe truc tuyen</li>
-        <li>Thanh toan an toan &amp; bao hiem y te</li>
+        <li>Đặt lịch khám trong vài giây</li>
+        <li>Bác sĩ được xác thực &amp; kiểm duyệt</li>
+        <li>Theo dõi hồ sơ sức khỏe trực tuyến</li>
+        <li>Thanh toán an toàn &amp; bảo hiểm y tế</li>
       </ul>
     </section>
 
 
-    <!-- ===================== COT PHAI: FORM DANG NHAP ===================== -->
+    <!-- ===================== CỘT PHẢI: FORM ĐĂNG NHẬP ===================== -->
     <section class="login-right">
-      <h2>Dang nhap vao he thong</h2>
-      <p class="login-subtitle">Chon vai tro cua ban de tiep tuc</p>
+      <h2>Đăng nhập vào hệ thống</h2>
+      <p class="login-subtitle">Chọn vai trò của bạn để tiếp tục</p>
 
-      <!-- novalidate: tat kiem tra mac dinh cua trinh duyet, de JS tu kiem tra -->
+      <!-- novalidate: tắt kiểm tra mặc định của trình duyệt, để JS tự kiểm tra -->
       <form id="login-form" novalidate>
 
-        <!-- --- Chon vai tro --- -->
+        <!-- --- Chọn vai trò --- -->
         <div class="role-list">
           <label class="role-card active">
             <input type="radio" name="role" value="khach-hang" checked>
-            <span class="role-icon">👤</span>
-            <strong>Khach Hang</strong>
-            <small>Dat dich vu cham soc tai nha</small>
+            <span class="role-icon">👱</span>
+            <strong>Khách Hàng</strong>
+            <small>Đặt dịch vụ chăm sóc tại nhà</small>
           </label>
 
           <label class="role-card">
             <input type="radio" name="role" value="bac-si">
             <span class="role-icon role-icon-blue">👨‍⚕️</span>
-            <strong>Bac Si</strong>
-            <small>Cung cap dich vu y te tai nha</small>
+            <strong>Bác Sĩ</strong>
+            <small>Cung cấp dịch vụ y tế tại nhà</small>
           </label>
         </div>
 
-        <!-- --- Ten dang nhap --- -->
+        <!-- --- Tên đăng nhập --- -->
         <div class="form-group">
-          <label for="username" class="form-label">So dien thoai / Ten dang nhap</label>
+          <label for="username" class="form-label">Số điện thoại / Tên đăng nhập</label>
           <div class="input-box" id="username-box">
             <i class="fa-regular fa-user"></i>
-            <input type="text" id="username" placeholder="Nhap so dien thoai hoac ten dang nhap">
+            <input type="text" id="username" placeholder="Nhập số điện thoại hoặc tên đăng nhập">
           </div>
           <p class="error-text" id="username-error"></p>
         </div>
 
-        <!-- --- Mat khau --- -->
+        <!-- --- Mật khẩu --- -->
         <div class="form-group">
-          <label for="password" class="form-label">Mat khau</label>
+          <label for="password" class="form-label">Mật khẩu</label>
           <div class="input-box" id="password-box">
             <i class="fa-solid fa-lock"></i>
-            <input type="password" id="password" placeholder="Nhap mat khau">
-            <!-- type="button": de nut nay KHONG gui form -->
-            <button type="button" class="toggle-password" id="toggle-password" title="Hien / An mat khau">
+            <input type="password" id="password" placeholder="Nhập mật khẩu">
+            <!-- type="button": để nút này KHÔNG gửi form -->
+            <button type="button" class="toggle-password" id="toggle-password" title="Hiện / ẩn mật khẩu">
               <i class="fa-regular fa-eye-slash" id="eye-icon"></i>
             </button>
-            <a href="#" class="forgot-link coming-soon">Quen?</a>
+            <a href="#" class="forgot-link coming-soon">Quên?</a>
           </div>
           <p class="error-text" id="password-error"></p>
         </div>
 
-        <a href="#" class="otp-link coming-soon">Dang nhap bang tin nhan OTP</a>
+        <a href="#" class="otp-link coming-soon">Đăng nhập bằng tin nhắn OTP</a>
 
+        <button type="submit" class="btn btn-primary btn-block btn-login">Đăng nhập</button>
       </form>
+
+      <!-- --- Đăng nhập bằng mạng xã hội --- -->
+      <div class="divider"><span>Hoặc đăng nhập với</span></div>
+
+      <div class="social-list">
+        <button type="button" class="social-btn coming-soon">
+          <i class="fa-brands fa-facebook icon-facebook"></i> Facebook
+        </button>
+        <button type="button" class="social-btn coming-soon">
+          <span class="icon-zalo">Z</span> Zalo
+        </button>
+        <button type="button" class="social-btn coming-soon">
+          <i class="fa-brands fa-google icon-google"></i> Google
+        </button>
+      </div>
+
+      <p class="register-text">
+        Bạn chưa có tài khoản?
+        <a href="dang-ky-khach-hang.html" id="register-link">Đăng ký ngay</a>
+      </p>
     </section>
 
   </main>
 
+  <script src="js/dang-nhap.js"></script>
 </body>
 </html>
