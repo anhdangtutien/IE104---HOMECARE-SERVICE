@@ -60,3 +60,17 @@ togglePasswordButton.addEventListener("click", function () {
     eyeIcon.className = "fa-regular fa-eye-slash";  // icon mat gach
   }
 });
+
+
+/* ---------- 4. HAM HIEN / XOA LOI ----------
+   boxId:   id cua khung .input-box (de to vien do)
+   errorId: id cua dong chu bao loi */
+function showError(boxId, errorId, message) {
+  document.getElementById(boxId).classList.add("invalid");
+  document.getElementById(errorId).textContent = message;
+}
+
+function clearError(boxId, errorId) {
+  document.getElementById(boxId).classList.remove("invalid");
+  document.getElementById(errorId).textContent = "";
+}
