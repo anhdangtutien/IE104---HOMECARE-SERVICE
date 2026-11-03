@@ -74,3 +74,49 @@ function clearError(boxId, errorId) {
   document.getElementById(boxId).classList.remove("invalid");
   document.getElementById(errorId).textContent = "";
 }
+
+
+/* ---------- 5. KIEM TRA KHI BAM "DANG NHAP" ---------- */
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault();   // chan form tai lai trang
+
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  let isValid = true;       // gia su ban dau la hop le
+
+  // Kiem tra ten dang nhap
+  if (username === "") {
+    showError("username-box", "username-error", "Vui long nhap so dien thoai hoac ten dang nhap");
+    isValid = false;
+  } else {
+    clearError("username-box", "username-error");
+  }
+
+  // Kiem tra mat khau
+  if (password === "") {
+    showError("password-box", "password-error", "Vui long nhap mat khau");
+    isValid = false;
+  } else if (password.length < 6) {
+    showError("password-box", "password-error", "Mat khau phai co it nhat 6 ky tu");
+    isValid = false;
+  } else {
+    clearError("password-box", "password-error");
+  }
+
+  // Co loi thi dung lai
+  if (isValid === false) {
+    return;
+  }
+
+  // Lay vai tro dang chon: tim radio name="role" dang duoc tich (:checked)
+  const selectedRole = document.querySelector('input[name="role"]:checked').value;
+
+  let roleName = "Khach hang";
+  if (selectedRole === "bac-si") {
+    roleName = "Bac si";
+  }
+
+  // Do an chua co may chu (backend) nen chi thong bao roi ve trang chu
+  alert("Dang nhap thanh cong voi vai tro: " + roleName);
+  window.location.href = "index.html";
+});
