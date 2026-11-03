@@ -46,3 +46,17 @@ for (const card of roleCards) {
     }
   });
 }
+
+
+/* ---------- 3. HIEN / AN MAT KHAU ----------
+   O mat khau co type="password" (hien dau ***).
+   Doi sang type="text" thi se thay chu that. */
+togglePasswordButton.addEventListener("click", function () {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.className = "fa-regular fa-eye";        // icon mat mo
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.className = "fa-regular fa-eye-slash";  // icon mat gach
+  }
+});
