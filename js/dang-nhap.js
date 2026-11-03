@@ -1,16 +1,16 @@
 /* =========================================================
-   DANG-NHAP.JS - XU LY TRANG DANG NHAP
-   Nguoi phu trach: THANH VIEN 3
+   DANG-NHAP.JS - XỬ LÝ TRANG ĐĂNG NHẬP
+   Người phụ trách: THÀNH VIÊN 3
 
-   Chuc nang:
-   1. Chon vai tro Khach hang / Bac si (doi mau the duoc chon)
-   2. Bam con mat de hien / an mat khau
-   3. Kiem tra du lieu khi bam "Dang nhap"
-   4. Cac nut chua lam (Facebook, Zalo, OTP...) -> bao "dang phat trien"
+   Chức năng:
+   1. Chọn vai trò Khách hàng / Bác sĩ (đổi màu thẻ được chọn)
+   2. Bấm con mắt để hiện / ẩn mật khẩu
+   3. Kiểm tra dữ liệu khi bấm "Đăng nhập"
+   4. Các nút chưa làm (Facebook, Zalo, OTP...) -> báo "đang phát triển"
    ========================================================= */
 
 
-/* ---------- 1. LAY CAC PHAN TU HTML ---------- */
+/* ---------- 1. LẤY CÁC PHẦN TỬ HTML ---------- */
 const loginForm = document.getElementById("login-form");
 const roleCards = document.querySelectorAll(".role-card");
 const registerLink = document.getElementById("register-link");
@@ -21,24 +21,24 @@ const togglePasswordButton = document.getElementById("toggle-password");
 const eyeIcon = document.getElementById("eye-icon");
 
 
-/* ---------- 2. CHON VAI TRO ----------
-   Moi the vai tro chua 1 nut radio. Khi radio thay doi:
-   - Xoa class "active" o TAT CA the
-   - Them class "active" cho the vua chon
-   - Doi link "Dang ky ngay" sang dung trang dang ky */
+/* ---------- 2. CHỌN VAI TRÒ ----------
+   Mỗi thẻ vai trò chứa 1 nút radio. Khi radio thay đổi:
+   - Xóa class "active" ở TẤT CẢ thẻ
+   - Thêm class "active" cho thẻ vừa chọn
+   - Đổi link "Đăng ký ngay" sang đúng trang đăng ký */
 for (const card of roleCards) {
   const radio = card.querySelector("input");
 
   radio.addEventListener("change", function () {
-    // Buoc 1: bo chon tat ca
+    // Bước 1: bỏ chọn tất cả
     for (const otherCard of roleCards) {
       otherCard.classList.remove("active");
     }
 
-    // Buoc 2: to mau the dang chon
+    // Bước 2: tô màu thẻ đang chọn
     card.classList.add("active");
 
-    // Buoc 3: doi link dang ky
+    // Bước 3: đổi link đăng ký
     if (radio.value === "bac-si") {
       registerLink.href = "dang-ky-bac-si.html";
     } else {
@@ -48,23 +48,23 @@ for (const card of roleCards) {
 }
 
 
-/* ---------- 3. HIEN / AN MAT KHAU ----------
-   O mat khau co type="password" (hien dau ***).
-   Doi sang type="text" thi se thay chu that. */
+/* ---------- 3. HIỆN / ẨN MẬT KHẨU ----------
+   Ô mật khẩu có type="password" (hiện dấu •••).
+   Đổi sang type="text" thì sẽ thấy chữ thật. */
 togglePasswordButton.addEventListener("click", function () {
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    eyeIcon.className = "fa-regular fa-eye";        // icon mat mo
+    eyeIcon.className = "fa-regular fa-eye";        // icon mắt mở
   } else {
     passwordInput.type = "password";
-    eyeIcon.className = "fa-regular fa-eye-slash";  // icon mat gach
+    eyeIcon.className = "fa-regular fa-eye-slash";  // icon mắt gạch
   }
 });
 
 
-/* ---------- 4. HAM HIEN / XOA LOI ----------
-   boxId:   id cua khung .input-box (de to vien do)
-   errorId: id cua dong chu bao loi */
+/* ---------- 4. HÀM HIỆN / XÓA LỖI ----------
+   boxId:   id của khung .input-box (để tô viền đỏ)
+   errorId: id của dòng chữ báo lỗi */
 function showError(boxId, errorId, message) {
   document.getElementById(boxId).classList.add("invalid");
   document.getElementById(errorId).textContent = message;
@@ -76,47 +76,69 @@ function clearError(boxId, errorId) {
 }
 
 
-/* ---------- 5. KIEM TRA KHI BAM "DANG NHAP" ---------- */
+/* ---------- 5. KIỂM TRA KHI BẤM "ĐĂNG NHẬP" ---------- */
 loginForm.addEventListener("submit", function (event) {
-  event.preventDefault();   // chan form tai lai trang
+  event.preventDefault();   // chặn form tải lại trang
 
   const username = usernameInput.value.trim();
   const password = passwordInput.value;
-  let isValid = true;       // gia su ban dau la hop le
+  let isValid = true;       // giả sử ban đầu là hợp lệ
 
-  // Kiem tra ten dang nhap
+  // Kiểm tra tên đăng nhập
   if (username === "") {
-    showError("username-box", "username-error", "Vui long nhap so dien thoai hoac ten dang nhap");
+    showError("username-box", "username-error", "Vui lòng nhập số điện thoại hoặc tên đăng nhập");
     isValid = false;
   } else {
     clearError("username-box", "username-error");
   }
 
-  // Kiem tra mat khau
+  // Kiểm tra mật khẩu
   if (password === "") {
-    showError("password-box", "password-error", "Vui long nhap mat khau");
+    showError("password-box", "password-error", "Vui lòng nhập mật khẩu");
     isValid = false;
   } else if (password.length < 6) {
-    showError("password-box", "password-error", "Mat khau phai co it nhat 6 ky tu");
+    showError("password-box", "password-error", "Mật khẩu phải có ít nhất 6 ký tự");
     isValid = false;
   } else {
     clearError("password-box", "password-error");
   }
 
-  // Co loi thi dung lai
+  // Có lỗi thì dừng lại
   if (isValid === false) {
     return;
   }
 
-  // Lay vai tro dang chon: tim radio name="role" dang duoc tich (:checked)
+  // Lấy vai trò đang chọn: tìm radio name="role" đang được tích (:checked)
   const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
-  let roleName = "Khach hang";
+  let roleName = "Khách hàng";
   if (selectedRole === "bac-si") {
-    roleName = "Bac si";
+    roleName = "Bác sĩ";
   }
 
-  // Do an chua co may chu (backend) nen chi thong bao roi ve trang chu
-  alert("Dang nhap thanh cong voi vai tro: " + roleName);
+  // Đồ án chưa có máy chủ (backend) nên chỉ thông báo rồi về trang chủ
+  alert("Đăng nhập thành công với vai trò: " + roleName);
   window.location.href = "index.html";
 });
+
+
+/* ---------- 6. ĐANG GÕ -> XÓA LỖI CỦA Ô ĐÓ ---------- */
+usernameInput.addEventListener("input", function () {
+  clearError("username-box", "username-error");
+});
+
+passwordInput.addEventListener("input", function () {
+  clearError("password-box", "password-error");
+});
+
+
+/* ---------- 7. CÁC CHỨC NĂNG CHƯA LÀM ----------
+   Các nút/link có class "coming-soon" chỉ hiện thông báo */
+const comingSoonItems = document.querySelectorAll(".coming-soon");
+
+for (const item of comingSoonItems) {
+  item.addEventListener("click", function (event) {
+    event.preventDefault();   // link "#" không nhảy lên đầu trang
+    alert("Chức năng này đang được phát triển!");
+  });
+}
