@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG ĐĂNG KÝ BÁC SĨ - dang-ky-bac-si.html
+  Người phụ trách: THÀNH VIÊN 4
+  File liên quan: css/dang-ky.css, js/dang-ky.js
+  Giống trang khách hàng, chỉ khác 2 ô: "Loại chứng chỉ" và "Chuyên môn"
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký Bác sĩ - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS riêng của trang đăng ký (Thành viên 4) -->
+  <link rel="stylesheet" href="css/dang-ky.css">
+</head>
+
+<body class="register-page">
+
+  <main class="register-wrapper">
+    <div class="register-card">
+
+      <!-- ===================== TIÊU ĐỀ XANH ===================== -->
+      <div class="register-header">
+        <h1><i class="fa-solid fa-briefcase-medical"></i> Đăng ký Tài khoản Bác sĩ</h1>
+        <p>Vui lòng điền đầy đủ thông tin để hoàn tất đăng ký</p>
+      </div>
+
+      <!-- ===================== FORM ===================== -->
+      <form class="register-form" id="register-form" novalidate>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="fullname" class="form-label">Họ và Tên</label>
+            <input type="text" id="fullname" class="form-control" placeholder="Nguyễn Văn A">
+            <p class="error-text" id="fullname-error"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="example@email.com">
+            <p class="error-text" id="email-error"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Số điện thoại</label>
+            <input type="tel" id="phone" class="form-control" placeholder="0901234567">
+            <p class="error-text" id="phone-error"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="birthday" class="form-label">Ngày sinh</label>
+            <input type="date" id="birthday" class="form-control">
+            <p class="error-text" id="birthday-error"></p>
+          </div>
+
+          <div class="form-group">
+            <span class="form-label">Giới tính</span>
+            <div class="radio-group">
+              <label><input type="radio" name="gender" value="nam"> Nam</label>
+              <label><input type="radio" name="gender" value="nu"> Nữ</label>
+              <label><input type="radio" name="gender" value="khac"> Khác</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="city" class="form-label">Tỉnh/Thành phố</label>
+            <select id="city" class="form-control">
+              <option value="">Chọn tỉnh/thành phố</option>
+              <option value="hcm">TP. Hồ Chí Minh</option>
+              <option value="hn">Hà Nội</option>
+              <option value="dn">Đà Nẵng</option>
+              <option value="hp">Hải Phòng</option>
+              <option value="ct">Cần Thơ</option>
+              <option value="hue">Huế</option>
+              <option value="dong-nai">Đồng Nai</option>
+              <option value="khac">Tỉnh/thành khác</option>
+            </select>
+            <p class="error-text" id="city-error"></p>
+          </div>
+
+        </div>
+
+        <!-- Loại chứng chỉ: bắt buộc chọn ít nhất 1 (JS kiểm tra) -->
+        <div class="form-group">
+          <span class="form-label">Loại chứng chỉ</span>
+          <div class="checkbox-grid" id="certificate-group">
+            <label class="checkbox-card"><input type="checkbox" name="certificate" value="bsdk"> BSĐK</label>
+            <label class="checkbox-card"><input type="checkbox" name="certificate" value="bsck"> BSCK</label>
+            <label class="checkbox-card"><input type="checkbox" name="certificate" value="dieu-duong"> Điều dưỡng</label>
+            <label class="checkbox-card"><input type="checkbox" name="certificate" value="khac"> Khác</label>
+          </div>
+          <p class="error-text" id="certificate-error"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="description" class="form-label">Chuyên môn</label>
+          <textarea id="description" class="form-control" rows="3" placeholder="Mô tả chuyên môn"></textarea>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Hồ sơ đính kèm (CCCD...)</span>
+          <label for="file-input" class="upload-box" id="upload-box">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <strong id="file-name">Nhấn để tải lên hoặc kéo thả file</strong>
+            <span>PDF, JPG, PNG (tối đa 10MB)</span>
+          </label>
+          <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" hidden>
+          <p class="error-text" id="file-error"></p>
+        </div>
+
+        <div class="form-group">
+          <label class="terms">
+            <input type="checkbox" id="terms">
+            <span>
+              Tôi đồng ý với <a href="#">điều khoản dịch vụ</a> và
+              <a href="#">chính sách bảo mật</a> của HomeCare.
+            </span>
+          </label>
+          <p class="error-text terms-error" id="terms-error"></p>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-register">Đăng ký ngay</button>
+          <a href="dang-nhap.html" class="btn btn-outline btn-cancel">Hủy</a>
+        </div>
+
+        <p class="login-text">
+          Đã có tài khoản? <a href="dang-nhap.html">Đăng nhập ngay</a>
+        </p>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- FOOTER RÚT GỌN: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer-simple"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/dang-ky.js"></script>
+</body>
+</html>
