@@ -41,3 +41,22 @@ function clearError(element, errorId) {
   element.classList.remove("invalid");
   document.getElementById(errorId).textContent = "";
 }
+
+
+
+
+/* ---------- 3. CÁC HÀM KIỂM TRA TỪNG Ô ----------
+   Mỗi hàm trả về: true  = hợp lệ
+                   false = có lỗi                        */
+
+function checkFullname() {
+  const value = fullnameInput.value.trim();
+
+  if (value === "") {
+    showError(fullnameInput, "fullname-error", "Họ và tên không được để trống");
+    return false;
+  }
+
+  clearError(fullnameInput, "fullname-error");
+  return true;
+}
