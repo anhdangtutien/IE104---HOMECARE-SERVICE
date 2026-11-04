@@ -221,3 +221,30 @@ textarea.form-control {
 .upload-box.invalid {
   border-color: var(--error);
 }
+
+/* --- Đồng ý điều khoản --- */
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.terms input {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.terms a {
+  font-weight: 700;
+  color: var(--primary-darker);
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+/* Lùi dòng lỗi vào cho thẳng hàng với chữ (bỏ qua ô checkbox) */
+.terms-error {
+  padding-left: 30px;
+}
