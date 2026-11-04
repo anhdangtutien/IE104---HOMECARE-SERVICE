@@ -45,3 +45,14 @@
 }
 
 
+/* =============== 3. FORM =============== */
+.register-form {
+  padding: 48px;
+}
+
+/* Lưới 2 cột cho các ô ngắn */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+}
