@@ -269,3 +269,12 @@ textarea.form-control {
 .btn-register:hover {
   background: var(--primary-darker);
 }
+
+.btn-cancel {
+  width: 112px;
+  height: 56px;
+  border-radius: 8px;
+  font-weight: 500;
+  border-color: var(--primary-darker);
+  color: var(--primary-darker);
+}
