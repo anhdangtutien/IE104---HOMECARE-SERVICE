@@ -166,3 +166,20 @@ function checkTerms() {
   clearError(termsCheckbox, "terms-error");
   return true;
 }
+
+
+
+
+/* ---------- 4. KIỂM TRA NGAY KHI NGƯỜI DÙNG RỜI KHỎI Ô ----------
+   "blur"   = khi bấm ra ngoài ô (ô mất con trỏ)
+   "change" = khi giá trị thay đổi (dùng cho select, ngày, checkbox) */
+fullnameInput.addEventListener("blur", checkFullname);
+emailInput.addEventListener("blur", checkEmail);
+phoneInput.addEventListener("blur", checkPhone);
+birthdayInput.addEventListener("change", checkBirthday);
+citySelect.addEventListener("change", checkCity);
+termsCheckbox.addEventListener("change", checkTerms);
+
+if (certificateGroup !== null) {
+  certificateGroup.addEventListener("change", checkCertificate);
+}
