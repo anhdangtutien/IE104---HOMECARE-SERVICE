@@ -253,3 +253,35 @@ uploadBox.addEventListener("drop", function (event) {
     handleFile(droppedFiles[0]);
   }
 });
+
+
+
+
+/* ---------- 6. KHI BẤM "ĐĂNG KÝ NGAY" ---------- */
+registerForm.addEventListener("submit", function (event) {
+  event.preventDefault();          // chặn form tải lại trang
+
+  // Gọi TẤT CẢ hàm kiểm tra (không dừng ở lỗi đầu tiên)
+  // để người dùng thấy hết các ô bị sai cùng lúc
+  let isValid = true;
+
+  if (checkFullname() === false) isValid = false;
+  if (checkEmail() === false) isValid = false;
+  if (checkPhone() === false) isValid = false;
+  if (checkBirthday() === false) isValid = false;
+  if (checkCity() === false) isValid = false;
+  if (checkCertificate() === false) isValid = false;
+  if (checkTerms() === false) isValid = false;
+
+  if (isValid === false) {
+    // Cuộn tới ô bị lỗi đầu tiên cho người dùng dễ thấy
+    const firstError = document.querySelector(".invalid");
+    firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  // Đồ án chưa có máy chủ (backend) nên chỉ thông báo rồi chuyển trang
+  alert("Đăng ký thành công! Chào mừng " + fullnameInput.value.trim() + " đến với HomeCare.");
+  window.location.href = "dang-nhap.html";
+});
+
