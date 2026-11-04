@@ -134,3 +134,23 @@ function checkCity() {
   clearError(citySelect, "city-error");
   return true;
 }
+
+
+
+function checkCertificate() {
+  // Trang khách hàng không có ô này -> bỏ qua, coi như hợp lệ
+  if (certificateGroup === null) {
+    return true;
+  }
+
+  // Tìm các checkbox chứng chỉ ĐANG ĐƯỢC TÍCH
+  const checkedBoxes = document.querySelectorAll('input[name="certificate"]:checked');
+
+  if (checkedBoxes.length === 0) {
+    showError(certificateGroup, "certificate-error", "Vui lòng chọn ít nhất 1 loại chứng chỉ");
+    return false;
+  }
+
+  clearError(certificateGroup, "certificate-error");
+  return true;
+}
