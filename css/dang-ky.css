@@ -111,3 +111,26 @@ textarea.form-control {
 .error-text:empty {
   display: none;
 }
+
+/* Đổi màu radio và checkbox thành màu xanh */
+.register-form input[type="radio"],
+.register-form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* --- Giới tính (radio) --- */
+.radio-group {
+  display: flex;
+  gap: 24px;
+  padding-top: 6px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
