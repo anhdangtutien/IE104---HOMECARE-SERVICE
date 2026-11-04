@@ -168,3 +168,56 @@ textarea.form-control {
 .checkbox-grid.invalid .checkbox-card {
   border-color: var(--error);
 }
+
+/* --- Khung tải file --- */
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 32px 16px;
+  background-color: #eff4ff;
+  border: 2px dashed #cbd5e1;  /* viền nét đứt */
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upload-box i {
+  font-size: 30px;
+  color: #64748b;
+}
+
+.upload-box strong {
+  font-weight: 500;
+}
+
+.upload-box span {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Rê chuột vào, hoặc đang kéo file vào (JS thêm .dragover) */
+.upload-box:hover,
+.upload-box.dragover {
+  border-color: var(--primary);
+  background-color: #e8f6ef;
+}
+
+/* Đã chọn file (JS thêm .has-file) */
+.upload-box.has-file {
+  border-style: solid;
+  border-color: var(--primary);
+  background-color: #e8f6ef;
+}
+
+.upload-box.has-file i,
+.upload-box.has-file strong {
+  color: var(--primary-dark);
+}
+
+/* File sai loại / quá lớn (JS thêm .invalid) */
+.upload-box.invalid {
+  border-color: var(--error);
+}
