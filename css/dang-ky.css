@@ -56,3 +56,14 @@
   grid-template-columns: 1fr 1fr;
   column-gap: 32px;
 }
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
