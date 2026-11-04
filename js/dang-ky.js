@@ -183,3 +183,73 @@ termsCheckbox.addEventListener("change", checkTerms);
 if (certificateGroup !== null) {
   certificateGroup.addEventListener("change", checkCertificate);
 }
+
+
+
+
+/* ---------- 5. TẢI FILE ---------- */
+const MAX_FILE_SIZE = 10 * 1024 * 1024;               // 10MB đổi ra byte
+const ALLOWED_EXTENSIONS = ["pdf", "jpg", "jpeg", "png"];
+const DEFAULT_UPLOAD_TEXT = "Nhấn để tải lên hoặc kéo thả file";
+
+// Đưa khung tải file về trạng thái ban đầu
+function resetUpload() {
+  fileInput.value = "";
+  fileNameText.textContent = DEFAULT_UPLOAD_TEXT;
+  uploadBox.classList.remove("has-file");
+}
+
+// Kiểm tra file người dùng chọn
+function handleFile(file) {
+  // Lấy đuôi file: "CCCD.PNG" -> tách theo dấu "." -> lấy phần cuối -> "png"
+  const extension = file.name.split(".").pop().toLowerCase();
+
+  if (ALLOWED_EXTENSIONS.includes(extension) === false) {
+    resetUpload();
+    showError(uploadBox, "file-error", "Chỉ chấp nhận file PDF, JPG, PNG");
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    resetUpload();
+    showError(uploadBox, "file-error", "File quá lớn, tối đa 10MB");
+    return;
+  }
+
+  // File hợp lệ -> hiện tên file
+  clearError(uploadBox, "file-error");
+  fileNameText.textContent = "Đã chọn: " + file.name;
+  uploadBox.classList.add("has-file");
+}
+
+// Cách 1: bấm vào khung -> chọn file từ máy
+fileInput.addEventListener("change", function () {
+  // fileInput.files là danh sách file đã chọn, lấy file đầu tiên [0]
+  if (fileInput.files.length > 0) {
+    handleFile(fileInput.files[0]);
+  }
+});
+
+// Cách 2: kéo file thả vào khung
+// "dragover": file đang được kéo phía trên khung
+uploadBox.addEventListener("dragover", function (event) {
+  event.preventDefault();          // bắt buộc, nếu không trình duyệt sẽ mở file ra
+  uploadBox.classList.add("dragover");
+});
+
+// "dragleave": kéo file ra khỏi khung
+uploadBox.addEventListener("dragleave", function () {
+  uploadBox.classList.remove("dragover");
+});
+
+// "drop": thả file xuống
+uploadBox.addEventListener("drop", function (event) {
+  event.preventDefault();
+  uploadBox.classList.remove("dragover");
+
+  const droppedFiles = event.dataTransfer.files;
+  if (droppedFiles.length > 0) {
+    fileInput.files = droppedFiles;  // gán file vào ô input để form có dữ liệu
+    handleFile(droppedFiles[0]);
+  }
+});
