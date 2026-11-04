@@ -122,3 +122,15 @@ function checkBirthday() {
   clearError(birthdayInput, "birthday-error");
   return true;
 }
+
+
+function checkCity() {
+  // Lựa chọn đầu tiên "Chọn tỉnh/thành phố" có value="" (rỗng)
+  if (citySelect.value === "") {
+    showError(citySelect, "city-error", "Vui lòng chọn tỉnh/thành phố");
+    return false;
+  }
+
+  clearError(citySelect, "city-error");
+  return true;
+}
