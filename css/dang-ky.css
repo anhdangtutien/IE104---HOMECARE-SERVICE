@@ -278,3 +278,19 @@ textarea.form-control {
   border-color: var(--primary-darker);
   color: var(--primary-darker);
 }
+
+.login-text {
+  margin-top: 36px;
+  text-align: center;
+  color: #475569;
+}
+
+.login-text a {
+  margin-left: 10px;
+  font-weight: 700;
+  color: var(--primary-darker);
+}
+
+.login-text a:hover {
+  text-decoration: underline;
+}
