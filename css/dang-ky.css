@@ -67,3 +67,31 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+/* .form-control dùng chung cho input, select, textarea */
+.form-control {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  background-color: var(--white);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 98px;
+  padding: 14px 16px;
+  resize: vertical;            /* chỉ cho kéo giãn theo chiều dọc */
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.15);
+}
