@@ -82,3 +82,20 @@ function checkEmail() {
   clearError(emailInput, "email-error");
   return true;
 }
+
+
+
+function checkPhone() {
+  const value = phoneInput.value.trim();
+
+  // Regex: bắt đầu bằng số 0, theo sau là đúng 9 chữ số -> tổng 10 số
+  const phonePattern = /^0[0-9]{9}$/;
+
+  if (phonePattern.test(value) === false) {
+    showError(phoneInput, "phone-error", "Số điện thoại phải có 10 chữ số");
+    return false;
+  }
+
+  clearError(phoneInput, "phone-error");
+  return true;
+}
