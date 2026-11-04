@@ -154,3 +154,15 @@ function checkCertificate() {
   clearError(certificateGroup, "certificate-error");
   return true;
 }
+
+
+
+function checkTerms() {
+  if (termsCheckbox.checked === false) {
+    showError(termsCheckbox, "terms-error", "Bạn cần đồng ý với điều khoản dịch vụ");
+    return false;
+  }
+
+  clearError(termsCheckbox, "terms-error");
+  return true;
+}
