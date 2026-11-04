@@ -248,3 +248,24 @@ textarea.form-control {
 .terms-error {
   padding-left: 30px;
 }
+
+/* =============== 4. NÚT BẤM =============== */
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.btn-register {
+  flex: 1;                     /* nút Đăng ký chiếm hết chỗ còn lại */
+  height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--primary-darker), #0a8a68);
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 8px 18px rgba(0, 105, 76, 0.25);
+}
+
+.btn-register:hover {
+  background: var(--primary-darker);
+}
