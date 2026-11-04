@@ -60,3 +60,25 @@ function checkFullname() {
   clearError(fullnameInput, "fullname-error");
   return true;
 }
+
+
+function checkEmail() {
+  const value = emailInput.value.trim();
+
+  // Biểu thức chính quy (regex) kiểm tra dạng: chu@ten-mien.duoi
+  // Ví dụ hợp lệ: an.nguyen@gmail.com
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (value === "") {
+    showError(emailInput, "email-error", "Email không được để trống");
+    return false;
+  }
+
+  if (emailPattern.test(value) === false) {
+    showError(emailInput, "email-error", "Email không hợp lệ");
+    return false;
+  }
+
+  clearError(emailInput, "email-error");
+  return true;
+}
