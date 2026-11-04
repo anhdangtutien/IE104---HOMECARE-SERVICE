@@ -99,3 +99,26 @@ function checkPhone() {
   clearError(phoneInput, "phone-error");
   return true;
 }
+
+
+
+function checkBirthday() {
+  const value = birthdayInput.value;   // dạng "2003-05-20", rỗng nếu chưa chọn
+
+  if (value === "") {
+    showError(birthdayInput, "birthday-error", "Vui lòng chọn ngày sinh");
+    return false;
+  }
+
+  // Ngày sinh không được lớn hơn ngày hôm nay
+  const birthday = new Date(value);
+  const today = new Date();
+
+  if (birthday > today) {
+    showError(birthdayInput, "birthday-error", "Ngày sinh không được ở tương lai");
+    return false;
+  }
+
+  clearError(birthdayInput, "birthday-error");
+  return true;
+}
