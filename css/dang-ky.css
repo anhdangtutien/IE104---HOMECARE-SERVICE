@@ -1,0 +1,25 @@
+/* =========================================================
+   DANG-KY.CSS - GIAO DIỆN 2 TRANG ĐĂNG KÝ
+   (dang-ky-khach-hang.html và dang-ky-bac-si.html)
+   Người phụ trách: THÀNH VIÊN 4
+   ========================================================= */
+
+
+/* =============== 1. NỀN TRANG + THẺ FORM =============== */
+.register-page {
+  background: linear-gradient(135deg, #f7f8fd, #e5eeff);
+}
+
+.register-wrapper {
+  padding: 60px 16px;
+}
+
+.register-card {
+  max-width: 896px;
+  margin: 0 auto;              /* căn giữa */
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;            /* để phần header xanh cũng được bo góc */
+  box-shadow: 0 20px 50px rgba(30, 60, 120, 0.1);
+}
+
