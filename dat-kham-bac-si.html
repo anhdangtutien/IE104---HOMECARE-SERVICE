@@ -1,537 +1,143 @@
 <!DOCTYPE html>
 <!--
   =========================================================
-  TRANG ĐẶT KHÁM THEO BÁC SĨ - dat-kham-bac-si.html
-  Người phụ trách: THÀNH VIÊN 1
-  File liên quan: css/style.css
+  TRANG ĐẶT KHÁM THEO BÁC SĨ - dat-kham.html
+  Người phụ trách: THÀNH VIÊN 5
+  File liên quan: css/dat-kham.css, js/dat-kham.js
+  Danh sách bác sĩ KHÔNG viết trong HTML mà do JavaScript tạo ra
+  từ mảng dữ liệu trong js/dat-kham.js
   =========================================================
 -->
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt khám theo bác sĩ - HomeCare</title>
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="css/style.css" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS riêng của trang đặt khám (Thành viên 5) -->
+  <link rel="stylesheet" href="css/dat-kham.css">
 </head>
-<body>
 
-  <!-- ==================== TOPBAR ==================== -->
-  <header class="topbar">
+<!-- data-page="dat-kham": để layout.js gạch chân menu "Dịch vụ" -->
+<body data-page="dat-kham">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main class="booking-page">
     <div class="container">
-      <div class="left-welcome-text">
-        <p class="text">Chào mừng bạn đến với HomeCare – chăm sóc sức khỏe tại nhà</p>
-      </div>
 
-      <a href="dang-nhap.html" class="right-account-button" aria-label="Tài khoản">
-        <div class="SVG">
-          <img class="vector" src="img/vector.svg" alt="Tài khoản" />
-        </div>
-        <div class="text-wrapper">
-          <div class="div">Tài khoản</div>
-        </div>
-      </a>
-    </div>
-  </header>
-
-  <!-- ==================== MAIN HEADER / NAVBAR ==================== -->
-  <nav class="main-header">
-    <div class="container">
-      <div class="brand-section">
-        <a href="index.html" class="logo-link">
-          <div class="logo-badge">
-            <i class="fa-solid fa-house-medical"></i>
-          </div>
-          <span class="logo-title">HomeCare</span>
-        </a>
-
-        <div class="phone-consultation">
-          <div class="phone-icon-wrap">
-            <i class="fa-solid fa-phone"></i>
-          </div>
-          <div class="phone-info">
-            <span class="phone-label">Tư vấn/Đặt lịch</span>
-            <span class="phone-number">1900 1234</span>
-          </div>
-        </div>
-      </div>
-
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a href="#" class="nav-link">Dịch vụ <i class="fa-solid fa-chevron-down"></i></a>
-        </li>
-        <li class="nav-item">
-          <a href="dat-kham-bac-si.html" class="nav-link active">Bác sĩ</a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">Gói chăm sóc</a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">Tin tức <i class="fa-solid fa-chevron-down"></i></a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">Hướng dẫn <i class="fa-solid fa-chevron-down"></i></a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">Liên hệ hợp tác <i class="fa-solid fa-chevron-down"></i></a>
-        </li>
-      </ul>
-
-      <button class="header-action-btn" type="button">
-        <i class="fa-regular fa-calendar-check"></i>
-        Đặt lịch khám
-      </button>
-    </div>
-  </nav>
-
-  <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
-  <main class="page-container">
-
-    <!-- HERO BANNER -->
-    <section class="hero-banner">
-      <div class="hero-left">
-        <div class="pill-badge">
-          DỊCH VỤ Y TẾ TẬN TÂM
-        </div>
-        <h1 class="hero-title">ĐẶT KHÁM THEO BÁC SĨ</h1>
-        <p class="hero-description">
-          Chủ động kết nối chuyên gia y tế giàu kinh nghiệm, đặt lịch tiện lợi, chăm sóc chu đáo ngay tại không gian thân quen của gia đình bạn.
-        </p>
-
-        <div class="hero-features-grid">
-          <div class="hero-feature-item">
-            <span class="feature-check-icon"><i class="fa-solid fa-check"></i></span>
-            <span>Chọn bác sĩ tin tưởng, hồ sơ minh bạch</span>
-          </div>
-          <div class="hero-feature-item">
-            <span class="feature-check-icon"><i class="fa-solid fa-check"></i></span>
-            <span>Bác sĩ đến tận nhà đúng giờ hẹn</span>
-          </div>
-          <div class="hero-feature-item">
-            <span class="feature-check-icon"><i class="fa-solid fa-check"></i></span>
-            <span>Xem lại hồ sơ sức khỏe điện tử trọn đời</span>
-          </div>
-          <div class="hero-feature-item">
-            <span class="feature-check-icon"><i class="fa-solid fa-check"></i></span>
-            <span>Hoàn tiền 100% khi hủy lịch theo quy định</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hero Right Floating Card -->
-      <aside class="hero-right-card">
-        <div class="hero-card-icon">
-          <i class="fa-solid fa-hospital"></i>
-        </div>
-        <h3 class="hero-card-title">Chuyên gia y tế chuẩn tuyến</h3>
-        <p class="hero-card-subtext">
-          Đội ngũ y bác sĩ từ các bệnh viện lớn tại TP.HCM sẵn sàng đến tận nhà thăm khám chu đáo và tin cậy.
-        </p>
-        <div class="hero-location-pill">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Phục vụ nhanh chóng tại TP. Thủ Đức</span>
-        </div>
-      </aside>
-    </section>
-
-    <!-- SEARCH & FILTER CONTROLS -->
-    <section class="search-filter-section">
-      <div class="search-box-wrap">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input 
-          type="text" 
-          id="doctor-search-input"
-          class="search-input" 
-          placeholder="Tìm kiếm bác sĩ theo tên, chuyên khoa hoặc bệnh lý..."
-          aria-label="Tìm kiếm bác sĩ"
-        />
-        <button class="search-submit-btn" type="button" id="search-btn">Tìm kiếm</button>
-      </div>
-
-      <div class="filter-controls">
-        <button class="btn-filter-modal" type="button">
-          <i class="fa-solid fa-filter"></i>
-          Bộ lọc
-        </button>
-        <div class="toggle-pills">
-          <button class="toggle-pill-btn active" type="button" data-role="doctor">Bác sĩ</button>
-          <button class="toggle-pill-btn" type="button" data-role="nurse">Điều dưỡng</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- MAIN 2-COLUMN SECTION -->
-    <section class="content-grid-layout">
-
-      <!-- LEFT: DOCTORS LIST -->
-      <div class="doctors-list-col" id="doctors-container">
-
-        <!-- DOCTOR CARD 1 -->
-        <article class="doctor-card">
-          <div class="doctor-main-info">
-            <div class="doctor-avatar-wrap">
-              <span class="doctor-initial">C</span>
-              <span class="doctor-verified-badge"><i class="fa-solid fa-check"></i></span>
-            </div>
-
-            <div class="doctor-details-wrap">
-              <div class="doctor-header-row">
-                <div class="doctor-name-title">
-                  <h2 class="doctor-name">ThS. Trần Ngọc C</h2>
-                  <span class="doctor-specialty-pill">Nội tổng quát & Lão khoa</span>
-                </div>
-                <div class="doctor-rating-info">
-                  <i class="fa-solid fa-star star-icon"></i>
-                  <span class="rating-score">4.9</span>
-                  <span class="rating-count">(128 lượt khám)</span>
-                </div>
-              </div>
-
-              <div class="doctor-info-list">
-                <p>
-                  <span class="info-label">Chuyên trị:</span> 
-                  <span class="info-value">Tăng huyết áp, Đái tháo đường, Bệnh lý tim mạch người cao tuổi</span>
-                </p>
-                <p>
-                  <span class="info-label">Lịch khám:</span> 
-                  <span class="info-value">Thứ 2, 4, 6 (08:00 - 17:00), Chủ nhật hẹn trước</span>
-                </p>
-                <p>
-                  <span class="info-label">Giá khám:</span> 
-                  <span class="info-price">300.000đ / lượt tại nhà</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="doctor-card-footer">
-            <div class="doctor-location">
-              <i class="fa-solid fa-location-dot"></i>
-              <span>Khu vực phục vụ: TP. Thủ Đức</span>
-            </div>
-            <button class="btn-book-now" type="button">Đặt lịch</button>
-          </div>
-        </article>
-
-        <!-- DOCTOR CARD 2 -->
-        <article class="doctor-card">
-          <div class="doctor-main-info">
-            <div class="doctor-avatar-wrap">
-              <span class="doctor-initial">D</span>
-              <span class="doctor-verified-badge"><i class="fa-solid fa-check"></i></span>
-            </div>
-
-            <div class="doctor-details-wrap">
-              <div class="doctor-header-row">
-                <div class="doctor-name-title">
-                  <h2 class="doctor-name">BS. Trần Lê Trung D</h2>
-                  <span class="doctor-specialty-pill">Cơ xương khớp & Phục hồi chức năng</span>
-                </div>
-                <div class="doctor-rating-info">
-                  <i class="fa-solid fa-star star-icon"></i>
-                  <span class="rating-score">4.8</span>
-                  <span class="rating-count">(94 lượt khám)</span>
-                </div>
-              </div>
-
-              <div class="doctor-info-list">
-                <p>
-                  <span class="info-label">Chuyên trị:</span> 
-                  <span class="info-value">Thoát vị đĩa đệm, đau thần kinh tọa, tập vận động sau tai biến</span>
-                </p>
-                <p>
-                  <span class="info-label">Lịch khám:</span> 
-                  <span class="info-value">Thứ 3, 5, 7 (07:30 - 18:30)</span>
-                </p>
-                <p>
-                  <span class="info-label">Giá khám:</span> 
-                  <span class="info-price">350.000đ / lượt tại nhà</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="doctor-card-footer">
-            <div class="doctor-location">
-              <i class="fa-solid fa-location-dot"></i>
-              <span>Khu vực phục vụ: TP. Thủ Đức</span>
-            </div>
-            <button class="btn-book-now" type="button">Đặt lịch</button>
-          </div>
-        </article>
-
-        <!-- DOCTOR CARD 3 -->
-        <article class="doctor-card">
-          <div class="doctor-main-info">
-            <div class="doctor-avatar-wrap">
-              <span class="doctor-initial">E</span>
-              <span class="doctor-verified-badge"><i class="fa-solid fa-check"></i></span>
-            </div>
-
-            <div class="doctor-details-wrap">
-              <div class="doctor-header-row">
-                <div class="doctor-name-title">
-                  <h2 class="doctor-name">BS. Phạm Thị E</h2>
-                  <span class="doctor-specialty-pill">Nhi khoa & Dinh dưỡng lâm sàng</span>
-                </div>
-                <div class="doctor-rating-info">
-                  <i class="fa-solid fa-star star-icon"></i>
-                  <span class="rating-score">5.0</span>
-                  <span class="rating-count">(150 lượt khám)</span>
-                </div>
-              </div>
-
-              <div class="doctor-info-list">
-                <p>
-                  <span class="info-label">Chuyên trị:</span> 
-                  <span class="info-value">Viêm phế quản, sốt virus trẻ em, tư vấn chế độ dinh dưỡng trẻ biếng ăn</span>
-                </p>
-                <p>
-                  <span class="info-label">Lịch khám:</span> 
-                  <span class="info-value">Thứ 2 đến Thứ 7 (16:30 - 20:30)</span>
-                </p>
-                <p>
-                  <span class="info-label">Giá khám:</span> 
-                  <span class="info-price">280.000đ / lượt tại nhà</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="doctor-card-footer">
-            <div class="doctor-location">
-              <i class="fa-solid fa-location-dot"></i>
-              <span>Khu vực phục vụ: TP. Thủ Đức</span>
-            </div>
-            <button class="btn-book-now" type="button">Đặt lịch</button>
-          </div>
-        </article>
-
-        <!-- DOCTOR CARD 4 -->
-        <article class="doctor-card">
-          <div class="doctor-main-info">
-            <div class="doctor-avatar-wrap">
-              <span class="doctor-initial">Đ</span>
-              <span class="doctor-verified-badge"><i class="fa-solid fa-check"></i></span>
-            </div>
-
-            <div class="doctor-details-wrap">
-              <div class="doctor-header-row">
-                <div class="doctor-name-title">
-                  <h2 class="doctor-name">BS. Nguyễn Tuấn Đ</h2>
-                  <span class="doctor-specialty-pill">Tai Mũi Họng & Hô hấp</span>
-                </div>
-                <div class="doctor-rating-info">
-                  <i class="fa-solid fa-star star-icon"></i>
-                  <span class="rating-score">4.9</span>
-                  <span class="rating-count">(82 lượt khám)</span>
-                </div>
-              </div>
-
-              <div class="doctor-info-list">
-                <p>
-                  <span class="info-label">Chuyên trị:</span> 
-                  <span class="info-value">Viêm xoang cấp, nội soi vệ sinh tai mũi họng tại nhà, dị ứng thời tiết</span>
-                </p>
-                <p>
-                  <span class="info-label">Lịch khám:</span> 
-                  <span class="info-value">Thứ 2, 3, 5, 7 (08:00 - 17:30)</span>
-                </p>
-                <p>
-                  <span class="info-label">Giá khám:</span> 
-                  <span class="info-price">300.000đ / lượt tại nhà</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="doctor-card-footer">
-            <div class="doctor-location">
-              <i class="fa-solid fa-location-dot"></i>
-              <span>Khu vực phục vụ: TP. Thủ Đức</span>
-            </div>
-            <button class="btn-book-now" type="button">Đặt lịch</button>
-          </div>
-        </article>
-
-        <!-- PAGINATION -->
-        <div class="pagination-wrap">
-          <button class="page-btn" aria-label="Trang trước"><i class="fa-solid fa-chevron-left"></i></button>
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <span class="page-ellipsis">...</span>
-          <button class="page-btn">20</button>
-          <button class="page-btn" aria-label="Trang tiếp theo"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-
-      </div>
-
-      <!-- RIGHT: SIDEBAR -->
-      <aside class="sidebar-col">
-        <div class="sidebar-featured-card">
-          <div class="pill-badge">DỊCH VỤ NỔI BẬT</div>
-          <h3 class="sidebar-title">Đội ngũ Y Bác sĩ HomeCare</h3>
-          <p class="sidebar-desc">
-            100% y bác sĩ có chứng chỉ hành nghề, đang công tác tại các bệnh viện lớn tuyến trung ương và thành phố.
+      <!-- ===================== 1. BANNER ===================== -->
+      <section class="booking-hero">
+        <div class="booking-hero-text">
+          <span class="badge">DỊCH VỤ Y TẾ TẬN TÂM</span>
+          <h1>ĐẶT KHÁM THEO BÁC SĨ</h1>
+          <p>
+            Chủ động kết nối chuyên gia y tế giàu kinh nghiệm, đặt lịch tiện lợi,
+            chăm sóc chu đáo ngay tại không gian thân quen của gia đình bạn.
           </p>
-
-          <div class="sidebar-checklist">
-            <div class="sidebar-check-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>Tư vấn sơ bộ miễn phí qua điện thoại</span>
-            </div>
-            <div class="sidebar-check-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>Bác sĩ mang đầy đủ dụng cụ y tế đạt chuẩn</span>
-            </div>
-            <div class="sidebar-check-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>Kê đơn thuốc điện tử tiện lợi</span>
-            </div>
-          </div>
-
-          <div class="sidebar-hotline-box">
-            <div class="hotline-icon-wrap">
-              <i class="fa-solid fa-phone"></i>
-            </div>
-            <div class="hotline-text-wrap">
-              <span class="hotline-subtext">Hỗ trợ đặt lịch nhanh 24/7</span>
-              <span class="hotline-strong">Hotline: 1900 1234</span>
-            </div>
-          </div>
+          <ul class="check-grid">
+            <li><i class="fa-solid fa-check"></i> Chọn bác sĩ tin tưởng, hồ sơ minh bạch</li>
+            <li><i class="fa-solid fa-check"></i> Bác sĩ đến tận nhà đúng giờ hẹn</li>
+            <li><i class="fa-solid fa-check"></i> Xem lại hồ sơ sức khỏe điện tử trọn đời</li>
+            <li><i class="fa-solid fa-check"></i> Hoàn tiền 100% khi hủy lịch theo quy định</li>
+          </ul>
         </div>
-      </aside>
 
-    </section>
+        <div class="booking-hero-card">
+          <div class="hero-card-icon"><i class="fa-regular fa-hospital"></i></div>
+          <h3>Chuyên gia y tế chuẩn tuyến</h3>
+          <p>
+            Đội ngũ y bác sĩ từ các bệnh viện lớn tại TP.HCM sẵn sàng đến tận nhà
+            thăm khám chu đáo và tin cậy.
+          </p>
+          <span class="hero-card-note">
+            <i class="fa-solid fa-circle-check"></i> Phục vụ nhanh chóng tại TP. Thủ Đức
+          </span>
+        </div>
+      </section>
 
+
+      <!-- ===================== 2. THANH TÌM KIẾM + BỘ LỌC ===================== -->
+      <section class="toolbar">
+        <form class="search-box" id="search-form">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="search-input" placeholder="Tìm kiếm bác sĩ theo tên, chuyên khoa hoặc bệnh lý...">
+          <button type="submit" class="btn btn-primary btn-pill">Tìm kiếm</button>
+        </form>
+
+        <button type="button" class="btn btn-outline btn-pill" id="filter-button">
+          <i class="fa-solid fa-filter"></i> Bộ lọc
+        </button>
+
+        <!-- 2 tab: data-type cho JS biết đang lọc loại nào -->
+        <div class="tabs">
+          <button type="button" class="tab active" data-type="bac-si">Bác sĩ</button>
+          <button type="button" class="tab" data-type="dieu-duong">Điều dưỡng</button>
+        </div>
+      </section>
+
+      <!-- Bảng bộ lọc: mặc định ẩn, bấm nút "Bộ lọc" mới hiện -->
+      <div class="filter-panel" id="filter-panel">
+        <label for="sort-select">Sắp xếp theo:</label>
+        <select id="sort-select">
+          <option value="default">Mặc định</option>
+          <option value="rating">Đánh giá cao nhất</option>
+          <option value="price-asc">Giá: thấp đến cao</option>
+          <option value="price-desc">Giá: cao đến thấp</option>
+        </select>
+      </div>
+
+
+      <!-- Dòng "Tìm thấy ... kết quả" (JS điền chữ vào) -->
+      <p class="result-count" id="result-count"></p>
+
+      <!-- ===================== 3. DANH SÁCH + CỘT BÊN PHẢI ===================== -->
+      <div class="booking-layout">
+
+        <section>
+          <!-- JS sẽ tạo các thẻ bác sĩ và đặt vào đây -->
+          <div class="doctor-list" id="doctor-list"></div>
+
+          <!-- JS sẽ tạo các nút số trang và đặt vào đây -->
+          <div class="pagination" id="pagination"></div>
+        </section>
+
+        <aside class="sidebar">
+          <span class="badge badge-green">DỊCH VỤ NỔI BẬT</span>
+          <h3>Đội ngũ Y Bác sĩ HomeCare</h3>
+          <p>
+            100% y bác sĩ có chứng chỉ hành nghề, đang công tác tại các bệnh viện
+            lớn tuyến trung ương và thành phố.
+          </p>
+          <ul class="sidebar-checks">
+            <li><i class="fa-solid fa-check"></i> Tư vấn sơ bộ miễn phí qua điện thoại</li>
+            <li><i class="fa-solid fa-check"></i> Bác sĩ mang đầy đủ dụng cụ y tế đạt chuẩn</li>
+            <li><i class="fa-solid fa-check"></i> Kê đơn thuốc điện tử tiện lợi</li>
+          </ul>
+          <a href="tel:19001234" class="sidebar-hotline">
+            <span class="sidebar-hotline-icon"><i class="fa-solid fa-phone"></i></span>
+            <span>
+              <small>Hỗ trợ đặt lịch nhanh 24/7</small>
+              <strong>Hotline: <span>1900 1234</span></strong>
+            </span>
+          </a>
+        </aside>
+
+      </div>
+    </div>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-top-grid">
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
 
-        <!-- Column 1: Brand -->
-        <div class="footer-brand-col">
-          <div class="footer-logo">
-            <div class="footer-logo-badge">
-              <i class="fa-solid fa-house-medical"></i>
-            </div>
-            <span class="footer-logo-title">HomeCare</span>
-          </div>
-          <p class="footer-brand-desc">
-            Nền tảng đặt lịch chăm sóc sức khỏe tại nhà – kết nối gia đình bạn với đội ngũ bác sĩ và điều dưỡng chuyên nghiệp.
-          </p>
-          <div class="footer-contact-info">
-            <p>Hotline: <strong>1900 1234</strong></p>
-            <p>Email: <strong>support@homecare.vn</strong></p>
-            <p>Địa chỉ: Khu phố 6, P. Linh Trung, TP. Thủ Đức</p>
-          </div>
-        </div>
-
-        <!-- Column 2: Dịch vụ -->
-        <div class="footer-links-col">
-          <h4 class="footer-col-title">DỊCH VỤ</h4>
-          <ul class="footer-link-list">
-            <li><a href="#" class="footer-link">Khám bác sĩ tại nhà</a></li>
-            <li><a href="#" class="footer-link">Chăm sóc bệnh nhân cao tuổi</a></li>
-            <li><a href="#" class="footer-link">Vật lý trị liệu & Phục hồi chức năng</a></li>
-            <li><a href="#" class="footer-link">Tiêm truyền & Thay băng rửa vết thương</a></li>
-            <li><a href="#" class="footer-link">Xét nghiệm máu tại nhà</a></li>
-          </ul>
-        </div>
-
-        <!-- Column 3: Hỗ trợ -->
-        <div class="footer-links-col">
-          <h4 class="footer-col-title">HỖ TRỢ</h4>
-          <ul class="footer-link-list">
-            <li><a href="#" class="footer-link">Quy trình đặt lịch hẹn</a></li>
-            <li><a href="#" class="footer-link">Hướng dẫn thanh toán</a></li>
-            <li>
-              <a href="#" class="footer-link">
-                <span class="dot-indicator"></span>
-                Chính sách hủy lịch & Hoàn tiền
-              </a>
-            </li>
-            <li><a href="#" class="footer-link">Hồ sơ năng lực y bác sĩ</a></li>
-            <li><a href="#" class="footer-link">Điều khoản dịch vụ</a></li>
-            <li><a href="#" class="footer-link">Chính sách bảo mật thông tin y tế</a></li>
-          </ul>
-        </div>
-
-        <!-- Column 4: Liên hệ & Tổ chức -->
-        <div class="footer-links-col">
-          <h4 class="footer-col-title">LIÊN HỆ & TỔ CHỨC</h4>
-          <div class="footer-org-section">
-            <div>
-              <div class="org-item-title">Cấp cứu khẩn cấp 24/7:</div>
-              <div class="org-item-content highlight">1900 1234 (Nhánh 1)</div>
-            </div>
-            <div>
-              <div class="org-item-title">Văn phòng điều hành:</div>
-              <div class="org-item-content">Tầng 4, Tòa nhà Công nghệ, TP. Thủ Đức</div>
-            </div>
-            <div>
-              <div class="org-item-title">Hợp tác chuyên môn:</div>
-              <div class="org-item-content">Bệnh viện Đa khoa Khu vực Thủ Đức, BV TP. Thủ Đức</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Copyright Bar -->
-      <div class="footer-bottom-bar">
-        <p class="copyright-text">
-          © 2026 HomeCare – Đồ án IE104, Nhóm 9, Trường ĐH Công nghệ Thông tin – ĐHQG TP.HCM
-        </p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Small interactive script -->
-  <script>
-    // Tab switching for Bác sĩ / Điều dưỡng
-    const toggleBtns = document.querySelectorAll('.toggle-pill-btn');
-    toggleBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        toggleBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    // Simple search filtering
-    const searchInput = document.getElementById('doctor-search-input');
-    const searchBtn = document.getElementById('search-btn');
-    const doctorCards = document.querySelectorAll('.doctor-card');
-
-    function filterDoctors() {
-      const query = (searchInput.value || '').toLowerCase().trim();
-      doctorCards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        if (text.includes(query)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    if (searchInput && searchBtn) {
-      searchBtn.addEventListener('click', filterDoctors);
-      searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') filterDoctors();
-      });
-    }
-  </script>
-
+  <script src="js/layout.js"></script>
+  <script src="js/dat-kham.js"></script>
 </body>
 </html>
