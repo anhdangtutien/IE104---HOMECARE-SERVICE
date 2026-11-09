@@ -1,0 +1,31 @@
+/* =========================================================
+   HOME.CSS - GIAO DIỆN TRANG CHỦ (index.html)
+   Người phụ trách: THÀNH VIÊN 2
+   ========================================================= */
+
+
+/* =============== 1. BANNER (HERO) =============== */
+.hero {
+  background-color: var(--primary-light);
+  padding: 64px 0 110px;       /* dưới dày hơn để chừa chỗ cho thẻ dịch vụ đè lên */
+}
+
+/* Chia 2 cột: chữ bên trái, ảnh bên phải */
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-text,
+.hero-image {
+  flex: 1;                     /* 2 cột rộng bằng nhau */
+}
+
+.hero h1 {
+  margin-bottom: 28px;
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--primary-dark);
+}
