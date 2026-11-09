@@ -73,3 +73,30 @@
   display: block;
 }
 
+/* --- Danh sách có dấu tích --- */
+.hero-checks {
+  margin-top: 24px;
+}
+
+.hero-checks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.hero-checks i {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+
+/* Làm mờ dần các mép ảnh để ảnh hòa vào nền xanh, không lộ khung chữ nhật.
+   mask-image: phần màu đen = hiện rõ, phần trong suốt = ẩn đi
+   (-webkit- là tiền tố cho trình duyệt Chrome/Safari đời cũ) */
+.hero-image img {
+  -webkit-mask-image: radial-gradient(ellipse 55% 60% at center, #000 75%, transparent 100%);
+  mask-image: radial-gradient(ellipse 55% 60% at center, #000 75%, transparent 100%);
+}
+
