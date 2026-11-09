@@ -100,3 +100,42 @@
   mask-image: radial-gradient(ellipse 55% 60% at center, #000 75%, transparent 100%);
 }
 
+
+/* =============== 2. DỊCH VỤ NHANH =============== */
+.services {
+  margin-top: -56px;           /* số âm -> kéo lên đè lên banner */
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 4 cột bằng nhau */
+  gap: 28px;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 20px;
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-align: center;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service-card i {
+  font-size: 46px;
+  color: var(--primary);
+}
+
+/* Rê chuột vào: thẻ nhích lên một chút */
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(15, 60, 45, 0.14);
+}
+
