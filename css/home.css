@@ -233,3 +233,26 @@
   max-height: 74px;
 }
 
+
+/* =============== 5. RESPONSIVE =============== */
+
+/* Máy tính bảng */
+@media (max-width: 992px) {
+  .hero-inner {
+    flex-direction: column;    /* 2 cột -> xếp chồng lên nhau */
+    align-items: stretch;      /* mỗi phần rộng bằng khung */
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .services-grid,
+  .doctor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .partner-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
