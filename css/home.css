@@ -256,3 +256,43 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* Điện thoại */
+@media (max-width: 576px) {
+  .hero {
+    padding: 40px 0 90px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero h1 br {
+    display: none;             /* bỏ xuống dòng cho chữ tự chảy */
+  }
+
+  .services-grid {
+    gap: 14px;
+  }
+
+  .service-card {
+    padding: 24px 12px;
+    font-size: 15px;
+  }
+
+  .service-card i {
+    font-size: 34px;
+  }
+
+  .doctor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .partner-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
