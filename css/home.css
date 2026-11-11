@@ -200,3 +200,36 @@
   margin-bottom: 18px;
 }
 
+
+/* =============== 4. ĐỐI TÁC =============== */
+.partners {
+  padding: 56px 0 72px;
+  background-color: var(--bg-light);
+  text-align: center;
+}
+
+.partners .section-title {
+  margin-bottom: 32px;
+}
+
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.partner-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  padding: 8px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.partner-item img {
+  max-height: 74px;
+}
+
