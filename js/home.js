@@ -38,3 +38,10 @@ searchForm.addEventListener("submit", function (event) {
   window.location.href = "dat-kham.html?q=" + encodeURIComponent(keyword);
 });
 
+
+/* ---------- 3. KHI ĐANG GÕ CHỮ -> ẨN THÔNG BÁO LỖI ---------- */
+searchInput.addEventListener("input", function () {
+  searchForm.classList.remove("error");
+  searchError.classList.remove("show");
+});
+
