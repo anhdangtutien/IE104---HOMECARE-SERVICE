@@ -45,3 +45,15 @@ searchInput.addEventListener("input", function () {
   searchError.classList.remove("show");
 });
 
+
+/* ---------- 4. NÚT "ĐẶT LỊCH" Ở THẺ BÁC SĨ ----------
+   Với mỗi thẻ bác sĩ: lấy tên bác sĩ (trong thẻ h3),
+   rồi gắn tên đó vào link của nút "Đặt lịch". */
+const doctorCards = document.querySelectorAll(".doctor-card");
+
+for (const card of doctorCards) {
+  const doctorName = card.querySelector("h3").textContent;
+  const bookButton = card.querySelector(".btn");
+
+  bookButton.href = "dat-kham.html?q=" + encodeURIComponent(doctorName);
+}
