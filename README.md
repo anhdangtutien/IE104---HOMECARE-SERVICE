@@ -1,7 +1,5 @@
 # IE104---HOMECARE-SERVICE
 
-# HomeCare – Website chăm sóc sức khỏe tại nhà
-
 Đồ án môn **Internet và Công nghệ Web (IE104)**.
 HomeCare kết nối khách hàng với bác sĩ, điều dưỡng đến tận nhà: đặt lịch khám, xem hồ sơ sức khỏe, thanh toán minh bạch.
 
