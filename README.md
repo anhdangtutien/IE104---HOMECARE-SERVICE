@@ -1,8 +1,11 @@
 # IE104---HOMECARE-SERVICE
 
-HomeCare – Website chăm sóc sức khỏe tại nhà.
+# HomeCare – Website chăm sóc sức khỏe tại nhà
+
 Đồ án môn **Internet và Công nghệ Web (IE104)**.
 HomeCare kết nối khách hàng với bác sĩ, điều dưỡng đến tận nhà: đặt lịch khám, xem hồ sơ sức khỏe, thanh toán minh bạch.
+
+Dự án chỉ dùng **HTML, CSS, JavaScript thuần** (không dùng framework, không cần cài đặt thêm gì).
 
 ---
 
@@ -167,6 +170,12 @@ Các file JS đều chạy chung một phạm vi, nên **không khai báo `const
 git pull                          # luôn lấy code mới nhất trước khi làm
 git add .
 git commit -m "TV1: viet header sticky"   # ghi rõ ai làm, làm gì
+git push
+```
+
+- Chỉ sửa **file của mình** (xem bảng phân công ở trên).
+- Cần thêm biến màu hoặc class dùng chung? Nhờ **TV1** thêm vào `base.css`, đừng tự sửa.
+- Commit thường xuyên, mỗi lần một việc nhỏ.
 git push
 ```
 
