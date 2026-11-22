@@ -1,7 +1,5 @@
 # IE104---HOMECARE-SERVICE
 
-# IE104 - HOMECARE SERVICE
-
 Website **chăm sóc sức khỏe tại nhà HomeCare** - đồ án môn *Phát triển ứng dụng Web (IE104)*.
 
 Xây dựng bằng **HTML, CSS, JavaScript thuần** (không dùng framework, không cần cài đặt gì).
