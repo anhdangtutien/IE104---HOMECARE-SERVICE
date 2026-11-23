@@ -1,0 +1,544 @@
+/* =========================================================
+   CHI-TIET-BAC-SI.CSS - GIAO DIỆN TRANG HỒ SƠ BÁC SĨ
+   Người phụ trách: THÀNH VIÊN 2
+   ========================================================= */
+
+
+.profile-breadcrumb {
+  margin-bottom: 20px;
+}
+
+
+/* =============== 1. THẺ HỒ SƠ =============== */
+/* Chia 2 cột: thông tin bên trái, khung giá + nút bên phải */
+.profile-card {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+  align-items: center;
+  padding: 32px;
+}
+
+.profile-main {
+  display: flex;
+  gap: 24px;
+}
+
+/* Ảnh đại diện cỡ lớn (kế thừa .avatar trong base.css) */
+.avatar-lg {
+  width: 110px;
+  height: 110px;
+  font-size: 44px;
+}
+
+.profile-name-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.profile-name-row h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background-color: var(--primary-light);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.profile-specialty {
+  margin: 6px 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* 4 dòng thông tin xếp thành lưới 2 cột */
+.profile-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.profile-meta li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-meta i {
+  width: 16px;
+  color: var(--primary);
+}
+
+.profile-meta .fa-star {
+  color: var(--star);
+}
+
+/* Khung giá bên phải */
+.profile-price {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-light);
+}
+
+.profile-price small {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.profile-price strong {
+  margin-bottom: 6px;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+
+/* =============== 2. CÁC TAB =============== */
+.profile-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 24px 0 20px;
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto;            /* màn hình nhỏ: vuốt ngang để xem hết tab */
+}
+
+.profile-tab {
+  margin-bottom: -2px;         /* đè lên đường viền dưới của thanh tab */
+  padding: 12px 18px;
+  border-bottom: 3px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.profile-tab:hover {
+  color: var(--primary);
+}
+
+.profile-tab.active {
+  border-bottom-color: var(--primary);
+  color: var(--primary-dark);
+}
+
+/* Mỗi khung nội dung chỉ hiện khi tab tương ứng được chọn */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+
+/* =============== 3. BỐ CỤC NỘI DUNG + CỘT PHẢI =============== */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Mặc định 1 ô lưới không hẹp hơn nội dung bên trong nó được.
+   min-width: 0 cho phép co lại -> bảng giá, lịch 7 ngày cuộn ngang trong khung,
+   không làm tràn cả trang trên điện thoại */
+.profile-layout > div {
+  min-width: 0;
+}
+
+.profile-bio {
+  line-height: 1.8;
+}
+
+.sub-title {
+  margin: 24px 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-list li {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: var(--primary-light);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-dark);
+}
+
+/* Quá trình công tác: đường kẻ dọc bên trái + chấm tròn */
+.timeline li {
+  position: relative;
+  padding: 0 0 18px 26px;
+  border-left: 2px solid var(--primary-light);
+}
+
+.timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background-color: var(--white);
+}
+
+.timeline strong {
+  display: block;
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+#lich-lam-viec .note {
+  margin: -8px 0 16px;
+}
+
+
+/* =============== 4. BẢNG GIÁ =============== */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.price-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;   /* gộp viền 2 ô sát nhau thành 1 */
+}
+
+.price-table th {
+  padding: 12px;
+  background-color: var(--bg-light);
+  font-size: 13px;
+  text-align: left;
+  color: var(--text-light);
+}
+
+.price-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.price-table td strong {
+  display: block;
+  font-size: 15px;
+}
+
+.price-table td small {
+  color: var(--text-light);
+}
+
+.price-table .price {
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+
+/* =============== 5. LỊCH LÀM VIỆC =============== */
+.schedule-scroll {
+  overflow-x: auto;
+}
+
+/* 7 cột = 7 ngày */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(92px, 1fr));
+  gap: 10px;
+}
+
+.schedule-day {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.schedule-day-head {
+  padding: 8px 4px;
+  border-radius: var(--radius);
+  background-color: var(--primary-light);
+  text-align: center;
+  font-size: 13px;
+  color: var(--primary-dark);
+}
+
+.schedule-day-head strong {
+  display: block;
+  font-size: 14px;
+}
+
+.slot {
+  display: block;
+  padding: 8px 4px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+a.slot:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.slot.full {
+  border-color: var(--border);
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  text-decoration: line-through;
+}
+
+.slot.off {
+  border-style: dashed;
+  border-color: var(--border);
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.schedule-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.schedule-legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+}
+
+.legend-box.full {
+  border-color: var(--border);
+  background-color: var(--bg-light);
+}
+
+.legend-box.off {
+  border-style: dashed;
+  border-color: var(--text-light);
+}
+
+
+/* =============== 6. ĐÁNH GIÁ =============== */
+.review-summary {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-score {
+  text-align: center;
+}
+
+.review-score strong {
+  display: block;
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary-dark);
+}
+
+.review-score small {
+  color: var(--text-light);
+}
+
+.review-bars {
+  flex: 1;
+}
+
+.review-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* Thanh ngang: nền xám, bên trong là .bar-fill màu vàng
+   (độ dài do JS gán bằng style="width: ...%") */
+.bar-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--bg-light);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--star);
+}
+
+.review-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-list li:last-child {
+  border-bottom: none;
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.review-head small {
+  color: var(--text-light);
+}
+
+.review-list p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* =============== 7. CỘT PHẢI =============== */
+/* position: sticky -> cột phải dính lại khi cuộn (chừa chỗ cho header) */
+.profile-aside {
+  position: sticky;
+  top: 96px;
+}
+
+.profile-aside h3 {
+  margin-bottom: 14px;
+  font-size: 17px;
+  color: var(--primary-dark);
+}
+
+.aside-checks li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.aside-checks i {
+  margin-top: 4px;
+  color: var(--primary);
+}
+
+.aside-hotline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background-color: var(--accent-light);
+}
+
+.aside-hotline i {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.aside-hotline small {
+  display: block;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.aside-hotline strong {
+  font-size: 18px;
+  color: var(--accent);
+}
+
+
+/* =============== 8. RESPONSIVE =============== */
+@media (max-width: 992px) {
+  .profile-card,
+  .profile-layout {
+    grid-template-columns: 1fr;    /* 2 cột -> 1 cột */
+  }
+
+  .profile-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-main {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-name-row {
+    justify-content: center;
+  }
+
+  .profile-name-row h1 {
+    font-size: 23px;
+  }
+
+  .profile-meta {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .review-summary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+}

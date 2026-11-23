@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG HỒ SƠ BÁC SĨ - chi-tiet-bac-si.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/chi-tiet-bac-si.css,
+                  js/du-lieu.js, js/chi-tiet-bac-si.js
+  Link có dạng chi-tiet-bac-si.html?id=1
+  -> JavaScript đọc id trên link rồi điền thông tin bác sĩ tương ứng
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ sơ bác sĩ - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/chi-tiet-bac-si.css">
+</head>
+
+<!-- data-page="bac-si": để layout.js gạch chân menu "Bác sĩ" -->
+<body data-page="bac-si">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main class="page-gray">
+    <div class="container">
+
+      <nav class="breadcrumb profile-breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <a href="dat-kham.html">Đặt khám</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span id="crumb-name">Hồ sơ bác sĩ</span>
+      </nav>
+
+      <!-- Toàn bộ hồ sơ. Nếu id trên link sai, JS sẽ thay khung này bằng thông báo lỗi -->
+      <div id="doctor-profile">
+
+        <!-- ===================== 1. THẺ HỒ SƠ ===================== -->
+        <section class="card profile-card">
+          <div class="profile-main">
+            <div class="avatar avatar-lg" id="doctor-avatar"></div>
+
+            <div class="profile-info">
+              <div class="profile-name-row">
+                <h1 id="doctor-name"></h1>
+                <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Đã xác minh</span>
+              </div>
+              <p class="profile-specialty" id="doctor-specialty"></p>
+
+              <ul class="profile-meta">
+                <li><i class="fa-solid fa-star"></i> <span id="doctor-rating"></span></li>
+                <li><i class="fa-solid fa-briefcase-medical"></i> <span id="doctor-experience"></span></li>
+                <li><i class="fa-regular fa-hospital"></i> <span id="doctor-workplace"></span></li>
+                <li><i class="fa-solid fa-location-dot"></i> <span id="doctor-area"></span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="profile-price">
+            <small>Giá khám tại nhà từ</small>
+            <strong id="doctor-price"></strong>
+            <a href="dat-lich.html" class="btn btn-primary btn-block" id="book-button">
+              <i class="fa-regular fa-calendar-check"></i> Đặt lịch khám tại nhà
+            </a>
+            <a href="dich-vu.html#goi-video" class="btn btn-outline btn-block">
+              <i class="fa-solid fa-video"></i> Tư vấn qua video
+            </a>
+          </div>
+        </section>
+
+
+        <!-- ===================== 2. CÁC TAB ===================== -->
+        <!-- data-tab trùng với id của khung nội dung bên dưới -->
+        <div class="profile-tabs">
+          <button type="button" class="profile-tab active" data-tab="gioi-thieu">Giới thiệu</button>
+          <button type="button" class="profile-tab" data-tab="bang-gia">Dịch vụ &amp; bảng giá</button>
+          <button type="button" class="profile-tab" data-tab="lich-lam-viec">Lịch làm việc</button>
+          <button type="button" class="profile-tab" data-tab="danh-gia">Đánh giá</button>
+        </div>
+
+        <div class="profile-layout">
+          <div>
+
+            <!-- Tab 1: Giới thiệu -->
+            <section class="card tab-panel active" id="gioi-thieu">
+              <h2 class="card-title">Giới thiệu</h2>
+              <p class="profile-bio" id="doctor-bio"></p>
+
+              <h3 class="sub-title">Chuyên trị</h3>
+              <ul class="tag-list" id="doctor-treats"></ul>
+
+              <h3 class="sub-title">Quá trình công tác</h3>
+              <ul class="timeline" id="doctor-timeline"></ul>
+            </section>
+
+            <!-- Tab 2: Bảng giá -->
+            <section class="card tab-panel" id="bang-gia">
+              <h2 class="card-title">Dịch vụ &amp; bảng giá</h2>
+              <!-- Bọc bảng trong khung cuộn ngang để màn hình nhỏ không bị vỡ -->
+              <div class="table-wrap">
+                <table class="price-table">
+                  <thead>
+                    <tr>
+                      <th>Dịch vụ</th>
+                      <th>Thời gian</th>
+                      <th>Giá</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="service-rows"></tbody>
+                </table>
+              </div>
+              <p class="note">* Giá chưa gồm phí di chuyển 30.000đ/lượt (tư vấn video không tính phí này).</p>
+            </section>
+
+            <!-- Tab 3: Lịch làm việc -->
+            <section class="card tab-panel" id="lich-lam-viec">
+              <h2 class="card-title">Lịch làm việc 7 ngày tới</h2>
+              <p class="note">Bấm vào khung giờ còn trống để đặt lịch ngay.</p>
+              <div class="schedule-scroll">
+                <div class="schedule-grid" id="schedule-grid"></div>
+              </div>
+              <ul class="schedule-legend">
+                <li><span class="legend-box free"></span> Còn trống</li>
+                <li><span class="legend-box full"></span> Đã kín</li>
+                <li><span class="legend-box off"></span> Nghỉ</li>
+              </ul>
+            </section>
+
+            <!-- Tab 4: Đánh giá -->
+            <section class="card tab-panel" id="danh-gia">
+              <h2 class="card-title">Đánh giá từ người bệnh</h2>
+              <div class="review-summary" id="review-summary"></div>
+              <ul class="review-list" id="review-list"></ul>
+            </section>
+
+          </div>
+
+          <!-- Cột phải -->
+          <aside class="card profile-aside">
+            <h3>Cam kết của HomeCare</h3>
+            <ul class="aside-checks">
+              <li><i class="fa-solid fa-check"></i> Bác sĩ có chứng chỉ hành nghề, đã xác minh</li>
+              <li><i class="fa-solid fa-check"></i> Đến đúng giờ, trễ trên 15 phút giảm 20% phí</li>
+              <li><i class="fa-solid fa-check"></i> Hoàn tiền 100% khi hủy trước 24 giờ</li>
+              <li><i class="fa-solid fa-check"></i> Lưu hồ sơ khám bệnh điện tử trọn đời</li>
+            </ul>
+            <a href="tel:19001234" class="aside-hotline">
+              <i class="fa-solid fa-phone"></i>
+              <span>
+                <small>Cần hỗ trợ đặt lịch?</small>
+                <strong>1900 1234</strong>
+              </span>
+            </a>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/du-lieu.js"></script>
+  <script src="js/chi-tiet-bac-si.js"></script>
+</body>
+</html>
