@@ -230,7 +230,7 @@ function createDoctorCard(doctor) {
 
         <div class="doctor-info">
           <div class="doctor-name-row">
-            <h3>${doctor.name}</h3>
+            <h3><a href="chi-tiet-bac-si.html?id=${doctor.id}">${doctor.name}</a></h3>
             <span class="tag">${doctor.specialty}</span>
             <span class="doctor-rating">
               <span class="rating">★ ${doctor.rating.toFixed(1)}</span> (${doctor.visits} lượt khám)
@@ -244,7 +244,10 @@ function createDoctorCard(doctor) {
 
       <div class="doctor-item-bottom">
         <span><i class="fa-solid fa-location-dot"></i>Khu vực phục vụ: ${doctor.area}</span>
-        <button type="button" class="btn btn-primary btn-small" onclick="bookDoctor(${doctor.id})">Đặt lịch</button>
+        <span>
+          <a href="chi-tiet-bac-si.html?id=${doctor.id}" class="btn btn-outline btn-small">Xem hồ sơ</a>
+          <button type="button" class="btn btn-primary btn-small" onclick="bookDoctor(${doctor.id})">Đặt lịch</button>
+        </span>
       </div>
     </article>
   `;
@@ -372,25 +375,11 @@ function renderPagination(totalPages) {
 
 
 /* ---------- 9. BẤM NÚT "ĐẶT LỊCH" ----------
-   Hàm này được gọi từ onclick="bookDoctor(id)" trong thẻ bác sĩ */
+   Hàm này được gọi từ onclick="bookDoctor(id)" trong thẻ bác sĩ.
+   Chuyển sang trang đặt lịch (chọn gói, ngày giờ, nhập thông tin),
+   mang theo id của bác sĩ trên link: dat-lich.html?id=3 */
 function bookDoctor(id) {
-  // Tìm bác sĩ có id tương ứng trong mảng
-  let selectedDoctor = null;
-  for (const doctor of doctors) {
-    if (doctor.id === id) {
-      selectedDoctor = doctor;
-    }
-  }
-
-  // confirm() hiện hộp thoại có 2 nút OK / Cancel, trả về true nếu bấm OK
-  const isConfirmed = confirm(
-    "Bạn muốn đặt lịch khám với " + selectedDoctor.name + "?\n" +
-    "Giá khám: " + formatPrice(selectedDoctor.price) + " / lượt tại nhà"
-  );
-
-  if (isConfirmed) {
-    alert("Đặt lịch thành công! HomeCare sẽ gọi lại cho bạn trong 15 phút để xác nhận.");
-  }
+  window.location.href = "dat-lich.html?id=" + id;
 }
 
 
