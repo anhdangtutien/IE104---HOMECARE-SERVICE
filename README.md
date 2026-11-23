@@ -45,7 +45,7 @@ homecare/
 
 Mỗi người **chỉ sửa file của mình**, vì vậy khi commit sẽ không bao giờ bị conflict.
 
-| Thành viên | MSSV | Họ và tên | Phần | File phụ trách | Kiến thức chính (để thuyết trình) |
+| Thành viên | MSSV | Họ và tên | Phần | File phụ trách | Kiến thức chính |
 |:---:|:---:|---|---|---|---|
 | **TV1** | 24521785 | Hồ Đình Tín | Phần chung | `README.md`, `css/base.css`, `css/layout.css`, `js/layout.js` | Biến CSS `:root`, reset CSS, header `sticky`, menu con khi rê chuột, `@media`; JS chèn HTML bằng `outerHTML`, `classList.toggle` |
 | **TV2** | 24521714 | Châu Phước Thọ | Trang chủ | `index.html`, `css/home.css`, `js/home.js`, thư mục `images/` | Flexbox, Grid, margin âm, hiệu ứng `hover`; JS bắt sự kiện `submit`, `preventDefault`, chuyển trang kèm tham số `?q=` |
