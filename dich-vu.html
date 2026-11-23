@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG DỊCH VỤ - dich-vu.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/dich-vu.css, js/dich-vu.js
+  Các mục có id để menu nhảy thẳng tới: #kham-tai-nha, #goi-video,
+  #xet-nghiem, #goi-dinh-ky
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dịch vụ y tế tại nhà - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/dich-vu.css">
+</head>
+
+<body data-page="dich-vu">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main>
+
+    <!-- ===================== BANNER ===================== -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Dịch vụ</span>
+        </nav>
+        <h1>Dịch vụ y tế tại nhà</h1>
+        <p>
+          Từ khám bệnh, gọi video với bác sĩ đến lấy mẫu xét nghiệm – mọi dịch vụ
+          đều được thực hiện tận nơi bởi đội ngũ y bác sĩ có chứng chỉ hành nghề.
+        </p>
+
+        <div class="quick-links">
+          <a href="#kham-tai-nha"><i class="fa-solid fa-house-medical"></i> Khám tại nhà</a>
+          <a href="#goi-video"><i class="fa-solid fa-video"></i> Gọi video với bác sĩ</a>
+          <a href="#xet-nghiem"><i class="fa-solid fa-vial"></i> Xét nghiệm tại nhà</a>
+          <a href="#goi-dinh-ky"><i class="fa-solid fa-kit-medical"></i> Gói chăm sóc định kỳ</a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 1. KHÁM TẠI NHÀ ===================== -->
+    <section class="page-section" id="kham-tai-nha">
+      <div class="container service-row">
+        <div class="service-text">
+          <span class="badge">PHỔ BIẾN NHẤT</span>
+          <h2>Khám bệnh tại nhà</h2>
+          <p>
+            Bác sĩ đến tận nhà thăm khám, chẩn đoán và kê đơn. Phù hợp với người cao tuổi,
+            trẻ nhỏ, người mới phẫu thuật hoặc gia đình bận rộn không muốn chờ đợi ở bệnh viện.
+          </p>
+          <ul class="check-list">
+            <li><i class="fa-solid fa-check"></i> Hơn 12 bác sĩ, điều dưỡng thuộc 10 chuyên khoa</li>
+            <li><i class="fa-solid fa-check"></i> Mang theo máy đo huyết áp, đường huyết, SpO2, ECG cầm tay</li>
+            <li><i class="fa-solid fa-check"></i> Kê đơn điện tử, lưu hồ sơ khám bệnh trọn đời</li>
+          </ul>
+          <a href="dat-kham.html" class="btn btn-primary">Chọn bác sĩ ngay</a>
+        </div>
+
+        <div class="service-visual">
+          <div class="visual-icon"><i class="fa-solid fa-user-doctor"></i></div>
+          <p class="visual-price">Từ <strong>250.000đ</strong> / lượt</p>
+          <ul class="visual-stats">
+            <li><strong>45'</strong><span>thời gian khám</span></li>
+            <li><strong>4.8★</strong><span>đánh giá trung bình</span></li>
+            <li><strong>2h</strong><span>có bác sĩ sớm nhất</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 2. GỌI VIDEO ===================== -->
+    <section class="page-section alt" id="goi-video">
+      <div class="container">
+        <div class="section-heading center">
+          <h2>Gọi video với bác sĩ</h2>
+          <p>Tư vấn sức khỏe từ xa trong 30 phút, không mất phí di chuyển. Phù hợp khi cần hỏi kết quả xét nghiệm, tái khám bệnh mạn tính hoặc tư vấn dinh dưỡng.</p>
+        </div>
+
+        <ol class="step-cards">
+          <li>
+            <span class="step-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <h3>1. Chọn bác sĩ</h3>
+            <p>Chọn bác sĩ phù hợp, chọn gói "Tư vấn qua video" và khung giờ.</p>
+          </li>
+          <li>
+            <span class="step-icon"><i class="fa-regular fa-credit-card"></i></span>
+            <h3>2. Thanh toán 150.000đ</h3>
+            <p>Thanh toán qua ví MoMo, chuyển khoản hoặc thẻ ngân hàng.</p>
+          </li>
+          <li>
+            <span class="step-icon"><i class="fa-solid fa-video"></i></span>
+            <h3>3. Nhận link gọi</h3>
+            <p>Link cuộc gọi được gửi qua SMS 15 phút trước giờ hẹn.</p>
+          </li>
+        </ol>
+
+        <div class="center-action">
+          <a href="dat-kham.html" class="btn btn-primary">Chọn bác sĩ tư vấn</a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 3. XÉT NGHIỆM TẠI NHÀ ===================== -->
+    <section class="page-section" id="xet-nghiem">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Xét nghiệm tại nhà</h2>
+          <p>Tích chọn các xét nghiệm cần làm, hệ thống tự tính chi phí. Điều dưỡng đến lấy mẫu, kết quả trả online sau 24 giờ.</p>
+        </div>
+
+        <div class="lab-layout">
+          <div class="card">
+            <!-- Chọn nhanh theo gói -->
+            <div class="lab-presets">
+              <span>Chọn nhanh:</span>
+              <button type="button" class="btn btn-outline btn-small" data-preset="co-ban">Gói tầm soát cơ bản</button>
+              <button type="button" class="btn btn-outline btn-small" data-preset="tieu-duong">Gói tiểu đường</button>
+              <button type="button" class="btn btn-outline btn-small" data-preset="bo-chon">Bỏ chọn tất cả</button>
+            </div>
+
+            <!-- JS tạo danh sách xét nghiệm từ mảng dữ liệu -->
+            <ul class="lab-list" id="lab-list"></ul>
+          </div>
+
+          <aside class="card lab-summary">
+            <h3>Chi phí dự kiến</h3>
+            <dl>
+              <div><dt>Số xét nghiệm</dt><dd id="lab-count">0</dd></div>
+              <div><dt>Tiền xét nghiệm</dt><dd id="lab-subtotal">0đ</dd></div>
+              <div><dt>Phí lấy mẫu tại nhà</dt><dd>120.000đ</dd></div>
+              <div class="lab-total"><dt>Tổng cộng</dt><dd id="lab-total">0đ</dd></div>
+            </dl>
+            <p class="error-text" id="lab-error"></p>
+            <button type="button" class="btn btn-primary btn-block" id="lab-book">
+              <i class="fa-regular fa-calendar-check"></i> Đặt lịch lấy mẫu
+            </button>
+            <p class="lab-note">Tiền xét nghiệm thanh toán sau khi có kết quả.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 4. GÓI ĐỊNH KỲ ===================== -->
+    <section class="page-section alt" id="goi-dinh-ky">
+      <div class="container service-row reverse">
+        <div class="service-text">
+          <span class="badge badge-green">TIẾT KIỆM ĐẾN 25%</span>
+          <h2>Gói chăm sóc định kỳ</h2>
+          <p>
+            Dành cho gia đình có người cao tuổi, người mắc bệnh mạn tính hoặc mẹ bầu cần
+            theo dõi thường xuyên. Bác sĩ quen thuộc đến khám theo lịch cố định mỗi tháng.
+          </p>
+          <ul class="check-list">
+            <li><i class="fa-solid fa-check"></i> 1 bác sĩ phụ trách riêng, hiểu rõ bệnh sử</li>
+            <li><i class="fa-solid fa-check"></i> Ưu tiên đặt lịch, miễn phí di chuyển</li>
+            <li><i class="fa-solid fa-check"></i> Báo cáo sức khỏe hằng tháng gửi người nhà</li>
+          </ul>
+          <a href="goi-cham-soc.html" class="btn btn-primary">Xem các gói chăm sóc</a>
+        </div>
+
+        <div class="service-visual">
+          <div class="visual-icon"><i class="fa-solid fa-kit-medical"></i></div>
+          <p class="visual-price">Từ <strong>590.000đ</strong> / tháng</p>
+          <ul class="visual-stats">
+            <li><strong>4</strong><span>gói lựa chọn</span></li>
+            <li><strong>0đ</strong><span>phí di chuyển</span></li>
+            <li><strong>24/7</strong><span>hotline ưu tiên</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/dich-vu.js"></script>
+</body>
+</html>
