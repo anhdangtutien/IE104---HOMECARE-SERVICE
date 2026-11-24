@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG THANH TOÁN & XÁC NHẬN - thanh-toan.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/dat-lich.css (khung tóm tắt),
+                  css/thanh-toan.css, js/du-lieu.js, js/thanh-toan.js
+  Đọc "đơn tạm" do trang dat-lich.html lưu trong localStorage
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán &amp; xác nhận - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/dat-lich.css">
+  <link rel="stylesheet" href="css/thanh-toan.css">
+</head>
+
+<body data-page="dat-kham">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main class="page-gray">
+    <div class="container">
+
+      <nav class="breadcrumb booking-breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <a href="dat-kham.html">Đặt khám</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Thanh toán</span>
+      </nav>
+
+      <ol class="steps" id="steps">
+        <li class="done"><span class="step-number"><i class="fa-solid fa-check"></i></span><span>Chọn dịch vụ &amp; thời gian</span></li>
+        <li class="current"><span class="step-number">2</span><span>Thanh toán</span></li>
+        <li><span class="step-number">3</span><span>Hoàn tất</span></li>
+      </ol>
+
+      <!-- ===================== KHUNG THANH TOÁN ===================== -->
+      <div id="payment-area">
+        <form class="booking-layout" id="payment-form" novalidate>
+
+          <div class="booking-main">
+
+            <!-- 1. Thông tin lịch hẹn -->
+            <section class="card">
+              <div class="card-head">
+                <h2 class="card-title">Thông tin lịch hẹn</h2>
+                <a href="dat-lich.html" class="edit-link" id="edit-link"><i class="fa-solid fa-pen"></i> Sửa</a>
+              </div>
+              <div id="appointment-info"></div>
+            </section>
+
+            <!-- 2. Phương thức thanh toán -->
+            <section class="card">
+              <h2 class="card-title">Phương thức thanh toán</h2>
+
+              <div class="pay-options">
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="cash" checked>
+                  <i class="fa-solid fa-money-bill-wave"></i>
+                  <span><strong>Tiền mặt khi khám xong</strong><small>Thanh toán trực tiếp cho bác sĩ</small></span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="bank">
+                  <i class="fa-solid fa-building-columns"></i>
+                  <span><strong>Chuyển khoản ngân hàng</strong><small>Quét mã QR, xác nhận tự động</small></span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="momo">
+                  <i class="fa-solid fa-wallet"></i>
+                  <span><strong>Ví MoMo</strong><small>Giảm thêm 5% tối đa 20.000đ</small></span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="card">
+                  <i class="fa-regular fa-credit-card"></i>
+                  <span><strong>Thẻ ATM / Visa / Mastercard</strong><small>Qua cổng thanh toán VNPAY</small></span>
+                </label>
+              </div>
+
+              <!-- Hướng dẫn riêng cho từng phương thức (JS điền) -->
+              <div class="pay-detail" id="pay-detail"></div>
+            </section>
+
+            <!-- 3. Mã giảm giá -->
+            <section class="card">
+              <h2 class="card-title">Mã giảm giá</h2>
+              <div class="promo-row">
+                <input type="text" id="promo-input" class="form-control" placeholder="Nhập mã, VD: HOMECARE10">
+                <button type="button" class="btn btn-outline" id="promo-button">Áp dụng</button>
+              </div>
+              <p class="promo-message" id="promo-message"></p>
+              <p class="promo-hint">Mã dùng thử: <strong>HOMECARE10</strong> (giảm 10%), <strong>GIAM50K</strong> (đơn từ 300.000đ)</p>
+            </section>
+          </div>
+
+          <!-- ===== CỘT PHẢI ===== -->
+          <aside class="card booking-summary">
+            <h2 class="card-title">Chi tiết thanh toán</h2>
+
+            <dl class="summary-money">
+              <div><dt>Phí dịch vụ</dt><dd id="pay-price">0đ</dd></div>
+              <div><dt>Phí di chuyển</dt><dd id="pay-travel">0đ</dd></div>
+              <div><dt>Giảm giá</dt><dd class="discount" id="pay-discount">-0đ</dd></div>
+              <div class="summary-total"><dt>Tổng thanh toán</dt><dd id="pay-total">0đ</dd></div>
+            </dl>
+
+            <label class="agree">
+              <input type="checkbox" id="agree-checkbox">
+              <span>Tôi đồng ý với <a href="huong-dan.html#dieu-khoan" target="_blank">điều khoản sử dụng</a>
+                và <a href="huong-dan.html#hoan-tien" target="_blank">chính sách hoàn tiền</a></span>
+            </label>
+            <p class="error-text" id="agree-error"></p>
+
+            <button type="submit" class="btn btn-primary btn-block" id="confirm-button">
+              <i class="fa-solid fa-lock"></i> Xác nhận đặt lịch
+            </button>
+            <p class="summary-note">
+              <i class="fa-solid fa-shield-heart"></i>
+              Thông tin thanh toán được mã hóa và bảo mật.
+            </p>
+          </aside>
+
+        </form>
+      </div>
+
+      <!-- ===================== ĐẶT LỊCH THÀNH CÔNG (ẩn sẵn) ===================== -->
+      <section class="card success-card" id="success-view" hidden>
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        <h1>Đặt lịch khám thành công!</h1>
+        <p class="success-sub">
+          HomeCare sẽ gọi điện xác nhận trong vòng 15 phút.
+          Thông tin lịch hẹn cũng được gửi qua SMS.
+        </p>
+
+        <div class="success-code">
+          Mã lịch hẹn
+          <strong id="success-code"></strong>
+        </div>
+
+        <dl class="success-list" id="success-list"></dl>
+
+        <div class="success-actions">
+          <a href="ho-so.html#lich-hen" class="btn btn-primary">
+            <i class="fa-regular fa-calendar-check"></i> Xem lịch hẹn của tôi
+          </a>
+          <a href="index.html" class="btn btn-outline">Về trang chủ</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/du-lieu.js"></script>
+  <script src="js/thanh-toan.js"></script>
+</body>
+</html>
