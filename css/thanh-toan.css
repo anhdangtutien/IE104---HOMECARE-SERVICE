@@ -1,0 +1,338 @@
+/* =========================================================
+   THANH-TOAN.CSS - GIAO DIỆN TRANG THANH TOÁN & XÁC NHẬN
+   Người phụ trách: THÀNH VIÊN 2
+   Bố cục 2 cột + khung tóm tắt lấy từ css/dat-lich.css
+   ========================================================= */
+
+
+/* =============== 1. THÔNG TIN LỊCH HẸN =============== */
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.edit-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}
+
+.info-doctor {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-doctor .avatar {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.info-doctor strong {
+  display: block;
+  font-size: 16px;
+  color: var(--primary-dark);
+}
+
+.info-doctor small {
+  color: var(--text-light);
+}
+
+/* Danh sách thông tin dạng 2 cột: nhãn | nội dung */
+.info-list {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 10px 16px;
+  font-size: 14px;
+}
+
+.info-list dt {
+  color: var(--text-light);
+}
+
+.info-list dd {
+  font-weight: 500;
+}
+
+
+/* =============== 2. PHƯƠNG THỨC THANH TOÁN =============== */
+.pay-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pay-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.pay-option:hover {
+  border-color: var(--primary);
+}
+
+.pay-option:has(input:checked) {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.pay-option input {
+  accent-color: var(--primary);
+}
+
+.pay-option > i {
+  width: 24px;
+  font-size: 20px;
+  text-align: center;
+  color: var(--primary);
+}
+
+.pay-option strong {
+  display: block;
+  font-size: 14px;
+}
+
+.pay-option small {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* Khung hướng dẫn của phương thức đang chọn */
+.pay-detail {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background-color: var(--bg-light);
+  font-size: 14px;
+}
+
+.pay-detail:empty {
+  display: none;               /* chưa có nội dung thì ẩn khung */
+}
+
+.pay-detail p + p {
+  margin-top: 4px;
+}
+
+.qr-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  font-size: 80px;
+  color: var(--text);
+}
+
+
+/* =============== 3. MÃ GIẢM GIÁ =============== */
+.promo-row {
+  display: flex;
+  gap: 10px;
+}
+
+.promo-row .form-control {
+  text-transform: uppercase;   /* gõ chữ thường cũng hiện thành chữ hoa */
+}
+
+.promo-message {
+  min-height: 20px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.promo-message.ok {
+  color: var(--primary);
+}
+
+.promo-message.fail {
+  color: var(--error);
+}
+
+.promo-hint {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.discount {
+  color: var(--primary);
+}
+
+
+/* =============== 4. Ô ĐỒNG Ý ĐIỀU KHOẢN =============== */
+.agree {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.agree input {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+}
+
+.agree a {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.agree + .error-text {
+  margin-bottom: 8px;
+}
+
+/* Nút đang xử lý: mờ đi */
+#confirm-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+
+/* =============== 5. ĐẶT LỊCH THÀNH CÔNG =============== */
+.success-card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.success-card[hidden] {
+  display: none;
+}
+
+/* Vòng tròn xanh có dấu tích, phóng to dần khi hiện (animation) */
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  box-shadow: 0 0 0 10px var(--primary-light);
+  font-size: 38px;
+  color: var(--white);
+  animation: pop-in 0.4s ease-out;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-card h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.success-sub {
+  margin: 8px auto 24px;
+  max-width: 460px;
+  color: var(--text-light);
+}
+
+.success-code {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 12px 28px;
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.success-code strong {
+  display: block;
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: var(--primary-dark);
+}
+
+.success-list {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 10px 16px;
+  margin-bottom: 28px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background-color: var(--bg-light);
+  font-size: 14px;
+  text-align: left;
+}
+
+.success-list dt {
+  color: var(--text-light);
+}
+
+.success-list dd {
+  font-weight: 600;
+}
+
+.success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+
+/* =============== 6. RESPONSIVE =============== */
+@media (max-width: 576px) {
+  .pay-options {
+    grid-template-columns: 1fr;
+  }
+
+  .info-list,
+  .success-list {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .info-list dd,
+  .success-list dd {
+    margin-bottom: 8px;
+  }
+
+  .pay-detail {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .success-card {
+    padding: 32px 20px;
+  }
+}
