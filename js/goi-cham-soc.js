@@ -90,3 +90,20 @@ function renderPackages() {
   packageGrid.innerHTML = html;
 }
 
+
+/* ---------- 3. CHUYỂN THÁNG / NĂM ---------- */
+const billingButtons = document.querySelectorAll(".billing-option");
+
+for (const button of billingButtons) {
+  button.addEventListener("click", function () {
+    billing = button.dataset.billing;
+
+    for (const other of billingButtons) {
+      other.classList.toggle("active", other === button);
+    }
+
+    renderPackages();
+  });
+}
+
+renderPackages();
