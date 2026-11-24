@@ -150,3 +150,133 @@
   color: var(--primary);
 }
 
+
+/* =============== 3. BẢNG SO SÁNH =============== */
+.compare-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.compare-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  background-color: var(--white);
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 14px;
+}
+
+.compare-table th {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+/* Cột đầu tiên (tên quyền lợi) căn trái */
+.compare-table th:first-child,
+.compare-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Dòng chẵn tô nền nhạt cho dễ dò theo hàng */
+.compare-table tbody tr:nth-child(even) {
+  background-color: var(--bg-light);
+}
+
+.compare-table .fa-check {
+  color: var(--primary);
+}
+
+
+/* =============== 4. QUY TRÌNH =============== */
+.process {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.process li {
+  position: relative;
+  text-align: center;
+}
+
+/* Đường nối giữa các bước (trừ bước cuối) */
+.process li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 26px;
+  left: calc(50% + 34px);
+  width: calc(100% - 44px);
+  height: 2px;
+  background-color: var(--primary-light);
+}
+
+.process span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.process strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--primary-dark);
+}
+
+.process p {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+
+/* =============== 5. DẢI KÊU GỌI HÀNH ĐỘNG =============== */
+.cta-band {
+  padding: 48px 0;
+  background: linear-gradient(120deg, var(--primary-dark), var(--primary));
+  color: var(--white);
+}
+
+.cta-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.cta-inner h2 {
+  margin-bottom: 6px;
+  font-size: 26px;
+}
+
+.cta-inner p {
+  opacity: 0.9;
+}
+
+/* Nút trắng chữ xanh trên nền xanh */
+.btn-cta {
+  padding: 14px 28px;
+  background-color: var(--white);
+  font-size: 18px;
+  color: var(--primary-dark);
+}
+
+.btn-cta:hover {
+  background-color: var(--accent);
+  color: var(--white);
+}
+
