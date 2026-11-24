@@ -1,0 +1,471 @@
+/* =========================================================
+   HO-SO.CSS - GIAO DIỆN TRANG HỒ SƠ TÀI KHOẢN & LỊCH HẸN
+   Người phụ trách: THÀNH VIÊN 2
+   ========================================================= */
+
+
+.account-breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* =============== 1. BỐ CỤC: MENU TRÁI + NỘI DUNG =============== */
+.account-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.account-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;                /* cho phép cột co lại, không bị nội dung dài đẩy tràn */
+}
+
+
+/* =============== 2. CỘT TRÁI =============== */
+.account-sidebar {
+  position: sticky;
+  top: 96px;
+  padding: 24px 16px;
+}
+
+.account-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.account-user .avatar {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 6px;
+  font-size: 34px;
+}
+
+.account-user strong {
+  font-size: 18px;
+  color: var(--primary-dark);
+}
+
+.account-user small {
+  font-size: 13px;
+  color: var(--text-light);
+  word-break: break-all;       /* email dài thì tự xuống dòng */
+}
+
+.role-badge {
+  padding: 3px 12px;
+  border-radius: 999px;
+  background-color: var(--accent-light);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-button i {
+  width: 18px;
+  text-align: center;
+  color: var(--primary);
+}
+
+.menu-button:hover {
+  background-color: var(--bg-light);
+}
+
+.menu-button.active {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.menu-button.active i {
+  color: var(--white);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--error);
+}
+
+.logout-button:hover {
+  background-color: color-mix(in srgb, var(--error) 8%, var(--white));
+}
+
+
+/* =============== 3. Ô THỐNG KÊ =============== */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--white);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background-color: var(--primary-light);
+  font-size: 19px;
+  color: var(--primary);
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.stat-card small {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+
+/* =============== 4. KHUNG NỘI DUNG =============== */
+/* Mặc định ẩn hết, JS thêm .active cho khung đang xem */
+.account-panel {
+  display: none;
+}
+
+.account-panel.active {
+  display: block;
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.panel-head .card-title {
+  margin-bottom: 0;
+}
+
+.panel-note {
+  margin: -8px 0 18px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* Các nút lọc theo trạng thái */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+}
+
+.filter-tab {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-light);
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.filter-tab:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.filter-tab.active {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+/* Số đếm nhỏ cạnh chữ */
+.filter-tab span {
+  margin-left: 4px;
+  opacity: 0.8;
+}
+
+
+/* =============== 5. THẺ LỊCH HẸN =============== */
+.appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.appointment-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.appointment-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.appointment-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  background-color: var(--bg-light);
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.appointment-top strong {
+  color: var(--text);
+}
+
+.appointment-body {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+}
+
+.appointment-body .avatar {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.appointment-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.appointment-info h3 {
+  font-size: 17px;
+  color: var(--primary-dark);
+}
+
+.appointment-service {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.appointment-meta li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.appointment-meta i {
+  width: 16px;
+  margin-top: 4px;
+  text-align: center;
+  color: var(--primary);
+}
+
+.appointment-price {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.appointment-price strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.appointment-price small {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.appointment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 18px 16px;
+}
+
+/* Nút hủy / từ chối: viền đỏ */
+.btn-danger {
+  background-color: var(--white);
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.btn-danger:hover {
+  background-color: var(--error);
+  color: var(--white);
+}
+
+/* --- Nhãn trạng thái --- */
+.status {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-cho-xac-nhan {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.status-sap-toi {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.status-hoan-thanh {
+  background-color: var(--border);
+  color: var(--text);
+}
+
+.status-da-huy {
+  background-color: color-mix(in srgb, var(--error) 10%, var(--white));
+  color: var(--error);
+}
+
+
+/* =============== 6. FORM =============== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+/* 7 ô chọn ngày làm việc */
+.weekday-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.weekday {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 6px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.weekday:has(input:checked) {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.weekday input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.time-range {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  gap: 20px;
+}
+
+
+/* =============== 7. RESPONSIVE =============== */
+@media (max-width: 992px) {
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-sidebar {
+    position: static;
+  }
+
+  /* Menu trái xếp thành hàng ngang cho gọn */
+  .account-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .menu-button {
+    width: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .appointment-body {
+    flex-wrap: wrap;
+  }
+
+  .appointment-price {
+    width: 100%;
+    text-align: left;
+  }
+
+  .appointment-actions {
+    justify-content: flex-start;
+  }
+
+  .weekday-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .time-range {
+    grid-template-columns: 1fr 1fr;
+  }
+}

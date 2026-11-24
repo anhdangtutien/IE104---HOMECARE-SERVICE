@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG HỒ SƠ TÀI KHOẢN & QUẢN LÝ LỊCH HẸN - ho-so.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/ho-so.css, js/du-lieu.js, js/ho-so.js
+
+  Một trang dùng cho 2 vai trò (đọc từ tài khoản đăng nhập):
+  - Khách hàng: lịch hẹn của tôi, thông tin cá nhân
+  - Bác sĩ    : lịch hẹn của bệnh nhân, hồ sơ hành nghề, lịch làm việc
+  Các khung có data-role="..." -> JS chỉ hiện khung đúng vai trò
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ sơ của tôi - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/ho-so.css">
+</head>
+
+<body data-page="ho-so">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main class="page-gray">
+    <div class="container">
+
+      <nav class="breadcrumb account-breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Tài khoản</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span id="crumb-panel">Hồ sơ</span>
+      </nav>
+
+      <!-- Chưa đăng nhập: JS thay toàn bộ khung này bằng thông báo -->
+      <div class="account-layout" id="account-layout">
+
+        <!-- ===================== CỘT TRÁI ===================== -->
+        <aside class="card account-sidebar">
+          <div class="account-user">
+            <div class="avatar" id="user-avatar"></div>
+            <strong id="user-name"></strong>
+            <span class="role-badge" id="user-role"></span>
+            <small id="user-contact"></small>
+          </div>
+
+          <!-- Menu: JS tạo theo vai trò -->
+          <nav class="account-menu" id="account-menu"></nav>
+
+          <button type="button" class="logout-button" id="logout-button">
+            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+          </button>
+        </aside>
+
+        <!-- ===================== NỘI DUNG ===================== -->
+        <div class="account-content">
+
+          <!-- Các ô thống kê nhanh (JS điền) -->
+          <div class="stat-row" id="stat-row"></div>
+
+
+          <!-- ========== KHÁCH HÀNG: LỊCH HẸN ========== -->
+          <section class="card account-panel" id="lich-hen" data-role="khach-hang">
+            <div class="panel-head">
+              <h2 class="card-title">Lịch hẹn của tôi</h2>
+              <a href="dat-kham.html" class="btn btn-primary btn-small">
+                <i class="fa-solid fa-plus"></i> Đặt lịch mới
+              </a>
+            </div>
+
+            <!-- data-filter: JS đọc để lọc theo trạng thái -->
+            <div class="filter-tabs" id="customer-filters">
+              <button type="button" class="filter-tab active" data-filter="tat-ca">Tất cả</button>
+              <button type="button" class="filter-tab" data-filter="sap-toi">Sắp tới</button>
+              <button type="button" class="filter-tab" data-filter="hoan-thanh">Đã hoàn thành</button>
+              <button type="button" class="filter-tab" data-filter="da-huy">Đã hủy</button>
+            </div>
+
+            <div class="appointment-list" id="customer-list"></div>
+          </section>
+
+
+          <!-- ========== KHÁCH HÀNG: THÔNG TIN CÁ NHÂN ========== -->
+          <section class="card account-panel" id="thong-tin" data-role="khach-hang">
+            <h2 class="card-title">Thông tin cá nhân</h2>
+
+            <form class="form-grid" id="profile-form" novalidate>
+              <div class="form-group">
+                <label for="profile-name" class="form-label">Họ và tên <span class="required">*</span></label>
+                <input type="text" id="profile-name" class="form-control">
+                <p class="error-text" id="profile-name-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="profile-phone" class="form-label">Số điện thoại <span class="required">*</span></label>
+                <input type="tel" id="profile-phone" class="form-control">
+                <p class="error-text" id="profile-phone-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="profile-email" class="form-label">Email</label>
+                <input type="email" id="profile-email" class="form-control" placeholder="VD: ten@gmail.com">
+                <p class="error-text" id="profile-email-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="profile-birthday" class="form-label">Ngày sinh</label>
+                <input type="date" id="profile-birthday" class="form-control">
+                <p class="error-text" id="profile-birthday-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="profile-gender" class="form-label">Giới tính</label>
+                <select id="profile-gender" class="form-control">
+                  <option value="">-- Chọn --</option>
+                  <option>Nam</option>
+                  <option>Nữ</option>
+                  <option>Khác</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="profile-ward" class="form-label">Phường (TP. Thủ Đức)</label>
+                <select id="profile-ward" class="form-control">
+                  <option value="">-- Chọn phường --</option>
+                  <option>P. Linh Trung</option>
+                  <option>P. Linh Xuân</option>
+                  <option>P. Linh Chiểu</option>
+                  <option>P. Linh Tây</option>
+                  <option>P. Hiệp Bình Chánh</option>
+                  <option>P. Hiệp Phú</option>
+                  <option>P. Tăng Nhơn Phú A</option>
+                  <option>P. Long Thạnh Mỹ</option>
+                  <option>P. Thảo Điền</option>
+                  <option>P. An Phú</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <label for="profile-street" class="form-label">Số nhà, tên đường</label>
+                <input type="text" id="profile-street" class="form-control" placeholder="Dùng để điền sẵn khi đặt lịch">
+              </div>
+
+              <div class="full form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-regular fa-floppy-disk"></i> Lưu thay đổi
+                </button>
+              </div>
+            </form>
+
+            <p class="form-success" id="profile-success">
+              <i class="fa-solid fa-circle-check"></i> Đã lưu thông tin cá nhân.
+            </p>
+          </section>
+
+
+          <!-- ========== BÁC SĨ: LỊCH HẸN BỆNH NHÂN ========== -->
+          <section class="card account-panel" id="lich-kham" data-role="bac-si">
+            <div class="panel-head">
+              <h2 class="card-title">Lịch hẹn của bệnh nhân</h2>
+            </div>
+
+            <div class="filter-tabs" id="doctor-filters">
+              <button type="button" class="filter-tab active" data-filter="cho-xac-nhan">Chờ xác nhận</button>
+              <button type="button" class="filter-tab" data-filter="sap-toi">Sắp tới</button>
+              <button type="button" class="filter-tab" data-filter="hoan-thanh">Đã hoàn thành</button>
+              <button type="button" class="filter-tab" data-filter="tat-ca">Tất cả</button>
+            </div>
+
+            <div class="appointment-list" id="doctor-list"></div>
+          </section>
+
+
+          <!-- ========== BÁC SĨ: HỒ SƠ HÀNH NGHỀ ========== -->
+          <section class="card account-panel" id="ho-so-hanh-nghe" data-role="bac-si">
+            <div class="panel-head">
+              <h2 class="card-title">Hồ sơ hành nghề</h2>
+              <a href="chi-tiet-bac-si.html" class="btn btn-outline btn-small" id="public-profile-link">
+                <i class="fa-regular fa-eye"></i> Xem trang công khai
+              </a>
+            </div>
+
+            <form class="form-grid" id="practice-form" novalidate>
+              <div class="form-group">
+                <label for="practice-specialty" class="form-label">Chuyên khoa <span class="required">*</span></label>
+                <input type="text" id="practice-specialty" class="form-control">
+                <p class="error-text" id="practice-specialty-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="practice-workplace" class="form-label">Nơi công tác <span class="required">*</span></label>
+                <input type="text" id="practice-workplace" class="form-control">
+                <p class="error-text" id="practice-workplace-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="practice-experience" class="form-label">Số năm kinh nghiệm</label>
+                <input type="number" id="practice-experience" class="form-control" min="0" max="60">
+                <p class="error-text" id="practice-experience-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="practice-price" class="form-label">Giá khám tại nhà (đồng)</label>
+                <input type="number" id="practice-price" class="form-control" min="100000" step="10000">
+                <p class="error-text" id="practice-price-error"></p>
+              </div>
+
+              <div class="form-group full">
+                <label for="practice-treats" class="form-label">Chuyên trị (cách nhau bởi dấu phẩy)</label>
+                <input type="text" id="practice-treats" class="form-control">
+              </div>
+
+              <div class="form-group full">
+                <label for="practice-bio" class="form-label">Giới thiệu bản thân</label>
+                <textarea id="practice-bio" class="form-control" placeholder="Để trống -> hệ thống tự viết đoạn giới thiệu"></textarea>
+              </div>
+
+              <div class="full form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-regular fa-floppy-disk"></i> Lưu hồ sơ
+                </button>
+              </div>
+            </form>
+
+            <p class="form-success" id="practice-success">
+              <i class="fa-solid fa-circle-check"></i> Đã cập nhật hồ sơ hành nghề.
+            </p>
+          </section>
+
+
+          <!-- ========== BÁC SĨ: LỊCH LÀM VIỆC ========== -->
+          <section class="card account-panel" id="lich-lam-viec" data-role="bac-si">
+            <h2 class="card-title">Lịch làm việc trong tuần</h2>
+            <p class="panel-note">Tích chọn những ngày nhận khám tại nhà. Bệnh nhân chỉ đặt được lịch vào các ngày này.</p>
+
+            <form id="schedule-form" novalidate>
+              <div class="weekday-grid" id="weekday-grid"></div>
+
+              <div class="time-range">
+                <div class="form-group">
+                  <label for="schedule-start" class="form-label">Bắt đầu ca</label>
+                  <input type="time" id="schedule-start" class="form-control" step="1800">
+                </div>
+                <div class="form-group">
+                  <label for="schedule-end" class="form-label">Kết thúc ca</label>
+                  <input type="time" id="schedule-end" class="form-control" step="1800">
+                </div>
+              </div>
+              <p class="error-text" id="schedule-error"></p>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-regular fa-floppy-disk"></i> Lưu lịch làm việc
+                </button>
+              </div>
+            </form>
+
+            <p class="form-success" id="schedule-success">
+              <i class="fa-solid fa-circle-check"></i> Đã lưu lịch làm việc.
+            </p>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/du-lieu.js"></script>
+  <script src="js/ho-so.js"></script>
+</body>
+</html>
