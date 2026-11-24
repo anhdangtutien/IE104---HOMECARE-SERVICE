@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG ĐẶT LỊCH KHÁM & CHỌN GÓI DỊCH VỤ - dat-lich.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/dat-lich.css,
+                  js/du-lieu.js, js/dat-lich.js
+  Link có dạng dat-lich.html?id=1  (có thể kèm &dv=...&ngay=...&gio=...)
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặt lịch khám tại nhà - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/dat-lich.css">
+</head>
+
+<body data-page="dat-kham">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main class="page-gray">
+    <div class="container">
+
+      <nav class="breadcrumb booking-breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <a href="dat-kham.html">Đặt khám</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Đặt lịch</span>
+      </nav>
+
+      <!-- Thanh 3 bước -->
+      <ol class="steps">
+        <li class="current"><span class="step-number">1</span><span>Chọn dịch vụ &amp; thời gian</span></li>
+        <li><span class="step-number">2</span><span>Thanh toán</span></li>
+        <li><span class="step-number">3</span><span>Hoàn tất</span></li>
+      </ol>
+
+      <!-- Nếu id bác sĩ sai, JS thay khung này bằng thông báo lỗi -->
+      <div id="booking-area">
+        <!-- novalidate: tắt kiểm tra mặc định của trình duyệt, để JS tự kiểm tra và báo lỗi -->
+        <form class="booking-layout" id="booking-form" novalidate>
+
+          <div class="booking-main">
+
+            <!-- Bác sĩ đã chọn -->
+            <section class="card doctor-mini" id="doctor-mini"></section>
+
+            <!-- ===== BƯỚC 1: CHỌN GÓI ===== -->
+            <section class="card">
+              <h2 class="card-title"><span class="step-number">1</span> Chọn gói dịch vụ</h2>
+              <div class="service-options" id="service-options"></div>
+              <p class="error-text" id="service-error"></p>
+            </section>
+
+            <!-- ===== BƯỚC 2: CHỌN NGÀY GIỜ ===== -->
+            <section class="card">
+              <h2 class="card-title"><span class="step-number">2</span> Chọn ngày và giờ khám</h2>
+              <div class="date-options" id="date-options"></div>
+              <p class="slot-label">Khung giờ còn trống</p>
+              <div class="slot-options" id="slot-options"></div>
+              <p class="error-text" id="time-error"></p>
+            </section>
+
+            <!-- ===== BƯỚC 3: THÔNG TIN NGƯỜI KHÁM ===== -->
+            <section class="card">
+              <h2 class="card-title"><span class="step-number">3</span> Thông tin người được khám</h2>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="patient-name" class="form-label">Họ và tên <span class="required">*</span></label>
+                  <input type="text" id="patient-name" class="form-control" placeholder="VD: Nguyễn Văn A">
+                  <p class="error-text" id="patient-name-error"></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="patient-phone" class="form-label">Số điện thoại <span class="required">*</span></label>
+                  <input type="tel" id="patient-phone" class="form-control" placeholder="VD: 0901234567">
+                  <p class="error-text" id="patient-phone-error"></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="patient-relation" class="form-label">Người được khám là</label>
+                  <select id="patient-relation" class="form-control">
+                    <option value="Bản thân">Bản thân</option>
+                    <option value="Bố / mẹ">Bố / mẹ</option>
+                    <option value="Con">Con</option>
+                    <option value="Vợ / chồng">Vợ / chồng</option>
+                    <option value="Người thân khác">Người thân khác</option>
+                  </select>
+                </div>
+
+                <!-- Nhóm địa chỉ: tư vấn video thì JS ẩn đi (không cần đến nhà) -->
+                <div class="form-group address-field">
+                  <label for="patient-ward" class="form-label">Phường <span class="required">*</span></label>
+                  <select id="patient-ward" class="form-control">
+                    <option value="">-- Chọn phường (TP. Thủ Đức) --</option>
+                    <option>P. Linh Trung</option>
+                    <option>P. Linh Xuân</option>
+                    <option>P. Linh Chiểu</option>
+                    <option>P. Linh Tây</option>
+                    <option>P. Hiệp Bình Chánh</option>
+                    <option>P. Hiệp Phú</option>
+                    <option>P. Tăng Nhơn Phú A</option>
+                    <option>P. Long Thạnh Mỹ</option>
+                    <option>P. Thảo Điền</option>
+                    <option>P. An Phú</option>
+                  </select>
+                  <p class="error-text" id="patient-ward-error"></p>
+                </div>
+
+                <div class="form-group full address-field">
+                  <label for="patient-address" class="form-label">Số nhà, tên đường <span class="required">*</span></label>
+                  <input type="text" id="patient-address" class="form-control" placeholder="VD: 12 Đường số 6">
+                  <p class="error-text" id="patient-address-error"></p>
+                </div>
+
+                <div class="form-group full">
+                  <label for="patient-note" class="form-label">Triệu chứng / ghi chú cho bác sĩ</label>
+                  <textarea id="patient-note" class="form-control" placeholder="VD: Sốt 2 ngày, ho nhiều về đêm..."></textarea>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ===== CỘT PHẢI: TÓM TẮT ===== -->
+          <aside class="card booking-summary">
+            <h2 class="card-title">Tóm tắt lịch hẹn</h2>
+
+            <dl class="summary-list">
+              <div><dt>Bác sĩ</dt><dd id="sum-doctor">—</dd></div>
+              <div><dt>Dịch vụ</dt><dd id="sum-service">Chưa chọn</dd></div>
+              <div><dt>Thời gian</dt><dd id="sum-time">Chưa chọn</dd></div>
+              <div><dt>Hình thức</dt><dd id="sum-place">Khám tại nhà</dd></div>
+            </dl>
+
+            <dl class="summary-money">
+              <div><dt>Phí dịch vụ</dt><dd id="sum-price">0đ</dd></div>
+              <div><dt>Phí di chuyển</dt><dd id="sum-travel">0đ</dd></div>
+              <div class="summary-total"><dt>Tạm tính</dt><dd id="sum-total">0đ</dd></div>
+            </dl>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Tiếp tục thanh toán <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <p class="summary-note">
+              <i class="fa-solid fa-shield-heart"></i>
+              Hủy miễn phí trước 24 giờ. Chưa trừ tiền ở bước này.
+            </p>
+          </aside>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/du-lieu.js"></script>
+  <script src="js/dat-lich.js"></script>
+</body>
+</html>
