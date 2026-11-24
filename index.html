@@ -69,11 +69,11 @@
           <i class="fa-solid fa-house-medical"></i>
           <span>Đặt khám tại nhà</span>
         </a>
-        <a href="#" class="service-card">
+        <a href="dich-vu.html#goi-video" class="service-card">
           <i class="fa-solid fa-video"></i>
           <span>Gọi video với bác sĩ</span>
         </a>
-        <a href="#" class="service-card">
+        <a href="dich-vu.html#xet-nghiem" class="service-card">
           <i class="fa-solid fa-syringe"></i>
           <span>Đặt lịch xét nghiệm</span>
         </a>
@@ -94,40 +94,42 @@
           <a href="dat-kham.html" class="see-all">Xem tất cả →</a>
         </div>
 
+        <!-- data-id: id của bác sĩ (giống trong js/dat-kham.js),
+             home.js dùng để tạo link sang trang hồ sơ bác sĩ -->
         <div class="doctor-grid">
           <!-- Thẻ bác sĩ 1 -->
-          <div class="doctor-card">
+          <div class="doctor-card" data-id="1">
             <div class="avatar">C</div>
             <h3>ThS. Trần Ngọc C</h3>
-            <p class="doctor-specialty">Nội tổng quát</p>
-            <p class="rating">★ 4.9 · 142 đánh giá</p>
+            <p class="doctor-specialty">Nội tổng quát &amp; Lão khoa</p>
+            <p class="rating">★ 4.9 · 128 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
           <!-- Thẻ bác sĩ 2 -->
-          <div class="doctor-card">
+          <div class="doctor-card" data-id="2">
             <div class="avatar">D</div>
             <h3>BS. Trần Lê Trung D</h3>
-            <p class="doctor-specialty">Vật lý trị liệu</p>
-            <p class="rating">★ 4.8 · 98 đánh giá</p>
+            <p class="doctor-specialty">Cơ xương khớp &amp; Phục hồi chức năng</p>
+            <p class="rating">★ 4.8 · 94 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
           <!-- Thẻ bác sĩ 3 -->
-          <div class="doctor-card">
+          <div class="doctor-card" data-id="3">
             <div class="avatar">E</div>
             <h3>BS. Phạm Thị E</h3>
-            <p class="doctor-specialty">Tim mạch</p>
-            <p class="rating">★ 4.9 · 215 đánh giá</p>
+            <p class="doctor-specialty">Nhi khoa &amp; Dinh dưỡng lâm sàng</p>
+            <p class="rating">★ 5.0 · 150 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
           <!-- Thẻ bác sĩ 4 -->
-          <div class="doctor-card">
+          <div class="doctor-card" data-id="4">
             <div class="avatar">Đ</div>
             <h3>BS. Nguyễn Tuấn Đ</h3>
-            <p class="doctor-specialty">Xét nghiệm tại nhà</p>
-            <p class="rating">★ 4.7 · 87 đánh giá</p>
+            <p class="doctor-specialty">Tai Mũi Họng &amp; Hô hấp</p>
+            <p class="rating">★ 4.9 · 82 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
         </div>
