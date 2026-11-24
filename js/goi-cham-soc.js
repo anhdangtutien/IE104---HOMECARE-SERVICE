@@ -43,3 +43,50 @@ const packageGrid = document.getElementById("package-grid");
 function toMoney(amount) {
   return amount.toLocaleString("vi-VN") + "đ";
 }
+
+function renderPackages() {
+  let html = "";
+
+  for (const item of carePackages) {
+    // Trả theo năm: giá mỗi tháng giảm 15%, làm tròn tới hàng nghìn
+    let pricePerMonth = item.monthly;
+    let billedText = "Thanh toán hằng tháng";
+    if (billing === "nam") {
+      pricePerMonth = Math.round(item.monthly * (1 - YEARLY_DISCOUNT) / 1000) * 1000;
+      billedText = "Thanh toán " + toMoney(pricePerMonth * 12) + " / năm";
+    }
+
+    let featuresHTML = "";
+    for (const feature of item.features) {
+      featuresHTML += `<li><i class="fa-solid fa-check"></i> ${feature}</li>`;
+    }
+
+    // Gói phổ biến: thêm class + nhãn, nút màu xanh đặc
+    let popularClass = "";
+    let popularTag = "";
+    let buttonClass = "btn-outline";
+    if (item.popular === true) {
+      popularClass = " popular";
+      popularTag = `<span class="popular-tag">PHỔ BIẾN NHẤT</span>`;
+      buttonClass = "btn-primary";
+    }
+
+    // Link sang trang liên hệ, mang theo chủ đề + tên gói + kỳ thanh toán
+    const contactLink = "contact.html?chu-de=goi-cham-soc&goi=" + encodeURIComponent(item.name) + "&ky=" + billing;
+
+    html += `
+      <article class="package-card${popularClass}">
+        ${popularTag}
+        <span class="package-icon"><i class="${item.icon}"></i></span>
+        <h3>${item.name}</h3>
+        <p class="package-for">${item.forWho}</p>
+        <p class="package-price">${toMoney(pricePerMonth)}<small> / tháng</small></p>
+        <p class="package-billed">${billedText}</p>
+        <ul class="package-features">${featuresHTML}</ul>
+        <a href="${contactLink}" class="btn ${buttonClass} btn-block">Đăng ký tư vấn</a>
+      </article>`;
+  }
+
+  packageGrid.innerHTML = html;
+}
+
