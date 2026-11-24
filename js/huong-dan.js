@@ -23,3 +23,25 @@ function normalizeText(text) {
     .replace(/đ/g, "d");
 }
 
+
+/* ---------- 1. TÌM KIẾM ---------- */
+faqSearch.addEventListener("input", function () {
+  const keyword = normalizeText(faqSearch.value.trim());
+  let visibleCount = 0;
+
+  for (const item of faqItems) {
+    // textContent lấy toàn bộ chữ bên trong (cả câu hỏi lẫn câu trả lời)
+    const isMatch = normalizeText(item.textContent).includes(keyword);
+    item.hidden = !isMatch;
+
+    if (isMatch) {
+      visibleCount++;
+    }
+
+    // Đang tìm thì mở sẵn câu trả lời để đọc luôn, xóa từ khóa thì đóng lại
+    item.open = isMatch && keyword !== "";
+  }
+
+  faqEmpty.hidden = visibleCount > 0;
+});
+
