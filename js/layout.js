@@ -37,11 +37,11 @@
         { text: "Đặt khám tại nhà", link: "dat-kham.html" },
         { text: "Gọi video với bác sĩ", link: "#" },
         { text: "Đặt lịch xét nghiệm", link: "#" },
-        { text: "Gói chăm sóc định kỳ", link: "#" }
+        { text: "Gói chăm sóc định kỳ", link: "goi-cham-soc.html" }
       ]
     },
     { page: "bac-si", text: "Bác sĩ", link: "dat-kham.html" },
-    { page: "goi-cham-soc", text: "Gói chăm sóc", link: "#" },
+    { page: "goi-cham-soc", text: "Gói chăm sóc", link: "goi-cham-soc.html" },
     {
       page: "tin-tuc",
       text: "Tin tức",
@@ -54,11 +54,11 @@
     {
       page: "huong-dan",
       text: "Hướng dẫn",
-      link: "#",
+      link: "huong-dan.html",
       children: [
-        { text: "Cách đặt lịch khám", link: "#" },
-        { text: "Câu hỏi thường gặp", link: "#" },
-        { text: "Chính sách hoàn tiền", link: "#" }
+        { text: "Cách đặt lịch khám", link: "huong-dan.html#dat-lich" },
+        { text: "Câu hỏi thường gặp", link: "huong-dan.html#cau-hoi" },
+        { text: "Chính sách hoàn tiền", link: "huong-dan.html#hoan-tien" }
       ]
     },
     {
@@ -184,17 +184,17 @@
             <li><a href="dat-kham.html">Khám tại nhà</a></li>
             <li><a href="#">Gọi video với bác sĩ</a></li>
             <li><a href="#">Xét nghiệm tại nhà</a></li>
-            <li><a href="#">Gói chăm sóc định kỳ</a></li>
+            <li><a href="goi-cham-soc.html">Gói chăm sóc định kỳ</a></li>
           </ul>
         </div>
 
         <div>
           <h4 class="footer-title">Hỗ trợ</h4>
           <ul class="footer-links">
-            <li><a href="#">Hướng dẫn đặt lịch</a></li>
-            <li><a href="#">Câu hỏi thường gặp</a></li>
-            <li><a href="#">Chính sách hoàn tiền</a></li>
-            <li><a href="#">Điều khoản sử dụng</a></li>
+            <li><a href="huong-dan.html#dat-lich">Hướng dẫn đặt lịch</a></li>
+            <li><a href="huong-dan.html#cau-hoi">Câu hỏi thường gặp</a></li>
+            <li><a href="huong-dan.html#hoan-tien">Chính sách hoàn tiền</a></li>
+            <li><a href="huong-dan.html#dieu-khoan">Điều khoản sử dụng</a></li>
           </ul>
         </div>
 
@@ -225,8 +225,8 @@
           <p>© ${currentYear} HomeCare. Đồ án môn Phát triển ứng dụng Web (IE104).</p>
         </div>
         <ul class="footer-simple-links">
-          <li><a href="#">Chính sách bảo mật</a></li>
-          <li><a href="#">Điều khoản</a></li>
+          <li><a href="huong-dan.html#bao-mat">Chính sách bảo mật</a></li>
+          <li><a href="huong-dan.html#dieu-khoan">Điều khoản</a></li>
           <li><a href="#">Hỗ trợ</a></li>
         </ul>
       </div>
