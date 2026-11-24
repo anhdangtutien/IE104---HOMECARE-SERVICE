@@ -126,7 +126,14 @@ loginForm.addEventListener("submit", function (event) {
 
   alert("Đăng nhập thành công với vai trò: " + roleName);
 
-  window.location.href = "index.html";
+  // Đến từ trang hồ sơ (dang-nhap.html?next=ho-so.html) -> quay lại trang hồ sơ,
+  // còn lại về trang chủ. Chỉ cho phép đúng trang ho-so.html để tránh bị chuyển sang trang lạ
+  const nextPage = new URLSearchParams(window.location.search).get("next");
+  if (nextPage === "ho-so.html") {
+    window.location.href = "ho-so.html";
+  } else {
+    window.location.href = "index.html";
+  }
 });
 
 
