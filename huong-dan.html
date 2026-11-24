@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG HƯỚNG DẪN & CHÍNH SÁCH - huong-dan.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/huong-dan.css, js/huong-dan.js
+  Các mục có id để menu / footer nhảy thẳng tới:
+  #dat-lich, #cau-hoi, #hoan-tien, #dieu-khoan, #bao-mat
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng dẫn &amp; chính sách - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/huong-dan.css">
+</head>
+
+<body data-page="huong-dan">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main>
+
+    <!-- ===================== BANNER ===================== -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Hướng dẫn</span>
+        </nav>
+        <h1>Hướng dẫn &amp; chính sách</h1>
+        <p>Mọi điều bạn cần biết khi sử dụng HomeCare: cách đặt lịch, câu hỏi thường gặp, hoàn tiền và quyền riêng tư.</p>
+
+        <div class="quick-links">
+          <a href="#dat-lich"><i class="fa-regular fa-calendar-check"></i> Cách đặt lịch khám</a>
+          <a href="#cau-hoi"><i class="fa-regular fa-circle-question"></i> Câu hỏi thường gặp</a>
+          <a href="#hoan-tien"><i class="fa-solid fa-rotate-left"></i> Chính sách hoàn tiền</a>
+          <a href="#dieu-khoan"><i class="fa-regular fa-file-lines"></i> Điều khoản sử dụng</a>
+          <a href="#bao-mat"><i class="fa-solid fa-user-shield"></i> Chính sách bảo mật</a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 1. CÁCH ĐẶT LỊCH ===================== -->
+    <section class="page-section" id="dat-lich">
+      <div class="container">
+        <div class="section-heading center">
+          <h2>Đặt lịch khám tại nhà chỉ với 5 bước</h2>
+          <p>Toàn bộ quá trình mất chưa đến 3 phút, không cần tải ứng dụng.</p>
+        </div>
+
+        <ol class="guide-steps">
+          <li>
+            <span class="guide-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <strong>Tìm bác sĩ</strong>
+            <p>Tìm theo tên, chuyên khoa hoặc triệu chứng ở trang <a href="dat-kham.html">Đặt khám</a>.</p>
+          </li>
+          <li>
+            <span class="guide-icon"><i class="fa-regular fa-id-badge"></i></span>
+            <strong>Xem hồ sơ</strong>
+            <p>Xem kinh nghiệm, bảng giá, lịch làm việc và đánh giá của bác sĩ.</p>
+          </li>
+          <li>
+            <span class="guide-icon"><i class="fa-regular fa-clock"></i></span>
+            <strong>Chọn gói &amp; giờ</strong>
+            <p>Chọn gói dịch vụ, ngày và khung giờ còn trống phù hợp với bạn.</p>
+          </li>
+          <li>
+            <span class="guide-icon"><i class="fa-regular fa-credit-card"></i></span>
+            <strong>Thanh toán</strong>
+            <p>Trả tiền mặt sau khi khám, chuyển khoản, ví MoMo hoặc thẻ.</p>
+          </li>
+          <li>
+            <span class="guide-icon"><i class="fa-solid fa-house-medical"></i></span>
+            <strong>Bác sĩ đến nhà</strong>
+            <p>Nhận SMS xác nhận, theo dõi lịch hẹn trong trang <a href="ho-so.html">Hồ sơ</a>.</p>
+          </li>
+        </ol>
+
+        <div class="guide-action">
+          <a href="dat-kham.html" class="btn btn-primary">Bắt đầu đặt lịch</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/layout.js"></script>
+</body>
+</html>
