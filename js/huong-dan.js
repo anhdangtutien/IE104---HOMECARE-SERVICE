@@ -45,3 +45,20 @@ faqSearch.addEventListener("input", function () {
   faqEmpty.hidden = visibleCount > 0;
 });
 
+
+/* ---------- 2. MỞ / THU GỌN TẤT CẢ ---------- */
+faqToggle.addEventListener("click", function () {
+  // Nếu còn ít nhất 1 câu đang đóng -> mở hết, ngược lại -> đóng hết
+  let hasClosed = false;
+  for (const item of faqItems) {
+    if (item.open === false) {
+      hasClosed = true;
+    }
+  }
+
+  for (const item of faqItems) {
+    item.open = hasClosed;
+  }
+
+  faqToggle.textContent = hasClosed ? "Thu gọn" : "Mở tất cả";
+});
