@@ -1,0 +1,295 @@
+/* =========================================================
+   DAT-LICH.CSS - GIAO DIỆN TRANG ĐẶT LỊCH & CHỌN GÓI DỊCH VỤ
+   Người phụ trách: THÀNH VIÊN 2
+   Khung tóm tắt (.booking-summary, .summary-...) dùng chung với trang thanh toán
+   ========================================================= */
+
+
+.booking-breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* =============== 1. BỐ CỤC 2 CỘT =============== */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;          /* cột phải không bị kéo dài bằng cột trái */
+}
+
+.booking-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;   /* cho cột được co hẹp hơn nội dung (hàng 7 ngày sẽ cuộn ngang thay vì làm tràn trang) */
+}
+
+
+/* =============== 2. BÁC SĨ ĐÃ CHỌN =============== */
+.doctor-mini {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.doctor-mini-info {
+  flex: 1;
+}
+
+.doctor-mini-info h3 {
+  font-size: 18px;
+  color: var(--primary-dark);
+}
+
+.doctor-mini-info p {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.doctor-mini-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* =============== 3. CHỌN GÓI DỊCH VỤ =============== */
+.service-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Cả thẻ là 1 <label> -> bấm chỗ nào trên thẻ cũng chọn được radio */
+.service-option {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.service-option:hover {
+  border-color: var(--primary);
+}
+
+/* :has(input:checked) = thẻ nào CHỨA radio đang được chọn -> tô xanh */
+.service-option:has(input:checked) {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.service-option input {
+  margin-top: 4px;
+  accent-color: var(--primary);   /* đổi màu radio mặc định sang xanh */
+}
+
+.service-option strong {
+  display: block;
+  font-size: 15px;
+}
+
+.service-option small {
+  display: block;
+  margin: 2px 0 6px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.service-option .price {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+
+/* =============== 4. CHỌN NGÀY + GIỜ =============== */
+.date-options {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.date-option {
+  padding: 10px 4px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-light);
+  transition: border-color 0.2s;
+}
+
+.date-option strong {
+  display: block;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.date-option:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.date-option.active {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.date-option.active strong {
+  color: var(--white);
+}
+
+/* Ngày bác sĩ nghỉ: mờ đi, không bấm được */
+.date-option:disabled {
+  background-color: var(--bg-light);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.slot-label {
+  margin: 18px 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.slot-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));  /* tự tính số cột vừa khung */
+  gap: 10px;
+}
+
+.slot-option {
+  padding: 9px 4px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.slot-option:hover:not(:disabled),
+.slot-option.active {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.slot-option:disabled {
+  border-color: var(--border);
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.slot-empty {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* Ô địa chỉ bị ẩn khi chọn tư vấn video */
+.address-field[hidden] {
+  display: none;
+}
+
+
+/* =============== 5. KHUNG TÓM TẮT (dùng chung với trang thanh toán) =============== */
+.booking-summary {
+  position: sticky;
+  top: 96px;                   /* dính lại dưới header khi cuộn */
+}
+
+.summary-list div,
+.summary-money div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.summary-list dt,
+.summary-money dt {
+  flex-shrink: 0;
+  color: var(--text-light);
+}
+
+.summary-list dd {
+  font-weight: 600;
+  text-align: right;
+}
+
+.summary-money {
+  margin: 12px 0 18px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+.summary-money dd {
+  font-weight: 600;
+}
+
+/* Dòng tổng tiền. Viết .summary-money .summary-total (2 class) để
+   độ ưu tiên cao hơn .summary-money div ở trên, không cần !important */
+.summary-money .summary-total {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.summary-money .summary-total dt {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.summary-money .summary-total dd {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.summary-note {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.summary-note i {
+  margin-top: 3px;
+  color: var(--primary);
+}
+
+
+/* =============== 6. RESPONSIVE =============== */
+@media (max-width: 992px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .service-options {
+    grid-template-columns: 1fr;
+  }
+
+  /* 7 ngày không đủ chỗ trên 1 hàng -> cho vuốt ngang */
+  .date-options {
+    grid-template-columns: repeat(7, 76px);
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .doctor-mini {
+    flex-wrap: wrap;
+  }
+}
