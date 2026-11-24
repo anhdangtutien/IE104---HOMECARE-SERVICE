@@ -35,8 +35,8 @@
 | 3 | Đăng ký khách hàng | `dang-ky-khach-hang.html` | Form 2 cột, kiểm tra email/SĐT bằng regex, kiểm tra từng ô khi rời ô nhập, tải file kéo thả |
 | 4 | Đăng ký bác sĩ | `dang-ky-bac-si.html` | Giống trang 3, thêm "Loại chứng chỉ" và "Chuyên môn" |
 | 5 | Đặt khám theo bác sĩ | `dat-kham.html` | 12 bác sĩ/điều dưỡng; tìm kiếm không dấu; tab Bác sĩ / Điều dưỡng; sắp xếp theo đánh giá, giá; phân trang 4 người/trang |
-| 6 | Hồ sơ bác sĩ | `chi-tiet-bac-si.html?id=` | Thông tin, giới thiệu, quá trình công tác, bảng giá dịch vụ, lịch làm việc 7 ngày tới, đánh giá |
-| 7 | Đặt lịch khám | `dat-lich.html?id=` | Chọn gói dịch vụ, ngày, khung giờ trống; tóm tắt và tính tiền theo thời gian thực; lưu "đơn tạm" |
+| 6 | Hồ sơ bác sĩ | `chi-tiet-bac-si.html` | Thông tin, giới thiệu, quá trình công tác, bảng giá dịch vụ, lịch làm việc 7 ngày tới, đánh giá |
+| 7 | Đặt lịch khám | `dat-lich.html` | Chọn gói dịch vụ, ngày, khung giờ trống; tóm tắt và tính tiền theo thời gian thực; lưu "đơn tạm" |
 | 8 | Thanh toán & xác nhận | `thanh-toan.html` | Đọc "đơn tạm" từ trang đặt lịch; 4 phương thức thanh toán (tiền mặt, chuyển khoản QR, ví MoMo, thẻ), mỗi loại hiện hướng dẫn riêng; mã giảm giá; tự tính lại tổng tiền; xác nhận → sinh mã lịch hẹn (dạng `HC123456`), lưu vào danh sách lịch hẹn và hiện màn hình thành công. Vào thẳng trang khi chưa chọn lịch thì được dẫn về Đặt khám |
 | 9 | Dịch vụ | `dich-vu.html` | 4 nhóm dịch vụ; chọn xét nghiệm (8 loại), tự tính số lượng và tổng tiền, chuyển sang đặt lịch lấy mẫu |
 | 10 | Gói chăm sóc | `goi-cham-soc.html` | 4 gói định kỳ, chuyển trả theo tháng/năm (năm giảm 15%), đăng ký tư vấn |
