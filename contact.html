@@ -1,1 +1,216 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG LIÊN HỆ & HỢP TÁC - contact.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/contact.css, js/contact.js
+  Link contact.html?chu-de=goi-cham-soc&goi=... -> điền sẵn chủ đề và gói
+  Link contact.html#hop-tac -> nhảy tới mục hợp tác
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên hệ &amp; hợp tác - HomeCare</title>
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/contact.css">
+</head>
+
+<body data-page="lien-he">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main>
+
+    <!-- ===================== BANNER ===================== -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Liên hệ &amp; hợp tác</span>
+        </nav>
+        <h1>Liên hệ &amp; hợp tác</h1>
+        <p>Cần tư vấn dịch vụ, đăng ký gói chăm sóc hay muốn trở thành đối tác? Để lại lời nhắn, HomeCare sẽ phản hồi trong vòng 30 phút (giờ hành chính).</p>
+      </div>
+    </section>
+
+
+    <!-- ===================== 1. THÔNG TIN LIÊN HỆ ===================== -->
+    <section class="page-section">
+      <div class="container">
+
+        <ul class="contact-cards">
+          <li>
+            <span class="contact-icon"><i class="fa-solid fa-phone"></i></span>
+            <small>Hotline 24/7</small>
+            <a href="tel:19001234"><strong>1900 1234</strong></a>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fa-regular fa-envelope"></i></span>
+            <small>Email</small>
+            <a href="mailto:support@homecare.vn"><strong>support@homecare.vn</strong></a>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <small>Văn phòng</small>
+            <strong>Khu phố 6, P. Linh Trung, TP. Thủ Đức</strong>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fa-regular fa-clock"></i></span>
+            <small>Giờ làm việc</small>
+            <strong>7:00 – 22:00, tất cả các ngày</strong>
+          </li>
+        </ul>
+
+
+        <!-- ===================== 2. FORM LIÊN HỆ ===================== -->
+        <div class="contact-layout" id="form-lien-he">
+          <form class="card contact-form" id="contact-form" novalidate>
+            <h2 class="card-title">Gửi lời nhắn cho HomeCare</h2>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="contact-name" class="form-label">Họ và tên <span class="required">*</span></label>
+                <input type="text" id="contact-name" class="form-control" placeholder="VD: Nguyễn Văn A">
+                <p class="error-text" id="contact-name-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-phone" class="form-label">Số điện thoại <span class="required">*</span></label>
+                <input type="tel" id="contact-phone" class="form-control" placeholder="VD: 0901234567">
+                <p class="error-text" id="contact-phone-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-email" class="form-label">Email</label>
+                <input type="email" id="contact-email" class="form-control" placeholder="VD: ten@gmail.com">
+                <p class="error-text" id="contact-email-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-topic" class="form-label">Chủ đề <span class="required">*</span></label>
+                <select id="contact-topic" class="form-control">
+                  <option value="lien-he">Tư vấn dịch vụ</option>
+                  <option value="goi-cham-soc">Đăng ký gói chăm sóc định kỳ</option>
+                  <option value="hop-tac">Hợp tác bệnh viện / phòng khám</option>
+                  <option value="gop-y">Góp ý / khiếu nại</option>
+                </select>
+              </div>
+
+              <!-- Chỉ hiện khi chủ đề là "Đăng ký gói chăm sóc" -->
+              <div class="form-group full" id="package-field" hidden>
+                <label for="contact-package" class="form-label">Gói quan tâm</label>
+                <select id="contact-package" class="form-control">
+                  <option>Cơ bản</option>
+                  <option>Người cao tuổi</option>
+                  <option>Mẹ &amp; bé</option>
+                  <option>Gia đình</option>
+                </select>
+              </div>
+
+              <!-- Chỉ hiện khi chủ đề là "Hợp tác" -->
+              <div class="form-group full" id="organization-field" hidden>
+                <label for="contact-organization" class="form-label">Tên bệnh viện / phòng khám <span class="required">*</span></label>
+                <input type="text" id="contact-organization" class="form-control" placeholder="VD: Phòng khám Đa khoa ABC">
+                <p class="error-text" id="contact-organization-error"></p>
+              </div>
+
+              <div class="form-group full">
+                <label for="contact-message" class="form-label">Nội dung <span class="required">*</span></label>
+                <textarea id="contact-message" class="form-control" placeholder="Bạn cần HomeCare hỗ trợ điều gì?"></textarea>
+                <div class="message-footer">
+                  <p class="error-text" id="contact-message-error"></p>
+                  <span id="message-counter">0/500</span>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-regular fa-paper-plane"></i> Gửi lời nhắn
+            </button>
+
+            <p class="form-success" id="contact-success">
+              <i class="fa-solid fa-circle-check"></i>
+              <span id="contact-success-text">Đã gửi! HomeCare sẽ liên hệ lại với bạn sớm.</span>
+            </p>
+          </form>
+
+          <!-- Khung bản đồ minh họa (chưa dùng bản đồ thật) -->
+          <aside class="map-box">
+            <div class="map-pin"><i class="fa-solid fa-location-dot"></i></div>
+            <strong>Văn phòng HomeCare</strong>
+            <p>Khu phố 6, P. Linh Trung, TP. Thủ Đức, TP.HCM</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Khu+phố+6+Linh+Trung+Thủ+Đức" target="_blank" rel="noopener" class="btn btn-outline btn-small">
+              <i class="fa-solid fa-map"></i> Mở Google Maps
+            </a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== 3. HỢP TÁC ===================== -->
+    <section class="page-section alt" id="hop-tac">
+      <div class="container">
+        <div class="section-heading center">
+          <h2>Hợp tác cùng HomeCare</h2>
+          <p>Cùng nhau mang dịch vụ y tế chất lượng đến tận nhà người bệnh.</p>
+        </div>
+
+        <div class="partner-types">
+          <div class="partner-type">
+            <span class="partner-icon"><i class="fa-regular fa-hospital"></i></span>
+            <h3>Bệnh viện &amp; phòng khám</h3>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Mở rộng dịch vụ ra ngoài cơ sở</li>
+              <li><i class="fa-solid fa-check"></i> Nhận bệnh nhân tái khám tại nhà</li>
+              <li><i class="fa-solid fa-check"></i> Kết nối hồ sơ bệnh án điện tử</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block" data-topic="hop-tac">Gửi đề nghị hợp tác</button>
+          </div>
+
+          <div class="partner-type">
+            <span class="partner-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <h3>Bác sĩ &amp; điều dưỡng</h3>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Chủ động chọn lịch làm việc</li>
+              <li><i class="fa-solid fa-check"></i> Thu nhập minh bạch, nhận tiền hằng tuần</li>
+              <li><i class="fa-solid fa-check"></i> Được bảo hiểm trách nhiệm nghề nghiệp</li>
+            </ul>
+            <a href="dang-ky-bac-si.html" class="btn btn-primary btn-block">Đăng ký làm bác sĩ</a>
+          </div>
+
+          <div class="partner-type">
+            <span class="partner-icon"><i class="fa-solid fa-flask-vial"></i></span>
+            <h3>Nhà thuốc &amp; phòng xét nghiệm</h3>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Nhận đơn thuốc điện tử từ bác sĩ</li>
+              <li><i class="fa-solid fa-check"></i> Giao thuốc tận nhà trong khu vực</li>
+              <li><i class="fa-solid fa-check"></i> Tiếp nhận mẫu xét nghiệm tại nhà</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block" data-topic="hop-tac">Gửi đề nghị hợp tác</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+  <div id="site-footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>
