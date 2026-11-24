@@ -25,18 +25,20 @@
                 thì mục menu tương ứng sẽ được tô sáng)
      text     : chữ hiển thị
      link     : đường dẫn ("#" = trang chưa làm)
-     children : (không bắt buộc) danh sách menu con                    */
+     children : (không bắt buộc) danh sách menu con
+     extraPages : (không bắt buộc) các data-page khác cũng tô sáng mục này */
   /* Theo Figma: menu KHÔNG có "Trang chủ" (bấm logo để về trang chủ),
      nên trang chủ (data-page="home") không có mục nào được tô sáng. */
   const menuItems = [
     {
       page: "dat-kham",
+      extraPages: ["dich-vu"],
       text: "Dịch vụ",
-      link: "dat-kham.html",
+      link: "dich-vu.html",
       children: [
         { text: "Đặt khám tại nhà", link: "dat-kham.html" },
-        { text: "Gọi video với bác sĩ", link: "#" },
-        { text: "Đặt lịch xét nghiệm", link: "#" },
+        { text: "Gọi video với bác sĩ", link: "dich-vu.html#goi-video" },
+        { text: "Đặt lịch xét nghiệm", link: "dich-vu.html#xet-nghiem" },
         { text: "Gói chăm sóc định kỳ", link: "goi-cham-soc.html" }
       ]
     },
@@ -45,10 +47,10 @@
     {
       page: "tin-tuc",
       text: "Tin tức",
-      link: "#",
+      link: "tin-tuc.html",
       children: [
-        { text: "Tin y tế", link: "#" },
-        { text: "Cẩm nang sức khỏe", link: "#" }
+        { text: "Tin y tế", link: "tin-tuc.html?loai=tin-y-te" },
+        { text: "Cẩm nang sức khỏe", link: "tin-tuc.html?loai=cam-nang" }
       ]
     },
     {
@@ -64,11 +66,11 @@
     {
       page: "lien-he",
       text: "Liên hệ hợp tác",
-      link: "#",
+      link: "contact.html",
       children: [
-        { text: "Giới thiệu HomeCare", link: "#" },
-        { text: "Hợp tác cùng HomeCare", link: "#" },
-        { text: "Liên hệ", link: "#" }
+        { text: "Giới thiệu HomeCare", link: "about.html" },
+        { text: "Hợp tác cùng HomeCare", link: "contact.html#hop-tac" },
+        { text: "Liên hệ", link: "contact.html" }
       ]
     }
   ];
@@ -80,6 +82,28 @@
   // Năm hiện tại, dùng cho dòng bản quyền
   const currentYear = new Date().getFullYear();
 
+  // Tài khoản đang đăng nhập (js/dang-nhap.js lưu vào localStorage), chưa đăng nhập -> null.
+  // try...catch: trình duyệt chặn localStorage (ẩn danh) thì coi như chưa đăng nhập
+  let loggedInUser = null;
+  try {
+    loggedInUser = JSON.parse(localStorage.getItem("homecare_user"));
+  } catch (error) {
+    loggedInUser = null;
+  }
+
+  // Nút ở thanh trên cùng: chưa đăng nhập -> "Tài khoản" (sang trang đăng nhập),
+  // đã đăng nhập -> hiện tên (sang trang hồ sơ). Tên được điền bằng textContent ở bước 3
+  let accountButtonHTML = `
+    <a href="dang-nhap.html" class="btn btn-outline btn-pill btn-small">
+      <i class="fa-regular fa-user"></i> Tài khoản
+    </a>`;
+  if (loggedInUser !== null) {
+    accountButtonHTML = `
+      <a href="ho-so.html" class="btn btn-outline btn-pill btn-small" title="Hồ sơ của tôi">
+        <i class="fa-regular fa-circle-user"></i> <span id="account-name"></span>
+      </a>`;
+  }
+
 
   /* ---------- 2. TẠO HTML ---------- */
 
@@ -90,7 +114,8 @@
     for (const item of menuItems) {
       // Mục nào có page trùng với data-page của trang hiện tại -> thêm class "active"
       let activeClass = "";
-      if (item.page === currentPage) {
+      const isExtraPage = item.extraPages !== undefined && item.extraPages.includes(currentPage);
+      if (item.page === currentPage || isExtraPage) {
         activeClass = " active";
       }
 
@@ -125,9 +150,7 @@
     <div class="topbar">
       <div class="container topbar-inner">
         <p class="topbar-welcome">Chào mừng bạn đến với HomeCare – chăm sóc sức khỏe tại nhà</p>
-        <a href="dang-nhap.html" class="btn btn-outline btn-pill btn-small">
-          <i class="fa-regular fa-user"></i> Tài khoản
-        </a>
+        ${accountButtonHTML}
       </div>
     </div>
 
@@ -182,8 +205,8 @@
           <h4 class="footer-title">Dịch vụ</h4>
           <ul class="footer-links">
             <li><a href="dat-kham.html">Khám tại nhà</a></li>
-            <li><a href="#">Gọi video với bác sĩ</a></li>
-            <li><a href="#">Xét nghiệm tại nhà</a></li>
+            <li><a href="dich-vu.html#goi-video">Gọi video với bác sĩ</a></li>
+            <li><a href="dich-vu.html#xet-nghiem">Xét nghiệm tại nhà</a></li>
             <li><a href="goi-cham-soc.html">Gói chăm sóc định kỳ</a></li>
           </ul>
         </div>
@@ -227,7 +250,7 @@
         <ul class="footer-simple-links">
           <li><a href="huong-dan.html#bao-mat">Chính sách bảo mật</a></li>
           <li><a href="huong-dan.html#dieu-khoan">Điều khoản</a></li>
-          <li><a href="#">Hỗ trợ</a></li>
+          <li><a href="contact.html">Hỗ trợ</a></li>
         </ul>
       </div>
     </footer>`;
@@ -253,6 +276,13 @@
   insertLayout("site-header", headerHTML);
   insertLayout("site-footer", footerHTML);
   insertLayout("site-footer-simple", footerSimpleHTML);
+
+  // Điền tên tài khoản bằng textContent (an toàn hơn chèn thẳng vào HTML,
+  // vì tên do người dùng tự gõ có thể chứa ký tự < >)
+  const accountName = document.getElementById("account-name");
+  if (accountName !== null) {
+    accountName.textContent = loggedInUser.name || loggedInUser.username || "Tài khoản";
+  }
 
 
   /* ---------- 4. NÚT ☰ ĐÓNG / MỞ MENU TRÊN ĐIỆN THOẠI ----------
