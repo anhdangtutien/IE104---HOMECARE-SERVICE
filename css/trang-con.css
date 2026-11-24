@@ -1,0 +1,342 @@
+/* =========================================================
+   TRANG-CON.CSS - KHUNG CHUNG CHO CÁC TRANG CON
+   Người phụ trách: THÀNH VIÊN 2
+
+   Dùng cho các trang: dịch vụ, gói chăm sóc, tin tức, hướng dẫn,
+   giới thiệu, liên hệ, hồ sơ bác sĩ, đặt lịch, thanh toán, hồ sơ.
+   Nạp SAU base.css + layout.css và TRƯỚC CSS riêng của trang.
+
+   Nội dung:
+   1. Banner tiêu đề trang + đường dẫn (breadcrumb)
+   2. Khoảng cách các mục, tiêu đề mục
+   3. Thẻ (card)
+   4. Form: ô nhập, nhãn, báo lỗi
+   5. Thanh các bước (đặt lịch -> thanh toán -> hoàn tất)
+   6. Khung thông báo trống / lỗi
+   7. Responsive
+   ========================================================= */
+
+
+/* =============== 1. BANNER TIÊU ĐỀ TRANG =============== */
+.page-hero {
+  padding: 40px 0 48px;
+  background-color: var(--primary-light);
+}
+
+.page-hero h1 {
+  margin: 12px 0 10px;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.page-hero p {
+  max-width: 720px;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* Đường dẫn: Trang chủ › Hướng dẫn */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.breadcrumb a {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb i {
+  font-size: 10px;
+}
+
+/* Các nút nhảy nhanh tới từng mục trong trang (link dạng #ten-muc) */
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.quick-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.quick-links a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+
+/* =============== 2. CÁC MỤC TRONG TRANG =============== */
+.page-section {
+  padding: 56px 0;
+  scroll-margin-top: 80px;     /* bấm link #muc thì chừa chỗ cho header dính phía trên */
+}
+
+/* Mục xen kẽ nền xám nhạt cho dễ phân biệt */
+.page-section.alt {
+  background-color: var(--bg-light);
+}
+
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-heading.center {
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.section-heading p {
+  color: var(--text-light);
+}
+
+.section-heading.center p {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Trang có nền xám cho cả phần nội dung (đặt lịch, thanh toán, hồ sơ) */
+.page-gray {
+  padding: 32px 0 64px;
+  background-color: var(--bg-light);
+}
+
+
+/* =============== 3. THẺ (CARD) =============== */
+.card {
+  padding: 24px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* Số thứ tự tròn trước tiêu đề: (1) Chọn dịch vụ */
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  font-size: 14px;
+  color: var(--white);
+}
+
+
+/* =============== 4. FORM =============== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+
+/* Ô chiếm cả 2 cột (VD: địa chỉ, ghi chú) */
+.form-grid .full {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-label .required {
+  color: var(--error);
+}
+
+.form-control {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+textarea.form-control {
+  min-height: 96px;
+  resize: vertical;            /* chỉ cho kéo giãn theo chiều dọc */
+}
+
+/* JS thêm class .invalid khi ô bị lỗi */
+.form-control.invalid {
+  border-color: var(--error);
+}
+
+.error-text {
+  min-height: 18px;            /* giữ chỗ sẵn để form không bị nhảy khi hiện lỗi */
+  font-size: 13px;
+  color: var(--error);
+}
+
+/* Thông báo gửi thành công (ẩn sẵn, JS thêm .show để hiện) */
+.form-success {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background-color: var(--primary-light);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.form-success.show {
+  display: flex;
+}
+
+
+/* =============== 5. THANH CÁC BƯỚC =============== */
+.steps {
+  display: flex;
+  margin-bottom: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--white);
+  overflow: hidden;            /* cắt phần thừa theo góc bo tròn */
+}
+
+.steps li {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.steps li + li {
+  border-left: 1px solid var(--border);
+}
+
+.steps .step-number {
+  background-color: var(--border);
+  color: var(--text-light);
+}
+
+/* Bước đang làm */
+.steps li.current {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.steps li.current .step-number {
+  background-color: var(--white);
+  color: var(--primary);
+}
+
+/* Bước đã xong */
+.steps li.done {
+  color: var(--primary-dark);
+}
+
+.steps li.done .step-number {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+
+/* =============== 6. KHUNG THÔNG BÁO TRỐNG / LỖI =============== */
+.empty-box {
+  padding: 48px 24px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--white);
+  text-align: center;
+  color: var(--text-light);
+}
+
+.empty-box i {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 40px;
+  color: var(--primary);
+}
+
+.empty-box h3 {
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.empty-box .btn {
+  margin-top: 18px;
+}
+
+
+/* =============== 7. RESPONSIVE =============== */
+@media (max-width: 768px) {
+  .page-hero h1 {
+    font-size: 28px;
+  }
+
+  .page-section {
+    padding: 40px 0;
+  }
+
+  .section-heading h2 {
+    font-size: 23px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;   /* form 2 cột -> 1 cột */
+  }
+
+  /* Thanh các bước: ẩn chữ, chỉ giữ số cho gọn */
+  .steps li span:not(.step-number) {
+    display: none;
+  }
+}
