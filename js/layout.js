@@ -245,7 +245,7 @@
       <div class="container footer-simple-inner">
         <div>
           <a href="index.html" class="footer-simple-logo">HomeCare</a>
-          <p>© ${currentYear} HomeCare. Đồ án môn Phát triển ứng dụng Web (IE104).</p>
+          <p>© ${currentYear} HomeCare. Đồ án môn Internet và Công nghệ Web (IE104).</p>
         </div>
         <ul class="footer-simple-links">
           <li><a href="huong-dan.html#bao-mat">Chính sách bảo mật</a></li>
