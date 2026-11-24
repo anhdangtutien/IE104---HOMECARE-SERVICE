@@ -302,3 +302,61 @@
   color: var(--text-light);
 }
 
+
+/* =============== 4. KHUNG HỖ TRỢ =============== */
+.help-box {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.help-box > i {
+  font-size: 48px;
+  color: var(--primary);
+}
+
+.help-box div {
+  flex: 1;
+}
+
+.help-box h2 {
+  margin-bottom: 4px;
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+
+.help-box p {
+  color: var(--text-light);
+}
+
+
+/* =============== 5. RESPONSIVE =============== */
+@media (max-width: 992px) {
+  .guide-steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .guide-steps li::after {
+    display: none;
+  }
+
+  .privacy-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .guide-steps,
+  .privacy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-tools {
+    flex-direction: column;
+  }
+
+  .help-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
