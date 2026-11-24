@@ -5,8 +5,8 @@
    Chức năng:
    1. Ô tìm kiếm: bỏ trống thì báo lỗi, có chữ thì chuyển sang
       trang đặt khám và mang theo từ khóa (dat-kham.html?q=...)
-   2. Nút "Đặt lịch" ở thẻ bác sĩ: chuyển sang trang đặt khám
-      và tự tìm đúng bác sĩ đó
+   2. Nút "Đặt lịch" ở thẻ bác sĩ: chuyển sang trang hồ sơ của
+      đúng bác sĩ đó (chi-tiet-bac-si.html?id=...)
    ========================================================= */
 
 
@@ -47,13 +47,18 @@ searchInput.addEventListener("input", function () {
 
 
 /* ---------- 4. NÚT "ĐẶT LỊCH" Ở THẺ BÁC SĨ ----------
-   Với mỗi thẻ bác sĩ: lấy tên bác sĩ (trong thẻ h3),
-   rồi gắn tên đó vào link của nút "Đặt lịch". */
+   Với mỗi thẻ bác sĩ: đọc id trong data-id="..." (dataset.id),
+   rồi gắn vào link của nút "Đặt lịch" -> mở trang hồ sơ bác sĩ đó.
+   Thẻ không có data-id thì giữ cách cũ: tìm theo tên ở trang đặt khám. */
 const doctorCards = document.querySelectorAll(".doctor-card");
 
 for (const card of doctorCards) {
-  const doctorName = card.querySelector("h3").textContent;
   const bookButton = card.querySelector(".btn");
 
-  bookButton.href = "dat-kham.html?q=" + encodeURIComponent(doctorName);
+  if (card.dataset.id !== undefined) {
+    bookButton.href = "chi-tiet-bac-si.html?id=" + card.dataset.id;
+  } else {
+    const doctorName = card.querySelector("h3").textContent;
+    bookButton.href = "dat-kham.html?q=" + encodeURIComponent(doctorName);
+  }
 }
