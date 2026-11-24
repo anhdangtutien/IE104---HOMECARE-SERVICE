@@ -116,8 +116,16 @@ loginForm.addEventListener("submit", function (event) {
     roleName = "Bác sĩ";
   }
 
-  // Đồ án chưa có máy chủ (backend) nên chỉ thông báo rồi về trang chủ
+  // Đồ án chưa có máy chủ (backend): lưu tài khoản vào localStorage để
+  // header hiện tên và trang ho-so.html biết là khách hàng hay bác sĩ
+  try {
+    localStorage.setItem("homecare_user", JSON.stringify({ username: username, role: selectedRole }));
+  } catch (error) {
+    // Trình duyệt chặn lưu trữ (ẩn danh) -> bỏ qua
+  }
+
   alert("Đăng nhập thành công với vai trò: " + roleName);
+
   window.location.href = "index.html";
 });
 
