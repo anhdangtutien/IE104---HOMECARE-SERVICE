@@ -1,0 +1,152 @@
+/* =========================================================
+   GOI-CHAM-SOC.CSS - GIAO DIỆN TRANG GÓI CHĂM SÓC
+   Người phụ trách: THÀNH VIÊN 2
+   ========================================================= */
+
+
+/* =============== 1. NÚT CHUYỂN THÁNG / NĂM =============== */
+.billing-switch {
+  display: flex;
+  width: fit-content;          /* rộng vừa đủ 2 nút */
+  margin: 0 auto 40px;
+  padding: 5px;
+  border-radius: 999px;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border);
+}
+
+.billing-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.billing-option.active {
+  background-color: var(--primary);
+  color: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.save-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: var(--accent);
+  font-size: 12px;
+  color: var(--white);
+}
+
+
+/* =============== 2. THẺ GÓI =============== */
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.package-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 22px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--white);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.package-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+}
+
+/* Gói nổi bật: viền xanh + nhãn "Phổ biến nhất" ở mép trên */
+.package-card.popular {
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.popular-tag {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);   /* dịch sang trái 1 nửa chiều rộng -> căn giữa */
+  padding: 4px 14px;
+  border-radius: 999px;
+  background-color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--white);
+}
+
+.package-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background-color: var(--primary-light);
+  font-size: 24px;
+  color: var(--primary);
+}
+
+.package-card h3 {
+  font-size: 20px;
+  color: var(--primary-dark);
+}
+
+.package-for {
+  min-height: 42px;
+  margin: 4px 0 16px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.package-price {
+  margin-bottom: 4px;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;         /* giá + "/ tháng" luôn nằm trên 1 dòng */
+  color: var(--text);
+}
+
+.package-price small {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.package-billed {
+  min-height: 20px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.package-features {
+  flex: 1;                     /* đẩy nút bấm xuống đáy thẻ, các thẻ thẳng hàng */
+  margin-bottom: 22px;
+}
+
+.package-features li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.package-features i {
+  margin-top: 4px;
+  color: var(--primary);
+}
+
