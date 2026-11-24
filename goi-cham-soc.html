@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  TRANG GÓI CHĂM SÓC ĐỊNH KỲ - goi-cham-soc.html
+  Người phụ trách: THÀNH VIÊN 2
+  File liên quan: css/trang-con.css, css/goi-cham-soc.css, js/goi-cham-soc.js
+  Các thẻ gói do JavaScript tạo từ mảng dữ liệu trong js/goi-cham-soc.js
+  =========================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gói chăm sóc sức khỏe định kỳ - HomeCare</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS chung (Thành viên 1) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- CSS của trang (Thành viên 2) -->
+  <link rel="stylesheet" href="css/trang-con.css">
+  <link rel="stylesheet" href="css/goi-cham-soc.css">
+</head>
+
+<body data-page="goi-cham-soc">
+
+  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  <div id="site-header"></div>
+
+  <main>
+
+    <!-- ===================== BANNER ===================== -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Gói chăm sóc</span>
+        </nav>
+        <h1>Gói chăm sóc sức khỏe định kỳ</h1>
+        <p>
+          Bác sĩ quen thuộc đến khám theo lịch cố định, theo dõi sức khỏe liên tục
+          và báo cáo cho người nhà mỗi tháng. Tiết kiệm đến 25% so với đặt lẻ từng lần.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ===================== 1. CÁC GÓI ===================== -->
+    <section class="page-section">
+      <div class="container">
+
+        <!-- Nút chuyển tháng / năm -->
+        <div class="billing-switch" id="billing-switch">
+          <button type="button" class="billing-option active" data-billing="thang">Trả theo tháng</button>
+          <button type="button" class="billing-option" data-billing="nam">
+            Trả theo năm <span class="save-tag">-15%</span>
+          </button>
+        </div>
+
+        <!-- JS tạo các thẻ gói và đặt vào đây -->
+        <div class="package-grid" id="package-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/layout.js"></script>
+</body>
+</html>
