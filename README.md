@@ -64,7 +64,7 @@ flowchart LR
     K -->|"?next=ho-so.html"| I
 ```
 
-### 2.3. Hướng dẫn trải nghiệm nhanh (dành cho người chấm)
+### 2.3. Hướng dẫn trải nghiệm nhanh
 
 1. Mở `index.html`, gõ tên hoặc chuyên khoa vào ô tìm kiếm → chuyển sang **Đặt khám** với từ khóa đã điền sẵn (gõ không dấu vẫn tìm được).
 2. Bấm **Xem hồ sơ** của một bác sĩ → chọn khung giờ trống trong lịch 7 ngày → sang **Đặt lịch**, điền thông tin.
@@ -175,7 +175,7 @@ homecare/
 
 Mỗi người **chỉ sửa file của mình**, vì vậy khi commit sẽ không bao giờ bị conflict. Đầu mỗi file đều có dòng `Người phụ trách: THÀNH VIÊN X`.
 
-| Thành viên | MSSV | Họ và tên | Phần | File phụ trách | Kiến thức chính (để thuyết trình) |
+| Thành viên | MSSV | Họ và tên | Phần | File phụ trách | Kiến thức chính |
 |:---:|:---:|---|---|---|---|
 | **TV1** | 24521785 | Hồ Đình Tín | Phần chung | `README.md`, `css/base.css`, `css/layout.css`, `js/layout.js` | Biến CSS `:root`, reset CSS, header `sticky`, menu con khi rê chuột, `@media`; JS chèn HTML bằng `outerHTML`, `classList.toggle` |
 | **TV2** | 24521714 | Châu Phước Thọ | Trang chủ và các trang con | `index.html`, `about.html`, `contact.html`, `dich-vu.html`, `goi-cham-soc.html`, `tin-tuc.html`, `huong-dan.html`, `chi-tiet-bac-si.html`, `dat-lich.html`, `thanh-toan.html`, `ho-so.html`; CSS và JS tương ứng (`home`, `trang-con`, `about`, `contact`, `dich-vu`, `goi-cham-soc`, `tin-tuc`, `huong-dan`, `chi-tiet-bac-si`, `dat-lich`, `thanh-toan`, `ho-so`, `du-lieu`); thư mục `images/` | Flexbox, Grid, margin âm, hiệu ứng `hover`; JS bắt sự kiện `submit`, `preventDefault`, chuyển trang kèm tham số `?q=`; `URLSearchParams`, `localStorage`, `<dialog>`, `<details>`, tính tiền, tìm kiếm không dấu |
