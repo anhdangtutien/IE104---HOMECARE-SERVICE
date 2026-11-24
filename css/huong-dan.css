@@ -164,3 +164,141 @@
   color: var(--primary);
 }
 
+
+/* =============== 3. CHÍNH SÁCH =============== */
+.policy-container {
+  max-width: 960px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.policy-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.policy-table th,
+.policy-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-size: 15px;
+}
+
+.policy-table th {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.policy-table tbody tr:nth-child(even) {
+  background-color: var(--bg-light);
+}
+
+.refund {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.refund.full {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.refund.half {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.refund.none {
+  background-color: color-mix(in srgb, var(--error) 10%, var(--white));
+  color: var(--error);
+}
+
+.policy-notes {
+  margin-top: 18px;
+}
+
+.policy-notes li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.policy-notes i {
+  margin-top: 4px;
+  color: var(--primary);
+}
+
+/* Danh sách điều khoản có số thứ tự tự động */
+.terms-list {
+  counter-reset: term;         /* tạo bộ đếm tên "term", bắt đầu từ 0 */
+}
+
+.terms-list li {
+  position: relative;
+  margin-bottom: 14px;
+  padding: 16px 20px 16px 64px;
+  border-radius: var(--radius);
+  background-color: var(--white);
+  line-height: 1.7;
+  counter-increment: term;     /* mỗi <li> tăng bộ đếm lên 1 */
+}
+
+.terms-list li::before {
+  content: counter(term);      /* in số của bộ đếm ra */
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  font-weight: 700;
+  color: var(--white);
+}
+
+.terms-list strong {
+  color: var(--primary-dark);
+}
+
+.privacy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.privacy-item {
+  padding: 24px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.privacy-item i {
+  margin-bottom: 12px;
+  font-size: 26px;
+  color: var(--primary);
+}
+
+.privacy-item strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.privacy-item p {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
