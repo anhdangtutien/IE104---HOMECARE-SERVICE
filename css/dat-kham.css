@@ -107,7 +107,7 @@
   justify-content: center;
 }
 
-.booking-hero-card h3 {
+.booking-hero-card h2 {
   margin-bottom: 8px;
   font-size: 19px;
   color: var(--primary-dark);
@@ -220,6 +220,29 @@
   outline: none;
 }
 
+/* AI prompt: "Thêm bộ lọc theo chuyên ngành" – mỗi ô lọc gồm nhãn + select */
+.filter-panel {
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+
+.filter-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.filter-field label i {
+  margin-right: 4px;
+  color: var(--primary);
+}
+
+.filter-panel select:focus {
+  border-color: var(--primary);
+}
+
 
 /* =============== 4. BỐ CỤC: DANH SÁCH + CỘT PHẢI =============== */
 .booking-layout {
@@ -311,10 +334,16 @@
   font-weight: 600;
 }
 
-.doctor-rating {
+.doctor-visits {
   margin-left: auto;           /* đẩy sang sát bên phải */
   font-size: 13px;
-  color: var(--text-light);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.doctor-visits i {
+  margin-right: 2px;
+  color: var(--primary);
 }
 
 .doctor-info p {
@@ -516,8 +545,18 @@
     margin: 0 18px;
   }
 
-  .doctor-rating {
+  .doctor-visits {
     margin-left: 0;
     width: 100%;
+  }
+
+  .filter-field {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .filter-field select {
+    flex: 1;
+    min-width: 0;
   }
 }

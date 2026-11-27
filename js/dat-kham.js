@@ -7,9 +7,9 @@
    2. Dùng JavaScript tạo HTML cho từng thẻ bác sĩ
    3. Tìm kiếm theo tên / chuyên khoa / bệnh lý (gõ có dấu hay không dấu đều được)
    4. Chuyển tab Bác sĩ / Điều dưỡng
-   5. Sắp xếp theo đánh giá, giá
+   5. Lọc theo chuyên khoa; sắp xếp theo lượt khám, giá
    6. Phân trang: mỗi trang hiện 4 người
-   7. Nhận từ khóa từ trang chủ (dat-kham.html?q=...)
+   7. Nhận từ khóa / chuyên khoa từ trang chủ (dat-kham.html?q=... hoặc ?chuyen-khoa=...)
    ========================================================= */
 
 
@@ -184,6 +184,7 @@ const ITEMS_PER_PAGE = 4;     // số người mỗi trang
 let currentType = "bac-si";   // tab đang chọn
 let currentKeyword = "";      // từ khóa tìm kiếm
 let currentSort = "default";  // kiểu sắp xếp
+let currentSpecialty = "";    // chuyên khoa đang lọc ("" = tất cả)
 let currentPageNumber = 1;    // trang đang xem
 
 
@@ -197,6 +198,7 @@ const tabButtons = document.querySelectorAll(".tab");
 const filterButton = document.getElementById("filter-button");
 const filterPanel = document.getElementById("filter-panel");
 const sortSelect = document.getElementById("sort-select");
+const specialtySelect = document.getElementById("specialty-select");
 
 
 /* ---------- 4. CÁC HÀM TIỆN ÍCH ---------- */
@@ -232,8 +234,8 @@ function createDoctorCard(doctor) {
           <div class="doctor-name-row">
             <h3><a href="chi-tiet-bac-si.html?id=${doctor.id}">${doctor.name}</a></h3>
             <span class="tag">${doctor.specialty}</span>
-            <span class="doctor-rating">
-              <span class="rating">★ ${doctor.rating.toFixed(1)}</span> (${doctor.visits} lượt khám)
+            <span class="doctor-visits">
+              <i class="fa-solid fa-user-check"></i> ${doctor.visits} lượt khám
             </span>
           </div>
           <p><span class="label">Chuyên trị:</span> ${doctor.treats}</p>
@@ -268,14 +270,17 @@ function getFilteredDoctors() {
     const searchText = removeAccents(doctor.name + " " + doctor.specialty + " " + doctor.treats);
     const isMatchKeyword = searchText.includes(keyword);
 
-    if (isRightType && isMatchKeyword) {
+    // Điều kiện 3: đúng chuyên khoa đang lọc (chưa chọn thì bỏ qua điều kiện này)
+    const isRightSpecialty = currentSpecialty === "" || doctor.specialty === currentSpecialty;
+
+    if (isRightType && isMatchKeyword && isRightSpecialty) {
       result.push(doctor);    // thêm vào mảng kết quả
     }
   }
 
   // Sắp xếp. Hàm so sánh (a, b) trả về số âm thì a đứng trước b
-  if (currentSort === "rating") {
-    result.sort(function (a, b) { return b.rating - a.rating; });   // cao -> thấp
+  if (currentSort === "visits") {
+    result.sort(function (a, b) { return b.visits - a.visits; });   // nhiều -> ít
   } else if (currentSort === "price-asc") {
     result.sort(function (a, b) { return a.price - b.price; });     // thấp -> cao
   } else if (currentSort === "price-desc") {
@@ -299,7 +304,7 @@ function renderDoctors() {
       <div class="empty-message">
         <i class="fa-solid fa-user-doctor"></i>
         Không tìm thấy kết quả phù hợp.<br>
-        Hãy thử từ khóa khác hoặc chuyển sang tab còn lại.
+        Hãy thử từ khóa khác, chọn "Tất cả chuyên khoa" hoặc chuyển sang tab còn lại.
       </div>
     `;
     pagination.innerHTML = "";
@@ -407,13 +412,16 @@ for (const tab of tabButtons) {
 
     currentType = tab.dataset.type;  // đọc data-type="..." của nút
     currentPageNumber = 1;
+    currentSpecialty = "";           // mỗi tab có chuyên khoa khác nhau -> bỏ lọc cũ
+    renderSpecialtyOptions();
     renderDoctors();
   });
 }
 
-// Bấm "Bộ lọc" -> hiện / ẩn bảng sắp xếp
+// Bấm "Bộ lọc" -> hiện / ẩn bảng lọc
 filterButton.addEventListener("click", function () {
-  filterPanel.classList.toggle("show");
+  const isOpen = filterPanel.classList.toggle("show");
+  filterButton.setAttribute("aria-expanded", isOpen);
 });
 
 // Đổi kiểu sắp xếp
@@ -424,7 +432,36 @@ sortSelect.addEventListener("change", function () {
 });
 
 
-/* ---------- 11. CHẠY LẦN ĐẦU KHI MỞ TRANG ----------
+/* ---------- 11. LỌC THEO CHUYÊN KHOA ----------
+   AI prompt: "Trang đặt lịch khám: thêm bộ lọc theo chuyên ngành" –
+   mục này được viết với sự hỗ trợ của AI.
+   Danh sách chuyên khoa lấy từ chính mảng doctors (không gõ tay),
+   chỉ gồm chuyên khoa của tab đang chọn, mỗi chuyên khoa xuất hiện 1 lần. */
+function renderSpecialtyOptions() {
+  const specialties = [];
+  for (const doctor of doctors) {
+    if (doctor.type === currentType && specialties.includes(doctor.specialty) === false) {
+      specialties.push(doctor.specialty);
+    }
+  }
+
+  // new Option(chữ hiển thị, giá trị): tạo thẻ <option> bằng JS
+  specialtySelect.innerHTML = "";
+  specialtySelect.appendChild(new Option("Tất cả chuyên khoa", ""));
+  for (const specialty of specialties) {
+    specialtySelect.appendChild(new Option(specialty, specialty));
+  }
+  specialtySelect.value = currentSpecialty;
+}
+
+specialtySelect.addEventListener("change", function () {
+  currentSpecialty = specialtySelect.value;
+  currentPageNumber = 1;
+  renderDoctors();
+});
+
+
+/* ---------- 12. CHẠY LẦN ĐẦU KHI MỞ TRANG ----------
    Nếu đến từ ô tìm kiếm ở trang chủ thì link có dạng dat-kham.html?q=tim+mach
    -> đọc giá trị q và điền sẵn vào ô tìm kiếm */
 const urlParams = new URLSearchParams(window.location.search);
@@ -435,4 +472,17 @@ if (keywordFromHome !== null) {
   searchInput.value = keywordFromHome;
 }
 
+// Chọn chuyên khoa từ gợi ý tìm kiếm ở trang chủ: dat-kham.html?chuyen-khoa=Tim%20mạch
+// Chuyên khoa của điều dưỡng thì tự chuyển sang tab "Điều dưỡng"
+const specialtyFromLink = urlParams.get("chuyen-khoa");
+const doctorOfSpecialty = doctors.find(function (doctor) { return doctor.specialty === specialtyFromLink; });
+if (doctorOfSpecialty !== undefined) {
+  currentSpecialty = specialtyFromLink;
+  currentType = doctorOfSpecialty.type;
+  for (const tab of tabButtons) {
+    tab.classList.toggle("active", tab.dataset.type === currentType);
+  }
+}
+
+renderSpecialtyOptions();
 renderDoctors();

@@ -13,7 +13,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt khám theo bác sĩ - HomeCare</title>
+  <meta name="description" content="Tìm và đặt lịch bác sĩ, điều dưỡng đến khám tại nhà theo chuyên khoa, lượt khám và giá khám. Lọc, sắp xếp và đặt lịch nhanh trên HomeCare.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 
+  <!-- Kết nối sớm tới máy chủ font / icon để tải nhanh hơn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -52,7 +58,7 @@
 
         <div class="booking-hero-card">
           <div class="hero-card-icon"><i class="fa-regular fa-hospital"></i></div>
-          <h3>Chuyên gia y tế chuẩn tuyến</h3>
+          <h2>Chuyên gia y tế chuẩn tuyến</h2>
           <p>
             Đội ngũ y bác sĩ từ các bệnh viện lớn tại TP.HCM sẵn sàng đến tận nhà
             thăm khám chu đáo và tin cậy.
@@ -65,14 +71,14 @@
 
 
       <!-- ===================== 2. THANH TÌM KIẾM + BỘ LỌC ===================== -->
-      <section class="toolbar">
+      <div class="toolbar">
         <form class="search-box" id="search-form">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="search-input" placeholder="Tìm kiếm bác sĩ theo tên, chuyên khoa hoặc bệnh lý...">
           <button type="submit" class="btn btn-primary btn-pill">Tìm kiếm</button>
         </form>
 
-        <button type="button" class="btn btn-outline btn-pill" id="filter-button">
+        <button type="button" class="btn btn-outline btn-pill" id="filter-button" aria-expanded="true" aria-controls="filter-panel">
           <i class="fa-solid fa-filter"></i> Bộ lọc
         </button>
 
@@ -81,17 +87,28 @@
           <button type="button" class="tab active" data-type="bac-si">Bác sĩ</button>
           <button type="button" class="tab" data-type="dieu-duong">Điều dưỡng</button>
         </div>
-      </section>
+      </div>
 
-      <!-- Bảng bộ lọc: mặc định ẩn, bấm nút "Bộ lọc" mới hiện -->
-      <div class="filter-panel" id="filter-panel">
-        <label for="sort-select">Sắp xếp theo:</label>
-        <select id="sort-select">
-          <option value="default">Mặc định</option>
-          <option value="rating">Đánh giá cao nhất</option>
-          <option value="price-asc">Giá: thấp đến cao</option>
-          <option value="price-desc">Giá: cao đến thấp</option>
-        </select>
+      <!-- Bảng bộ lọc: mở sẵn, bấm nút "Bộ lọc" để ẩn / hiện -->
+      <!-- AI prompt: "Trang đặt lịch khám: thêm bộ lọc theo chuyên ngành, bỏ phần đánh giá sao" -->
+      <div class="filter-panel show" id="filter-panel">
+        <div class="filter-field">
+          <label for="specialty-select"><i class="fa-solid fa-stethoscope"></i> Chuyên khoa:</label>
+          <!-- Các lựa chọn do JS tạo theo tab đang chọn (Bác sĩ / Điều dưỡng) -->
+          <select id="specialty-select">
+            <option value="">Tất cả chuyên khoa</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="sort-select"><i class="fa-solid fa-arrow-down-wide-short"></i> Sắp xếp theo:</label>
+          <select id="sort-select">
+            <option value="default">Mặc định</option>
+            <option value="visits">Nhiều lượt khám nhất</option>
+            <option value="price-asc">Giá: thấp đến cao</option>
+            <option value="price-desc">Giá: cao đến thấp</option>
+          </select>
+        </div>
       </div>
 
 
@@ -101,13 +118,13 @@
       <!-- ===================== 3. DANH SÁCH + CỘT BÊN PHẢI ===================== -->
       <div class="booking-layout">
 
-        <section>
+        <div>
           <!-- JS sẽ tạo các thẻ bác sĩ và đặt vào đây -->
           <div class="doctor-list" id="doctor-list"></div>
 
           <!-- JS sẽ tạo các nút số trang và đặt vào đây -->
           <div class="pagination" id="pagination"></div>
-        </section>
+        </div>
 
         <aside class="sidebar">
           <span class="badge badge-green">DỊCH VỤ NỔI BẬT</span>
