@@ -453,4 +453,16 @@ if (returnCode !== null) {
   renderAppointmentInfo();
   updateMoney();
   renderPayDetail();
+
+  // Hỏi máy chủ đã cấu hình VNPay chưa; chưa thì khóa lựa chọn VNPay
+  callApi("/api/auth").then(function (data) {
+    if (data.config.vnpay === false) {
+      const vnpayOption = document.getElementById("vnpay-option");
+      vnpayOption.classList.add("disabled");
+      vnpayOption.querySelector("input").disabled = true;
+      vnpayOption.querySelector("small").textContent = "Máy chủ chưa cấu hình VNPay sandbox";
+    }
+  }).catch(function () {
+    // Không gọi được máy chủ -> để người dùng bấm xác nhận sẽ thấy lỗi cụ thể
+  });
 }
