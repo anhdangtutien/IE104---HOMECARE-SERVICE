@@ -47,7 +47,6 @@
   color: var(--text-light);
 }
 
-/* Danh sách thông tin dạng 2 cột: nhãn | nội dung */
 .info-list {
   display: grid;
   grid-template-columns: 150px 1fr;
@@ -112,7 +111,6 @@
   color: var(--text-light);
 }
 
-/* Khung hướng dẫn của phương thức đang chọn */
 .pay-detail {
   display: flex;
   align-items: center;
@@ -207,7 +205,6 @@
   margin-bottom: 8px;
 }
 
-/* Nút đang xử lý: mờ đi */
 #confirm-button:disabled {
   opacity: 0.7;
   cursor: wait;
@@ -343,7 +340,6 @@
    phần CSS bên dưới được viết với sự hỗ trợ của AI.
    ========================================================= */
 
-/* Phương thức chưa dùng được (VD: máy chủ chưa cấu hình VNPay) */
 .pay-option.disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -354,7 +350,6 @@
   text-align: center;
 }
 
-/* Bảng thẻ test VNPay */
 .test-card {
   margin-top: 8px;
   padding: 10px 12px;
@@ -369,7 +364,6 @@
   font-weight: 600;
 }
 
-/* Màn hình thanh toán thất bại: đổi vòng tròn xanh thành cam */
 .success-icon.failed {
   background-color: var(--accent);
   box-shadow: 0 0 0 10px var(--accent-light);
