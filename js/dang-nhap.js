@@ -46,6 +46,9 @@ for (const card of roleCards) {
   const radio = card.querySelector("input");
 
   radio.addEventListener("change", function () {
+    clearError("username-box", "username-error");
+    clearError("password-box", "password-error");
+
     // Bước 1: bỏ chọn tất cả
     for (const otherCard of roleCards) {
       otherCard.classList.remove("active");
@@ -183,7 +186,7 @@ loginForm.addEventListener("submit", async function (event) {
       verified: true
     });
 
-    // Đồng bộ vào hồ sơ cá nhân nếu là khách hàng
+    // Đồng bộ vào hồ sơ cá nhân theo đúng vai trò đang đăng nhập
     if (selectedRole === "khach-hang") {
       let accounts = [];
       try { accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || []; } catch (e) {}
@@ -198,6 +201,26 @@ loginForm.addEventListener("submit", async function (event) {
         gender: (acc ? acc.gender : "") || currentProf.gender || "",
         ward: currentProf.ward || "",
         street: (acc ? acc.street : "") || currentProf.street || ""
+      }));
+    } else if (selectedRole === "bac-si") {
+      let accounts = [];
+      try { accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || []; } catch (e) {}
+      const acc = accounts.find(function (a) { return a.phone === serverUser.phone; });
+      let currentDoc = {};
+      try { currentDoc = JSON.parse(localStorage.getItem("homecare_doctor_profile")) || {}; } catch (e) {}
+      const isNurse = acc && Array.isArray(acc.certificates) && acc.certificates.includes("dieu-duong");
+      const docFullName = serverUser.name || (acc ? acc.fullname : "") || currentDoc.fullname || "Bác sĩ HomeCare";
+      localStorage.setItem("homecare_doctor_profile", JSON.stringify({
+        fullname: docFullName,
+        name: (docFullName.startsWith("BS") || docFullName.startsWith("ThS") || isNurse ? "" : "BS. ") + docFullName,
+        phone: serverUser.phone,
+        email: (acc ? acc.email : "") || currentDoc.email || "",
+        specialty: (acc && acc.specialty) || currentDoc.specialty || (isNurse ? "Chăm sóc & Điều dưỡng tại nhà" : "Nội tổng quát & Đa khoa"),
+        workplace: currentDoc.workplace || "Bệnh viện Đa khoa HomeCare",
+        experience: currentDoc.experience || 5,
+        price: currentDoc.price || 300000,
+        treats: currentDoc.treats || "Khám, tư vấn và chăm sóc sức khỏe tại nhà",
+        area: (acc && acc.street) || currentDoc.area || "TP. Hồ Chí Minh"
       }));
     }
 
@@ -230,13 +253,6 @@ loginForm.addEventListener("submit", async function (event) {
     return;
   }
 
-  // Kiểm tra vai trò: tài khoản khách hàng không được đăng nhập phía bác sĩ và ngược lại
-  if (matched.role && matched.role !== selectedRole) {
-    const roleExpected = matched.role === "bac-si" ? "Bác sĩ" : "Khách hàng";
-    showError("username-box", "username-error", "Tài khoản này được đăng ký với vai trò " + roleExpected + ". Vui lòng chọn vai trò " + roleExpected + " ở trên để đăng nhập.");
-    return;
-  }
-
   if (matched.password !== password) {
     showError("password-box", "password-error", "Mật khẩu không chính xác");
     return;
@@ -251,7 +267,7 @@ loginForm.addEventListener("submit", async function (event) {
     verified: true
   });
 
-  // Đồng bộ vào hồ sơ cá nhân nếu là khách hàng
+  // Đồng bộ vào hồ sơ cá nhân theo đúng vai trò đang đăng nhập
   if (selectedRole === "khach-hang") {
     let currentProf = {};
     try { currentProf = JSON.parse(localStorage.getItem("homecare_profile")) || {}; } catch (e) {}
@@ -263,6 +279,23 @@ loginForm.addEventListener("submit", async function (event) {
       gender: matched.gender || currentProf.gender || "",
       ward: currentProf.ward || "",
       street: matched.street || currentProf.street || ""
+    }));
+  } else if (selectedRole === "bac-si") {
+    let currentDoc = {};
+    try { currentDoc = JSON.parse(localStorage.getItem("homecare_doctor_profile")) || {}; } catch (e) {}
+    const isNurse = Array.isArray(matched.certificates) && matched.certificates.includes("dieu-duong");
+    const docFullName = matched.fullname || currentDoc.fullname || "Minh Triết";
+    localStorage.setItem("homecare_doctor_profile", JSON.stringify({
+      fullname: docFullName,
+      name: (docFullName.startsWith("BS") || docFullName.startsWith("ThS") || isNurse ? "" : "BS. ") + docFullName,
+      phone: matched.phone || username,
+      email: matched.email || currentDoc.email || "",
+      specialty: matched.specialty || currentDoc.specialty || (isNurse ? "Chăm sóc & Điều dưỡng tại nhà" : "Nội tổng quát & Đa khoa"),
+      workplace: currentDoc.workplace || "Bệnh viện Đa khoa HomeCare",
+      experience: currentDoc.experience || 5,
+      price: currentDoc.price || 300000,
+      treats: currentDoc.treats || "Khám, tư vấn và chăm sóc sức khỏe tại nhà",
+      area: matched.street || currentDoc.area || "TP. Hồ Chí Minh"
     }));
   }
 

@@ -237,17 +237,27 @@ function renderSidebar() {
   let contact = "";
 
   if (isDoctor) {
+    let doctorProf = null;
+    try { doctorProf = JSON.parse(localStorage.getItem("homecare_doctor_profile")); } catch (e) {}
+
     let accounts = [];
     try { accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || []; } catch (e) {}
     const doctorAccount = accounts.find(function (a) {
       return (a.phone === currentUser.phone || a.phone === currentUser.username) && a.role === "bac-si";
+    }) || accounts.find(function (a) {
+      return a.phone === currentUser.phone || a.phone === currentUser.username;
     });
 
-    const customDoctorName = (doctorAccount && doctorAccount.fullname) || (currentUser.name && currentUser.name !== "ThS. Trần Ngọc C" ? currentUser.name : null);
+    const customDoctorName = (doctorProf && (doctorProf.name || doctorProf.fullname)) ||
+      (doctorAccount && doctorAccount.fullname) ||
+      (currentUser.name && currentUser.name !== "ThS. Trần Ngọc C" ? currentUser.name : null);
+
     if (customDoctorName) {
-      name = customDoctorName;
+      name = customDoctorName.startsWith("BS") || customDoctorName.startsWith("ThS") || customDoctorName.startsWith("ĐD")
+        ? customDoctorName
+        : "BS. " + customDoctorName;
       letter = getInitial(customDoctorName);
-      contact = (doctorAccount && doctorAccount.specialty) || "Bác sĩ HomeCare";
+      contact = (doctorProf && doctorProf.specialty) || (doctorAccount && doctorAccount.specialty) || "Bác sĩ HomeCare";
     } else {
       const doctor = findDoctor(DEMO_DOCTOR_ID);
       name = doctor.name;
@@ -610,12 +620,15 @@ const practiceForm = document.getElementById("practice-form");
 
 function fillPracticeForm() {
   const doctor = findDoctor(DEMO_DOCTOR_ID);
-  document.getElementById("practice-specialty").value = doctor.specialty;
-  document.getElementById("practice-workplace").value = doctor.workplace;
-  document.getElementById("practice-experience").value = doctor.experience;
-  document.getElementById("practice-price").value = doctor.price;
-  document.getElementById("practice-treats").value = doctor.treats;
-  document.getElementById("practice-bio").value = doctor.bio || "";
+  let doctorProf = null;
+  try { doctorProf = JSON.parse(localStorage.getItem("homecare_doctor_profile")); } catch (e) {}
+
+  document.getElementById("practice-specialty").value = (doctorProf && doctorProf.specialty) || doctor.specialty;
+  document.getElementById("practice-workplace").value = (doctorProf && doctorProf.workplace) || doctor.workplace;
+  document.getElementById("practice-experience").value = (doctorProf && doctorProf.experience) || doctor.experience;
+  document.getElementById("practice-price").value = (doctorProf && doctorProf.price) || doctor.price;
+  document.getElementById("practice-treats").value = (doctorProf && doctorProf.treats) || doctor.treats;
+  document.getElementById("practice-bio").value = (doctorProf && doctorProf.bio) || doctor.bio || "";
   document.getElementById("public-profile-link").href = "chi-tiet-bac-si.html?id=" + DEMO_DOCTOR_ID;
 }
 

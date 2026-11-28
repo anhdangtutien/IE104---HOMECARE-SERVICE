@@ -95,15 +95,6 @@ async function verifyOtp(req, res) {
 
   // Đúng mã: đánh dấu đã dùng, tạo tài khoản nếu là lần đầu (upsert theo số điện thoại)
   await db.update("otp_codes", { id: otp.id }, { used: true });
-
-  // Kiểm tra vai trò nếu tài khoản đã tồn tại
-  const existingUsers = await db.select("users", { phone: phone }, { limit: 1 });
-  const existingUser = existingUsers[0];
-  if (existingUser && existingUser.role && existingUser.role !== role) {
-    const roleVN = existingUser.role === "bac-si" ? "Bác sĩ" : "Khách hàng";
-    throw new HttpError(400, "Số điện thoại này đã đăng ký tài khoản " + roleVN + ". Vui lòng chọn vai trò " + roleVN + " để đăng nhập.");
-  }
-
   const user = await db.upsert("users", { phone: phone, role: role, last_login_at: new Date().toISOString() }, "phone");
 
   auth.setSessionCookie(req, res, auth.createSessionToken(user));
@@ -155,12 +146,6 @@ async function loginPassword(req, res) {
 
   if (user === undefined) {
     throw new HttpError(400, "Số điện thoại này chưa được đăng ký trong hệ thống");
-  }
-
-  // Kiểm tra vai trò đăng ký: tài khoản khách hàng không được đăng nhập phía bác sĩ và ngược lại
-  if (user.role && user.role !== role) {
-    const roleVN = user.role === "bac-si" ? "Bác sĩ" : "Khách hàng";
-    throw new HttpError(400, "Tài khoản này được đăng ký là " + roleVN + ". Vui lòng chọn vai trò " + roleVN + " để đăng nhập.");
   }
 
   if (!user.password_hash) {
