@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<!--
-  =========================================================
-  TRANG ĐẶT LỊCH KHÁM & CHỌN GÓI DỊCH VỤ - dat-lich.html
-  Người phụ trách: THÀNH VIÊN 2
-  File liên quan: css/trang-con.css, css/dat-lich.css,
-                  js/du-lieu.js, js/dat-lich.js
-  Link có dạng dat-lich.html?id=1  (có thể kèm &dv=...&ngay=...&gio=...)
-  =========================================================
--->
+
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt lịch khám tại nhà - HomeCare</title>
+  <meta name="description" content="Đặt lịch khám tại nhà trên HomeCare: chọn gói dịch vụ, ngày giờ còn trống và nhập thông tin người được khám.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -27,7 +25,7 @@
 
 <body data-page="dat-kham">
 
-  <!-- HEADER: được chèn tự động bởi js/layout.js -->
+  
   <div id="site-header"></div>
 
   <main class="page-gray">
@@ -41,22 +39,24 @@
         <span>Đặt lịch</span>
       </nav>
 
-      <!-- Thanh 3 bước -->
+      
+      <h1 class="sr-only">Đặt lịch khám tại nhà</h1>
+
       <ol class="steps">
         <li class="current"><span class="step-number">1</span><span>Chọn dịch vụ &amp; thời gian</span></li>
         <li><span class="step-number">2</span><span>Thanh toán</span></li>
         <li><span class="step-number">3</span><span>Hoàn tất</span></li>
       </ol>
 
-      <!-- Nếu id bác sĩ sai, JS thay khung này bằng thông báo lỗi -->
+      
       <div id="booking-area">
-        <!-- novalidate: tắt kiểm tra mặc định của trình duyệt, để JS tự kiểm tra và báo lỗi -->
+       
         <form class="booking-layout" id="booking-form" novalidate>
 
           <div class="booking-main">
 
             <!-- Bác sĩ đã chọn -->
-            <section class="card doctor-mini" id="doctor-mini"></section>
+            <div class="card doctor-mini" id="doctor-mini"></div>
 
             <!-- ===== BƯỚC 1: CHỌN GÓI ===== -->
             <section class="card">
@@ -78,6 +78,9 @@
             <section class="card">
               <h2 class="card-title"><span class="step-number">3</span> Thông tin người được khám</h2>
 
+            
+              <p class="account-note" id="account-note"></p>
+
               <div class="form-grid">
                 <div class="form-group">
                   <label for="patient-name" class="form-label">Họ và tên <span class="required">*</span></label>
@@ -85,9 +88,11 @@
                   <p class="error-text" id="patient-name-error"></p>
                 </div>
 
+                <!-- AI prompt: "Số điện thoại: không bắt buộc. Nếu nhập thì phải đúng 10 hoặc 11 số.
+                     Bỏ ô SĐT bắt buộc vì người dùng đã đăng nhập bằng số điện thoại" -->
                 <div class="form-group">
-                  <label for="patient-phone" class="form-label">Số điện thoại <span class="required">*</span></label>
-                  <input type="tel" id="patient-phone" class="form-control" placeholder="VD: 0901234567">
+                  <label for="patient-phone" class="form-label">SĐT liên hệ khác <span class="optional">(không bắt buộc)</span></label>
+                  <input type="tel" id="patient-phone" class="form-control" inputmode="numeric" maxlength="11" placeholder="Để trống nếu dùng SĐT đăng nhập">
                   <p class="error-text" id="patient-phone-error"></p>
                 </div>
 
@@ -102,7 +107,7 @@
                   </select>
                 </div>
 
-                <!-- Nhóm địa chỉ: tư vấn video thì JS ẩn đi (không cần đến nhà) -->
+                
                 <div class="form-group address-field">
                   <label for="patient-ward" class="form-label">Phường <span class="required">*</span></label>
                   <select id="patient-ward" class="form-control">
@@ -127,9 +132,43 @@
                   <p class="error-text" id="patient-address-error"></p>
                 </div>
 
+                <!-- AI prompt: "Triệu chứng: dạng danh sách xổ xuống có ô vuông để tích chọn,
+                     kèm mục 'Khác' (Other) để tự nhập" -->
                 <div class="form-group full">
-                  <label for="patient-note" class="form-label">Triệu chứng / ghi chú cho bác sĩ</label>
-                  <textarea id="patient-note" class="form-control" placeholder="VD: Sốt 2 ngày, ho nhiều về đêm..."></textarea>
+                  <span class="form-label" id="symptom-label">Triệu chứng <span class="optional">(chọn được nhiều)</span></span>
+                  
+                  <details class="symptom-select" id="symptom-select">
+                    <summary class="form-control" aria-labelledby="symptom-label">
+                      <span class="symptom-summary" id="symptom-summary">-- Chọn triệu chứng --</span>
+                      <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="symptom-options" id="symptom-options">
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Sốt"> Sốt</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Ho"> Ho</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Đau họng"> Đau họng</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Sổ mũi / nghẹt mũi"> Sổ mũi / nghẹt mũi</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Khó thở"> Khó thở</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Đau đầu"> Đau đầu</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Chóng mặt"> Chóng mặt</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Buồn nôn / nôn"> Buồn nôn / nôn</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Đau bụng"> Đau bụng</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Tiêu chảy"> Tiêu chảy</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Mệt mỏi"> Mệt mỏi</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Đau nhức xương khớp"> Đau nhức xương khớp</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Phát ban / ngứa"> Phát ban / ngứa</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Tăng huyết áp"> Tăng huyết áp</label>
+                      <label class="symptom-option"><input type="checkbox" name="symptom" value="Mất ngủ"> Mất ngủ</label>
+                      <label class="symptom-option symptom-option-other"><input type="checkbox" name="symptom" value="Khác"> Khác (tự nhập)</label>
+                    </div>
+                  </details>
+                  <!-- Chỉ hiện khi tích "Khác" -->
+                  <input type="text" id="symptom-other" class="form-control" maxlength="200" placeholder="Mô tả triệu chứng khác, VD: đau vai gáy, phù chân..." hidden>
+                  <p class="error-text" id="symptom-error"></p>
+                </div>
+
+                <div class="form-group full">
+                  <label for="patient-note" class="form-label">Ghi chú thêm cho bác sĩ</label>
+                  <textarea id="patient-note" class="form-control" placeholder="VD: Sốt 2 ngày, ho nhiều về đêm, đang dùng thuốc hạ sốt..."></textarea>
                 </div>
               </div>
             </section>
@@ -166,11 +205,12 @@
     </div>
   </main>
 
-  <!-- FOOTER: được chèn tự động bởi js/layout.js -->
+ 
   <div id="site-footer"></div>
 
   <script src="js/layout.js"></script>
   <script src="js/du-lieu.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/dat-lich.js"></script>
 </body>
 </html>
