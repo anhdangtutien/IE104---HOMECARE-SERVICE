@@ -44,6 +44,7 @@ const agreeCheckbox = document.getElementById("agree-checkbox");
 const agreeError = document.getElementById("agree-error");
 const confirmButton = document.getElementById("confirm-button");
 const submitError = document.getElementById("submit-error");
+const retryButton = document.getElementById("retry-payment");
 
 
 /* ---------- 3. CÁC HÀM TÍNH TOÁN ---------- */
@@ -324,18 +325,18 @@ paymentForm.addEventListener("submit", async function (event) {
     try {
       await goToVnpay(booking.code);
     } catch (error) {
-      setConfirmLoading(false);
-      submitError.textContent = error.message;
+      showResult(booking, error.message);
     }
     return;
   }
 
-  showResult(booking);
+  showResult(booking, null);
 });
 
 
-/* ---------- 9. MÀN HÌNH THÀNH CÔNG ---------- */
-function showResult(booking) {
+/* ---------- 9. MÀN HÌNH KẾT QUẢ ----------
+   failMessage = null -> đặt lịch thành công; có chữ -> thanh toán VNPay chưa thành công */
+function showResult(booking, failMessage) {
   document.getElementById("payment-area").hidden = true;
   document.getElementById("success-view").hidden = false;
 
@@ -344,6 +345,23 @@ function showResult(booking) {
   stepItems[1].className = "done";
   stepItems[1].querySelector(".step-number").innerHTML = `<i class="fa-solid fa-check"></i>`;
   stepItems[2].className = "current";
+
+  if (failMessage !== null) {
+    document.getElementById("success-icon").classList.add("failed");
+    document.getElementById("success-icon").innerHTML = `<i class="fa-solid fa-exclamation"></i>`;
+    document.getElementById("success-title").textContent = "Lịch hẹn đã được lưu, chưa thanh toán";
+    document.getElementById("success-sub").textContent = failMessage;
+    retryButton.hidden = false;
+    retryButton.onclick = async function () {
+      retryButton.disabled = true;
+      try {
+        await goToVnpay(booking.code);
+      } catch (error) {
+        retryButton.disabled = false;
+        document.getElementById("success-sub").textContent = error.message;
+      }
+    };
+  }
 
   let paymentText = formatMoney(booking.total) + " – " + booking.paymentName;
   if (booking.paymentMethod === "vnpay") {
