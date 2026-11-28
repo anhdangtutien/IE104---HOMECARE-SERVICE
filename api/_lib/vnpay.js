@@ -21,7 +21,7 @@ const crypto = require("crypto");
 
 const TMN_CODE = process.env.VNP_TMN_CODE || "";
 const HASH_SECRET = process.env.VNP_HASH_SECRET || "";
-const PAY_URL = process.env.VNP_URL || "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+const PAY_URL = process.env.VNP_URL || "https://sandbox.vnpaytest.vn/paymentv2/vpcpay.html";
 
 function isConfigured() {
   return TMN_CODE !== "" && HASH_SECRET !== "";
