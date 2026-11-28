@@ -377,6 +377,10 @@ registerForm.addEventListener("submit", async function (event) {
     accounts = [];
   }
 
+  const certBoxes = document.querySelectorAll('input[name="certificate"]:checked');
+  const certificates = Array.from(certBoxes).map(function (c) { return c.value; });
+  const isNurse = certificates.includes("dieu-duong");
+
   const newAccount = {
     fullname: fullname,
     email: email,
@@ -386,6 +390,8 @@ registerForm.addEventListener("submit", async function (event) {
     gender: gender,
     street: city,
     role: role,
+    certificates: certificates,
+    specialty: isNurse ? "Chăm sóc & Điều dưỡng tại nhà" : "Nội tổng quát & Đa khoa",
     registeredAt: new Date().toISOString()
   };
 
@@ -411,6 +417,19 @@ registerForm.addEventListener("submit", async function (event) {
         gender: gender,
         ward: "",
         street: city
+      }));
+    } else if (role === "bac-si") {
+      localStorage.setItem("homecare_doctor_profile", JSON.stringify({
+        fullname: fullname,
+        name: (fullname.startsWith("BS") || fullname.startsWith("ThS") || isNurse ? "" : "BS. ") + fullname,
+        phone: phone,
+        email: email,
+        specialty: newAccount.specialty,
+        workplace: "Bệnh viện Đa khoa HomeCare",
+        experience: 5,
+        price: 300000,
+        treats: "Khám, tư vấn và chăm sóc sức khỏe tại nhà",
+        area: city || "TP. Hồ Chí Minh"
       }));
     }
   } catch (e) {

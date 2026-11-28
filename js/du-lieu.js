@@ -137,6 +137,71 @@ function formatMoney(amount) {
   return amount.toLocaleString("vi-VN") + "đ";
 }
 
+// Tự động nạp thêm bác sĩ / điều dưỡng vừa đăng ký tài khoản từ hệ thống
+function loadRegisteredDoctorsToData() {
+  let accounts = [];
+  try {
+    accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
+  } catch (e) {
+    accounts = [];
+  }
+
+  let currentUser = null;
+  try { currentUser = JSON.parse(localStorage.getItem("homecare_user")); } catch (e) {}
+  if (currentUser && currentUser.role === "bac-si" && currentUser.name) {
+    const existsInAccounts = accounts.some(function (acc) {
+      return (acc.phone && acc.phone === currentUser.phone) || acc.fullname === currentUser.name;
+    });
+    if (!existsInAccounts) {
+      accounts.push({
+        fullname: currentUser.name,
+        phone: currentUser.phone || "",
+        role: "bac-si",
+        specialty: "Nội tổng quát & Đa khoa",
+        street: "TP. Hồ Chí Minh"
+      });
+    }
+  }
+
+  let doctorProf = null;
+  try { doctorProf = JSON.parse(localStorage.getItem("homecare_doctor_profile")); } catch (e) {}
+
+  const doctorAccounts = accounts.filter(function (acc) {
+    return acc.role === "bac-si";
+  });
+
+  doctorAccounts.forEach(function (acc, index) {
+    const alreadyExists = doctorData.some(function (d) {
+      return (acc.phone && d.phone === acc.phone) || d.name.toLowerCase().includes(acc.fullname.toLowerCase());
+    });
+    if (!alreadyExists && acc.fullname) {
+      const isNurse = Array.isArray(acc.certificates) && acc.certificates.includes("dieu-duong");
+      const title = isNurse ? "ĐD. " : (acc.fullname.startsWith("BS") || acc.fullname.startsWith("ThS") ? "" : "BS. ");
+      const initial = acc.fullname.trim().split(" ").slice(-1)[0].charAt(0).toUpperCase();
+
+      doctorData.push({
+        id: 100 + index,
+        name: title + acc.fullname,
+        letter: initial,
+        type: isNurse ? "dieu-duong" : "bac-si",
+        specialty: (doctorProf && doctorProf.phone === acc.phone && doctorProf.specialty) || acc.specialty || (isNurse ? "Chăm sóc & Điều dưỡng tại nhà" : "Nội tổng quát & Đa khoa"),
+        rating: 5.0,
+        visits: 0,
+        experience: 5,
+        workplace: "Phòng khám Đa khoa HomeCare",
+        treats: (doctorProf && doctorProf.phone === acc.phone && doctorProf.treats) || acc.treats || "Khám, tư vấn và chăm sóc sức khỏe tại nhà",
+        workDays: [1, 2, 3, 4, 5, 6],
+        startTime: "08:00",
+        endTime: "17:00",
+        price: (doctorProf && doctorProf.phone === acc.phone && doctorProf.price) || 300000,
+        area: (doctorProf && doctorProf.phone === acc.phone && doctorProf.area) || acc.street || "TP. Hồ Chí Minh",
+        phone: acc.phone
+      });
+    }
+  });
+}
+loadRegisteredDoctorsToData();
+
 // Tìm bác sĩ theo id. id lấy từ link (?id=3) là chuỗi "3" -> đổi sang số
 function findDoctor(id) {
   const idNumber = Number(id);
