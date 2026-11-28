@@ -237,10 +237,23 @@ function renderSidebar() {
   let contact = "";
 
   if (isDoctor) {
-    const doctor = findDoctor(DEMO_DOCTOR_ID);
-    name = doctor.name;
-    letter = doctor.letter;
-    contact = doctor.specialty;
+    let accounts = [];
+    try { accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || []; } catch (e) {}
+    const doctorAccount = accounts.find(function (a) {
+      return (a.phone === currentUser.phone || a.phone === currentUser.username) && a.role === "bac-si";
+    });
+
+    const customDoctorName = (doctorAccount && doctorAccount.fullname) || (currentUser.name && currentUser.name !== "ThS. Trần Ngọc C" ? currentUser.name : null);
+    if (customDoctorName) {
+      name = customDoctorName;
+      letter = getInitial(customDoctorName);
+      contact = (doctorAccount && doctorAccount.specialty) || "Bác sĩ HomeCare";
+    } else {
+      const doctor = findDoctor(DEMO_DOCTOR_ID);
+      name = doctor.name;
+      letter = doctor.letter;
+      contact = doctor.specialty;
+    }
   } else {
     const profile = getProfile();
     name = profile.name;

@@ -230,6 +230,13 @@ loginForm.addEventListener("submit", async function (event) {
     return;
   }
 
+  // Kiểm tra vai trò: tài khoản khách hàng không được đăng nhập phía bác sĩ và ngược lại
+  if (matched.role && matched.role !== selectedRole) {
+    const roleExpected = matched.role === "bac-si" ? "Bác sĩ" : "Khách hàng";
+    showError("username-box", "username-error", "Tài khoản này được đăng ký với vai trò " + roleExpected + ". Vui lòng chọn vai trò " + roleExpected + " ở trên để đăng nhập.");
+    return;
+  }
+
   if (matched.password !== password) {
     showError("password-box", "password-error", "Mật khẩu không chính xác");
     return;
