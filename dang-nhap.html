@@ -3,7 +3,7 @@
   =========================================================
   TRANG ĐĂNG NHẬP - dang-nhap.html
   Người phụ trách: THÀNH VIÊN 3
-  File liên quan: css/dang-nhap.css, js/dang-nhap.js
+  File liên quan: css/dang-nhap.css, js/dang-nhap.js, js/api.js
   (Trang này KHÔNG có header/footer theo thiết kế)
   =========================================================
 -->
@@ -12,7 +12,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đăng nhập - HomeCare</title>
+  <meta name="description" content="Đăng nhập tài khoản HomeCare dành cho khách hàng và bác sĩ để đặt lịch, quản lý lịch hẹn và hồ sơ sức khỏe.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 
+  <!-- Kết nối sớm tới máy chủ font / icon để tải nhanh hơn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -56,27 +62,80 @@
       <h2>Đăng nhập vào hệ thống</h2>
       <p class="login-subtitle">Chọn vai trò của bạn để tiếp tục</p>
 
-      <!-- novalidate: tắt kiểm tra mặc định của trình duyệt, để JS tự kiểm tra -->
-      <form id="login-form" novalidate>
+      <!-- Lý do phải đăng nhập (VD: bấm "Đặt lịch" khi chưa đăng nhập). JS điền chữ -->
+      <p class="login-notice" id="login-notice" hidden></p>
 
-        <!-- --- Chọn vai trò --- -->
-        <div class="role-list">
-          <label class="role-card active">
-            <input type="radio" name="role" value="khach-hang" checked>
-            <span class="role-icon">👱</span>
-            <strong>Khách Hàng</strong>
-            <small>Đặt dịch vụ chăm sóc tại nhà</small>
-          </label>
+      <!-- Chọn vai trò (dùng chung cho cả 2 cách đăng nhập) -->
+      <div class="role-list">
+        <label class="role-card active">
+          <input type="radio" name="role" value="khach-hang" checked>
+          <span class="role-icon">👱</span>
+          <strong>Khách Hàng</strong>
+          <small>Đặt dịch vụ chăm sóc tại nhà</small>
+        </label>
 
-          <label class="role-card">
-            <input type="radio" name="role" value="bac-si">
-            <span class="role-icon role-icon-blue">👨‍⚕️</span>
-            <strong>Bác Sĩ</strong>
-            <small>Cung cấp dịch vụ y tế tại nhà</small>
-          </label>
+        <label class="role-card">
+          <input type="radio" name="role" value="bac-si">
+          <span class="role-icon role-icon-blue">👨‍⚕️</span>
+          <strong>Bác Sĩ</strong>
+          <small>Cung cấp dịch vụ y tế tại nhà</small>
+        </label>
+      </div>
+
+      <!-- AI prompt: "Có thể đăng nhập bằng số điện thoại kèm mã OTP" – 2 tab chọn cách
+           đăng nhập và form OTP bên dưới được viết với sự hỗ trợ của AI. -->
+      <div class="method-tabs" role="tablist" aria-label="Cách đăng nhập">
+        <button type="button" class="method-tab active" role="tab" aria-selected="true" data-method="otp">
+          <i class="fa-solid fa-mobile-screen-button"></i> Số điện thoại + OTP
+        </button>
+        <button type="button" class="method-tab" role="tab" aria-selected="false" data-method="password">
+          <i class="fa-solid fa-lock"></i> Mật khẩu
+        </button>
+      </div>
+
+      <!-- ===== CÁCH 1: SỐ ĐIỆN THOẠI + MÃ OTP ===== -->
+      <form id="otp-form" novalidate>
+        <div class="form-group">
+          <label for="otp-phone" class="form-label">Số điện thoại</label>
+          <div class="input-box" id="otp-phone-box">
+            <i class="fa-solid fa-phone"></i>
+            <!-- inputmode="numeric": điện thoại hiện bàn phím số -->
+            <input type="tel" id="otp-phone" inputmode="numeric" maxlength="11" autocomplete="tel" placeholder="Nhập số điện thoại (10 hoặc 11 số)">
+            <button type="button" class="change-phone" id="change-phone" hidden>Đổi số</button>
+          </div>
+          <p class="error-text" id="otp-phone-error"></p>
         </div>
 
-        <!-- --- Tên đăng nhập --- -->
+        <!-- Ô nhập mã: chỉ hiện sau khi đã gửi mã -->
+        <div class="form-group" id="otp-code-group" hidden>
+          <label for="otp-code" class="form-label">Mã OTP</label>
+          <div class="input-box" id="otp-code-box">
+            <i class="fa-solid fa-key"></i>
+            <!-- autocomplete="one-time-code": điện thoại tự gợi ý mã từ tin nhắn -->
+            <input type="text" id="otp-code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="Nhập mã 6 chữ số">
+            <button type="button" class="resend-otp" id="resend-otp" disabled>Gửi lại</button>
+          </div>
+          <p class="error-text" id="otp-code-error"></p>
+          <p class="otp-info" id="otp-info"></p>
+        </div>
+
+        <!-- Chế độ demo: chưa gửi SMS thật nên hiện mã ngay tại đây -->
+        <div class="otp-demo" id="otp-demo" hidden>
+          <i class="fa-solid fa-flask"></i>
+          <span>
+            <strong>Chế độ demo</strong> – chưa gửi SMS thật.
+            Mã OTP của bạn là <strong class="otp-demo-code" id="otp-demo-code"></strong>
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-login" id="otp-submit">Gửi mã OTP</button>
+      </form>
+
+      <!-- ===== CÁCH 2: TÊN ĐĂNG NHẬP + MẬT KHẨU ===== -->
+      <!-- novalidate: tắt kiểm tra mặc định của trình duyệt, để JS tự kiểm tra -->
+      <form id="login-form" novalidate hidden>
+
+        <!-- Tên đăng nhập -->
         <div class="form-group">
           <label for="username" class="form-label">Số điện thoại / Tên đăng nhập</label>
           <div class="input-box" id="username-box">
@@ -86,7 +145,7 @@
           <p class="error-text" id="username-error"></p>
         </div>
 
-        <!-- --- Mật khẩu --- -->
+        <!-- Mật khẩu -->
         <div class="form-group">
           <label for="password" class="form-label">Mật khẩu</label>
           <div class="input-box" id="password-box">
@@ -101,12 +160,15 @@
           <p class="error-text" id="password-error"></p>
         </div>
 
-        <a href="#" class="otp-link coming-soon">Đăng nhập bằng tin nhắn OTP</a>
+        <p class="password-note">
+          <i class="fa-solid fa-circle-info"></i>
+          Muốn đặt lịch khám, vui lòng đăng nhập bằng <strong>số điện thoại + OTP</strong>.
+        </p>
 
         <button type="submit" class="btn btn-primary btn-block btn-login">Đăng nhập</button>
       </form>
 
-      <!-- --- Đăng nhập bằng mạng xã hội --- -->
+      <!-- Đăng nhập bằng mạng xã hội -->
       <div class="divider"><span>Hoặc đăng nhập với</span></div>
 
       <div class="social-list">
@@ -129,6 +191,7 @@
 
   </main>
 
+  <script src="js/api.js"></script>
   <script src="js/dang-nhap.js"></script>
 </body>
 </html>
