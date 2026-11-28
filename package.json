@@ -1,0 +1,13 @@
+{
+  "name": "homecare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HomeCare - website đặt lịch chăm sóc sức khỏe tại nhà (IE104, Nhóm 13)",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  }
+}
