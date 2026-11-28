@@ -1,8 +1,3 @@
-/* =========================================================
-   DAT-LICH.CSS - GIAO DIỆN TRANG ĐẶT LỊCH & CHỌN GÓI DỊCH VỤ
-   Người phụ trách: THÀNH VIÊN 2
-   Khung tóm tắt (.booking-summary, .summary-...) dùng chung với trang thanh toán
-   ========================================================= */
 
 
 .booking-breadcrumb {
@@ -14,14 +9,14 @@
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 24px;
-  align-items: start;          /* cột phải không bị kéo dài bằng cột trái */
+  align-items: start;          
 }
 
 .booking-main {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-width: 0;   /* cho cột được co hẹp hơn nội dung (hàng 7 ngày sẽ cuộn ngang thay vì làm tràn trang) */
+  min-width: 0;   
 }
 
 
@@ -60,7 +55,7 @@
   gap: 14px;
 }
 
-/* Cả thẻ là 1 <label> -> bấm chỗ nào trên thẻ cũng chọn được radio */
+
 .service-option {
   display: flex;
   gap: 12px;
@@ -75,7 +70,7 @@
   border-color: var(--primary);
 }
 
-/* :has(input:checked) = thẻ nào CHỨA radio đang được chọn -> tô xanh */
+
 .service-option:has(input:checked) {
   border-color: var(--primary);
   background-color: var(--primary-light);
@@ -83,7 +78,7 @@
 
 .service-option input {
   margin-top: 4px;
-  accent-color: var(--primary);   /* đổi màu radio mặc định sang xanh */
+  accent-color: var(--primary);   
 }
 
 .service-option strong {
@@ -142,7 +137,7 @@
   color: var(--white);
 }
 
-/* Ngày bác sĩ nghỉ: mờ đi, không bấm được */
+
 .date-option:disabled {
   background-color: var(--bg-light);
   cursor: not-allowed;
@@ -157,7 +152,7 @@
 
 .slot-options {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));  /* tự tính số cột vừa khung */
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));  
   gap: 10px;
 }
 
@@ -200,7 +195,7 @@
 /* =============== 5. KHUNG TÓM TẮT (dùng chung với trang thanh toán) =============== */
 .booking-summary {
   position: sticky;
-  top: 96px;                   /* dính lại dưới header khi cuộn */
+  top: 96px;                  
 }
 
 .summary-list div,
@@ -233,8 +228,7 @@
   font-weight: 600;
 }
 
-/* Dòng tổng tiền. Viết .summary-money .summary-total (2 class) để
-   độ ưu tiên cao hơn .summary-money div ở trên, không cần !important */
+
 .summary-money .summary-total {
   margin-top: 6px;
   padding-top: 14px;
@@ -282,7 +276,7 @@
     grid-template-columns: 1fr;
   }
 
-  /* 7 ngày không đủ chỗ trên 1 hàng -> cho vuốt ngang */
+  
   .date-options {
     grid-template-columns: repeat(7, 76px);
     overflow-x: auto;
@@ -291,5 +285,154 @@
 
   .doctor-mini {
     flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   AI prompt: "Triệu chứng dạng danh sách xổ xuống có ô vuông để tích chọn,
+   kèm mục Khác; bỏ ô SĐT bắt buộc vì đã đăng nhập bằng SĐT" –
+   phần CSS bên dưới được viết với sự hỗ trợ của AI.
+   ========================================================= */
+
+
+.form-label .optional {
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+
+.account-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background-color: var(--primary-light);
+  font-size: 14px;
+  color: var(--primary-dark);
+}
+
+.account-note i {
+  margin-top: 3px;
+  color: var(--primary);
+}
+
+.account-note:empty {
+  display: none;
+}
+
+
+.symptom-select {
+  position: relative;          
+}
+
+.symptom-select summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;            
+}
+
+.symptom-select summary::-webkit-details-marker {
+  display: none;               /* Safari */
+}
+
+.symptom-select summary i {
+  font-size: 13px;
+  color: var(--text-light);
+  transition: transform 0.2s;
+}
+
+.symptom-select[open] summary {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.symptom-select[open] summary i {
+  transform: rotate(180deg);
+}
+
+.symptom-summary {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;     
+  color: var(--text-light);
+}
+
+.symptom-summary.has-value {
+  color: var(--text);
+}
+
+
+.symptom-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 30px rgba(13, 60, 45, 0.14);
+}
+
+.symptom-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.symptom-option:hover {
+  background-color: var(--bg-light);
+}
+
+.symptom-option input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+
+
+.symptom-option:has(input:checked) {
+  background-color: var(--primary-light);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+
+.symptom-option-other {
+  grid-column: 1 / -1;
+  border-top: 1px dashed var(--border);
+  border-radius: 0 0 8px 8px;
+}
+
+#symptom-other {
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .symptom-options {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .symptom-options {
+    grid-template-columns: 1fr;
   }
 }
