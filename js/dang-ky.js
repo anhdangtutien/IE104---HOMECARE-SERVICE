@@ -396,7 +396,7 @@ registerForm.addEventListener("submit", async function (event) {
   };
 
   const existingIndex = accounts.findIndex(function (acc) {
-    return acc.phone === phone || (acc.email && acc.email.toLowerCase() === email.toLowerCase());
+    return (acc.phone === phone || (acc.email && acc.email.toLowerCase() === email.toLowerCase())) && acc.role === role;
   });
 
   if (existingIndex !== -1) {

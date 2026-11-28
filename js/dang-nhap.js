@@ -242,14 +242,27 @@ loginForm.addEventListener("submit", async function (event) {
     { phone: "0901234567", email: "bacsi@gmail.com", fullname: "ThS.BS Trần Ngọc C", password: "password123", role: "bac-si" }
   ];
 
-  const matched = accounts.find(function (acc) {
+  // 1. Tìm tất cả tài khoản trùng số điện thoại hoặc email
+  const allMatched = accounts.filter(function (acc) {
     return acc.phone === username || (acc.email && acc.email.toLowerCase() === username.toLowerCase());
-  }) || defaultAccounts.find(function (acc) {
+  }).concat(defaultAccounts.filter(function (acc) {
     return acc.phone === username || (acc.email && acc.email.toLowerCase() === username.toLowerCase());
+  }));
+
+  if (allMatched.length === 0) {
+    showError("username-box", "username-error", "Tài khoản (SĐT/Email) chưa được đăng ký trong hệ thống");
+    return;
+  }
+
+  // 2. Tìm tài khoản có vai trò khớp với vai trò đang chọn để đăng nhập
+  const matched = allMatched.find(function (acc) {
+    return acc.role === selectedRole;
   });
 
   if (!matched) {
-    showError("username-box", "username-error", "Tài khoản (SĐT/Email) chưa được đăng ký trong hệ thống");
+    const registeredRoleVN = allMatched[0].role === "bac-si" ? "Bác sĩ" : "Khách hàng";
+    const selectedRoleVN = selectedRole === "bac-si" ? "Bác sĩ" : "Khách hàng";
+    showError("username-box", "username-error", "Số điện thoại này chỉ mới đăng ký tài khoản " + registeredRoleVN + ", chưa đăng ký tài khoản " + selectedRoleVN + ".");
     return;
   }
 

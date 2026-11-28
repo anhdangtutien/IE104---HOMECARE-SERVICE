@@ -148,6 +148,13 @@ async function loginPassword(req, res) {
     throw new HttpError(400, "Số điện thoại này chưa được đăng ký trong hệ thống");
   }
 
+  // Kiểm tra vai trò: chỉ cho phép đăng nhập nếu tài khoản đã đăng ký vai trò tương ứng
+  if (user.role && user.role !== role && user.role !== "ca-hai") {
+    const registeredVN = user.role === "bac-si" ? "Bác sĩ" : "Khách hàng";
+    const selectedVN = role === "bac-si" ? "Bác sĩ" : "Khách hàng";
+    throw new HttpError(400, "Số điện thoại này chỉ mới đăng ký tài khoản " + registeredVN + ", chưa đăng ký tài khoản " + selectedVN + ".");
+  }
+
   if (!user.password_hash) {
     throw new HttpError(400, "Tài khoản chưa cài đặt mật khẩu. Vui lòng đăng nhập bằng mã OTP.");
   }
