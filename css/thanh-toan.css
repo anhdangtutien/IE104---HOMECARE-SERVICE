@@ -353,3 +353,18 @@
   margin-top: 10px;
   text-align: center;
 }
+
+/* Bảng thẻ test VNPay */
+.test-card {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  background-color: var(--accent-light);
+  font-size: 13px;
+}
+
+.test-card code {
+  font-family: Consolas, monospace;
+  font-weight: 600;
+}
