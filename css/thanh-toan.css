@@ -336,3 +336,15 @@
     padding: 32px 20px;
   }
 }
+
+
+/* =========================================================
+   AI prompt: "Tích hợp cổng thanh toán ở chế độ test (sandbox)" –
+   phần CSS bên dưới được viết với sự hỗ trợ của AI.
+   ========================================================= */
+
+/* Phương thức chưa dùng được (VD: máy chủ chưa cấu hình VNPay) */
+.pay-option.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
