@@ -13,7 +13,8 @@
    4. Form: ô nhập, nhãn, báo lỗi
    5. Thanh các bước (đặt lịch -> thanh toán -> hoàn tất)
    6. Khung thông báo trống / lỗi
-   7. Responsive
+   7. Chữ ẩn cho trình đọc màn hình (.sr-only)
+   8. Responsive
    ========================================================= */
 
 
@@ -317,7 +318,23 @@ textarea.form-control {
 }
 
 
-/* =============== 7. RESPONSIVE =============== */
+/* =============== 7. CHỮ ẨN CHO TRÌNH ĐỌC MÀN HÌNH ===============
+   .sr-only: ẩn khỏi màn hình nhưng vẫn nằm trong HTML, nên trình đọc màn hình
+   (cho người khiếm thị) và Google vẫn đọc được. Dùng cho tiêu đề trang không cần hiện. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* =============== 8. RESPONSIVE =============== */
 @media (max-width: 768px) {
   .page-hero h1 {
     font-size: 28px;
