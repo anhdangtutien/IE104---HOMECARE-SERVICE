@@ -27,10 +27,9 @@ if (pendingBooking !== null) {
   }
 }
 
-// Kết quả VNPay trả về (khi quay lại từ cổng thanh toán)
 const pageParams = new URLSearchParams(window.location.search);
-const returnCode = pageParams.get("ma");            // VD: HC204517
-const returnResult = pageParams.get("ket-qua");     // thanh-cong | that-bai | loi
+const returnCode = pageParams.get("ma");
+const returnResult = pageParams.get("ket-qua");
 
 const PAYMENT_NAMES = {
   cash: "Tiền mặt khi khám xong",
@@ -39,7 +38,6 @@ const PAYMENT_NAMES = {
   vnpay: "VNPay (sandbox)"
 };
 
-// Mã giảm giá đang áp dụng (null = chưa có)
 let appliedPromo = null;
 
 
@@ -58,14 +56,12 @@ const retryButton = document.getElementById("retry-payment");
 
 /* ---------- 3. CÁC HÀM TÍNH TOÁN ---------- */
 
-// Phương thức đang chọn: tìm radio name="payment" đang được tích
 function getPaymentMethod() {
   return document.querySelector('input[name="payment"]:checked').value;
 }
 
-// Địa chỉ đầy đủ (tư vấn video thì không có địa chỉ)
 function getFullAddress(booking) {
-  if (!booking.street) {         // chuỗi rỗng hoặc không có -> là tư vấn video
+  if (!booking.street) {
     return "Tư vấn qua video (link gửi qua SMS)";
   }
   return booking.street + ", " + booking.ward + ", TP. Thủ Đức";
@@ -78,13 +74,11 @@ function calculateMoney() {
   let discount = 0;
 
   if (appliedPromo === "HOMECARE10") {
-    // Giảm 10% phí dịch vụ, tối đa 50.000đ. Math.min lấy số nhỏ hơn
     discount = Math.min(Math.round(pendingBooking.servicePrice * 0.1), 50000);
   } else if (appliedPromo === "GIAM50K") {
     discount = 50000;
   }
 
-  // Ví MoMo giảm thêm 5%, tối đa 20.000đ
   if (getPaymentMethod() === "momo") {
     discount += Math.min(Math.round(pendingBooking.servicePrice * 0.05), 20000);
   }
@@ -96,7 +90,6 @@ function calculateMoney() {
   };
 }
 
-// Danh sách triệu chứng để hiển thị: ["Sốt", "Khác"] + "đau vai" -> "Sốt, đau vai"
 function getSymptomText(symptoms, otherText) {
   const list = (symptoms || []).filter(function (item) { return item !== "Khác"; });
   if (otherText) {
@@ -238,7 +231,6 @@ promoButton.addEventListener("click", function () {
   renderPayDetail();
 });
 
-// Nhấn Enter trong ô mã giảm giá -> áp dụng mã (không gửi cả form)
 promoInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -265,14 +257,12 @@ function setConfirmLoading(isLoading, text) {
     : `<i class="fa-solid fa-lock"></i> Xác nhận đặt lịch`;
 }
 
-// Lưu thêm 1 bản vào localStorage để trang hồ sơ hiện ngay cả khi mất mạng
 function saveLocalCopy(booking) {
   const appointments = getAppointments().filter(function (item) { return item.code !== booking.code; });
   appointments.unshift(bookingToAppointment(booking));
   saveAppointments(appointments);
 }
 
-// Gọi máy chủ tạo link VNPay rồi chuyển trang
 async function goToVnpay(code) {
   const result = await callApi("/api/payment", { method: "POST", body: { code: code } });
   window.location.href = result.url;
@@ -324,7 +314,6 @@ paymentForm.addEventListener("submit", async function (event) {
     return;
   }
 
-  // 8.2. Đã lưu xong -> xóa đơn tạm, lưu bản sao cho trang hồ sơ
   removeStorage("homecare_pending");
   saveLocalCopy(booking);
 
@@ -349,7 +338,6 @@ function showResult(booking, failMessage) {
   document.getElementById("payment-area").hidden = true;
   document.getElementById("success-view").hidden = false;
 
-  // Thanh các bước: bước 2 xong, bước 3 đang ở
   const stepItems = document.querySelectorAll("#steps li");
   stepItems[1].className = "done";
   stepItems[1].querySelector(".step-number").innerHTML = `<i class="fa-solid fa-check"></i>`;
@@ -445,7 +433,6 @@ if (returnCode !== null) {
       <a href="ho-so.html#lich-hen" class="btn btn-primary">Xem lịch hẹn của tôi</a>
     </div>`;
 } else if (pendingBooking === null || payDoctor === null || payService === null) {
-  // Vào thẳng trang này mà chưa chọn lịch -> báo và dẫn về trang đặt khám
   document.getElementById("payment-area").innerHTML = `
     <div class="empty-box">
       <i class="fa-regular fa-calendar-xmark"></i>
@@ -467,6 +454,5 @@ if (returnCode !== null) {
       vnpayOption.querySelector("small").textContent = "Máy chủ chưa cấu hình VNPay sandbox";
     }
   }).catch(function () {
-    // Không gọi được máy chủ -> để người dùng bấm xác nhận sẽ thấy lỗi cụ thể
   });
 }
