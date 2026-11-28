@@ -368,3 +368,13 @@
   font-family: Consolas, monospace;
   font-weight: 600;
 }
+
+/* Màn hình thanh toán thất bại: đổi vòng tròn xanh thành cam */
+.success-icon.failed {
+  background-color: var(--accent);
+  box-shadow: 0 0 0 10px var(--accent-light);
+}
+
+.success-actions [hidden] {
+  display: none;
+}
