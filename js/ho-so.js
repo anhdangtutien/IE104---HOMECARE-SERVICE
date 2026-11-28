@@ -1,7 +1,7 @@
 /* =========================================================
    HO-SO.JS - TRANG HỒ SƠ TÀI KHOẢN & QUẢN LÝ LỊCH HẸN
    Người phụ trách: THÀNH VIÊN 2
-   Cần nạp js/du-lieu.js trước file này.
+   Cần nạp js/du-lieu.js và js/api.js trước file này.
 
    Chức năng:
    1. Đọc tài khoản đăng nhập (js/dang-nhap.js lưu) -> biết là khách hàng hay bác sĩ
@@ -10,6 +10,8 @@
    4. Bác sĩ: xác nhận / từ chối / hoàn thành lịch hẹn,
               sửa hồ sơ hành nghề, chọn ngày làm việc trong tuần
    5. Đăng xuất
+   6. Tài khoản đăng nhập bằng OTP: tải lịch hẹn từ database (api/bookings.js),
+      hủy / xác nhận lịch thì cập nhật lên database
    ========================================================= */
 
 
@@ -88,6 +90,12 @@ function matchFilter(status, filter) {
 
 // Đổi trạng thái 1 lịch hẹn theo mã, rồi lưu lại vào đúng danh sách chứa nó
 function changeStatus(code, newStatus) {
+  // Lịch lưu trên database -> cập nhật lên máy chủ (hàm ở mục 16)
+  if (isServerAppointment(code)) {
+    changeServerStatus(code, newStatus);
+    return;
+  }
+
   const storageKeys = ["homecare_appointments", "homecare_doctor_appointments"];
 
   for (const key of storageKeys) {
@@ -136,7 +144,7 @@ function getProfile() {
   }
 
   const username = currentUser.username;
-  const isPhone = /^0\d{9}$/.test(username);
+  const isPhone = /^\d{10,11}$/.test(username);
   return {
     name: isPhone ? "Khách hàng HomeCare" : username,
     phone: isPhone ? username : "",
@@ -174,11 +182,13 @@ function getDoctorSamples() {
 }
 
 // Toàn bộ lịch của bác sĩ = dữ liệu mẫu + lịch khách hàng vừa đặt với bác sĩ này
+// + lịch bệnh nhân đặt thật (tải từ database ở mục 16)
 function getDoctorAppointments() {
+  const serverCodes = serverDoctorAppointments.map(function (item) { return item.code; });
   const fromCustomers = getAppointments().filter(function (item) {
-    return item.doctorId === DEMO_DOCTOR_ID;
+    return item.doctorId === DEMO_DOCTOR_ID && serverCodes.includes(item.code) === false;
   });
-  return getDoctorSamples().concat(fromCustomers);
+  return getDoctorSamples().concat(fromCustomers, serverDoctorAppointments);
 }
 
 
@@ -676,12 +686,76 @@ scheduleForm.addEventListener("submit", function (event) {
 
 
 /* ---------- 14. ĐĂNG XUẤT ---------- */
-document.getElementById("logout-button").addEventListener("click", function () {
+document.getElementById("logout-button").addEventListener("click", async function () {
   if (confirm("Bạn muốn đăng xuất khỏi HomeCare?")) {
     removeStorage("homecare_user");
+    // Xóa cookie đăng nhập trên máy chủ (lỗi mạng cũng vẫn đăng xuất ở trình duyệt)
+    try {
+      await callApi("/api/auth?action=logout", { method: "POST" });
+    } catch (error) {
+      // bỏ qua
+    }
     window.location.href = "dang-nhap.html";
   }
 });
+
+
+/* ---------- 16. LỊCH HẸN TRÊN DATABASE ----------
+   AI prompt: "Tạo database lưu thông tin đặt lịch khám" – mục này được viết
+   với sự hỗ trợ của AI.
+   Chỉ áp dụng cho tài khoản đăng nhập bằng số điện thoại + OTP (verified: true). */
+let serverDoctorAppointments = [];       // lịch bệnh nhân đặt với bác sĩ (phía bác sĩ)
+
+// Mã lịch hẹn này có phải lịch lưu trên database không
+function isServerAppointment(code) {
+  const all = getAppointments().concat(serverDoctorAppointments);
+  return all.some(function (item) { return item.code === code && item.source === "server"; });
+}
+
+async function loadServerAppointments() {
+  if (isVerifiedUser(currentUser) === false) {
+    return;
+  }
+
+  let bookings;
+  try {
+    const data = await callApi("/api/bookings");
+    bookings = data.bookings;
+  } catch (error) {
+    if (error.status === 401) {
+      // Phiên trên máy chủ hết hạn -> coi như chưa xác thực, nhắc đăng nhập lại
+      currentUser.verified = false;
+      writeStorage("homecare_user", currentUser);
+    }
+    return;
+  }
+
+  const fromServer = bookings.map(bookingToAppointment);
+
+  if (isDoctor) {
+    serverDoctorAppointments = fromServer;
+    renderDoctorList();
+  } else {
+    // Khách hàng: thay các lịch cùng mã trong localStorage bằng bản mới nhất từ database
+    const serverCodes = fromServer.map(function (item) { return item.code; });
+    const localOnly = getAppointments().filter(function (item) {
+      return serverCodes.includes(item.code) === false && item.source !== "server";
+    });
+    saveAppointments(fromServer.concat(localOnly));
+    renderCustomerList();
+  }
+  renderStats();
+}
+
+async function changeServerStatus(code, newStatus) {
+  try {
+    await callApi("/api/bookings", { method: "PATCH", body: { code: code, status: newStatus } });
+  } catch (error) {
+    alert(error.message);
+  }
+  // Tải lại từ database để hiện đúng trạng thái mới nhất
+  await loadServerAppointments();
+}
 
 
 /* ---------- 15. CHẠY KHI MỞ TRANG ---------- */
@@ -708,6 +782,9 @@ if (currentUser === null) {
     renderCustomerList();
     fillProfileForm();
   }
+
+  // Tải lịch hẹn thật từ database (chạy ngầm, xong thì vẽ lại danh sách)
+  loadServerAppointments();
 
   // Mở khung theo #... trên link (VD: ho-so.html#lich-hen), không hợp lệ thì mở khung đầu tiên
   const menuItems = ACCOUNT_MENUS[viewerRole];

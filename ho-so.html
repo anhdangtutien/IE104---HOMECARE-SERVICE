@@ -3,7 +3,7 @@
   =========================================================
   TRANG HỒ SƠ TÀI KHOẢN & QUẢN LÝ LỊCH HẸN - ho-so.html
   Người phụ trách: THÀNH VIÊN 2
-  File liên quan: css/trang-con.css, css/ho-so.css, js/du-lieu.js, js/ho-so.js
+  File liên quan: css/trang-con.css, css/ho-so.css, js/du-lieu.js, js/api.js, js/ho-so.js
 
   Một trang dùng cho 2 vai trò (đọc từ tài khoản đăng nhập):
   - Khách hàng: lịch hẹn của tôi, thông tin cá nhân
@@ -16,7 +16,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ sơ của tôi - HomeCare</title>
+  <meta name="description" content="Quản lý tài khoản HomeCare: xem, lọc và hủy lịch hẹn, cập nhật thông tin cá nhân; bác sĩ xác nhận lịch khám và lịch làm việc.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 
+  <!-- Kết nối sớm tới máy chủ font / icon để tải nhanh hơn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -43,6 +49,9 @@
         <i class="fa-solid fa-chevron-right"></i>
         <span id="crumb-panel">Hồ sơ</span>
       </nav>
+
+      <!-- Tiêu đề trang: ẩn khỏi màn hình nhưng trình đọc màn hình và Google vẫn đọc được -->
+      <h1 class="sr-only">Hồ sơ tài khoản HomeCare</h1>
 
       <!-- Chưa đăng nhập: JS thay toàn bộ khung này bằng thông báo -->
       <div class="account-layout" id="account-layout">
@@ -282,6 +291,7 @@
 
   <script src="js/layout.js"></script>
   <script src="js/du-lieu.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/ho-so.js"></script>
 </body>
 </html>
