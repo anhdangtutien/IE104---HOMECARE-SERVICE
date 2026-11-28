@@ -23,9 +23,6 @@ if (pendingBooking !== null) {
   }
 }
 
-// Mã lịch hẹn: "HC" + 6 chữ số ngẫu nhiên. Tạo sẵn để dùng làm nội dung chuyển khoản
-const bookingCode = "HC" + Math.floor(100000 + Math.random() * 900000);
-
 const PAYMENT_NAMES = {
   cash: "Tiền mặt khi khám xong",
   bank: "Chuyển khoản ngân hàng",
@@ -65,6 +62,7 @@ function getFullAddress(booking) {
 }
 
 // Tính tất cả các khoản tiền, trả về 1 object
+// (máy chủ cũng tính lại y hệt trong api/_lib/catalog.js, không tin số tiền trình duyệt gửi)
 function calculateMoney() {
   const subtotal = pendingBooking.servicePrice + pendingBooking.travelFee;
   let discount = 0;
@@ -157,7 +155,7 @@ function renderPayDetail() {
         <p><strong>Số tài khoản:</strong> 1023 4567 89</p>
         <p><strong>Chủ tài khoản:</strong> CONG TY HOMECARE</p>
         <p><strong>Số tiền:</strong> ${total}</p>
-        <p><strong>Nội dung:</strong> ${bookingCode}</p>
+        <p><strong>Nội dung:</strong> mã lịch hẹn (hiện sau khi xác nhận)</p>
       </div>`;
   } else if (method === "momo") {
     payDetail.innerHTML = `
@@ -239,54 +237,87 @@ promoInput.addEventListener("keydown", function (event) {
 });
 
 
-/* ---------- 8. XÁC NHẬN ĐẶT LỊCH ---------- */
+/* =========================================================
+   AI prompt: "Tạo database lưu thông tin đặt lịch khám; tích hợp cổng
+   thanh toán ở chế độ test (sandbox)" – mục 8 -> 9 bên dưới được viết
+   với sự hỗ trợ của AI.
+   ========================================================= */
+
+/* ---------- 8. XÁC NHẬN ĐẶT LỊCH -> LƯU VÀO DATABASE ---------- */
 agreeCheckbox.addEventListener("change", function () {
   agreeError.textContent = "";
 });
 
-paymentForm.addEventListener("submit", function (event) {
+function setConfirmLoading(isLoading, text) {
+  confirmButton.disabled = isLoading;
+  confirmButton.innerHTML = isLoading
+    ? `<i class="fa-solid fa-spinner fa-spin"></i> ${text}`
+    : `<i class="fa-solid fa-lock"></i> Xác nhận đặt lịch`;
+}
+
+// Lưu thêm 1 bản vào localStorage để trang hồ sơ hiện ngay cả khi mất mạng
+function saveLocalCopy(booking) {
+  const appointments = getAppointments().filter(function (item) { return item.code !== booking.code; });
+  appointments.unshift(bookingToAppointment(booking));
+  saveAppointments(appointments);
+}
+
+paymentForm.addEventListener("submit", async function (event) {
   event.preventDefault();
+  submitError.textContent = "";
 
   if (agreeCheckbox.checked === false) {
     agreeError.textContent = "Bạn cần đồng ý với điều khoản trước khi đặt lịch";
     return;
   }
 
-  // Giả lập thời gian chờ máy chủ xử lý (0,8 giây)
-  confirmButton.disabled = true;
-  confirmButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...`;
+  setConfirmLoading(true, "Đang lưu lịch hẹn...");
 
-  setTimeout(function () {
-    const appointment = {
-      code: bookingCode,
-      doctorId: payDoctor.id,
-      serviceId: payService.id,
-      date: pendingBooking.date,
-      time: pendingBooking.time,
-      patientName: pendingBooking.patientName + (pendingBooking.relation === "Bản thân" ? "" : " (" + pendingBooking.relation.toLowerCase() + ")"),
-      phone: pendingBooking.phone,
-      address: getFullAddress(pendingBooking),
-      note: pendingBooking.note,
-      total: calculateMoney().total,
-      payment: PAYMENT_NAMES[getPaymentMethod()],
-      status: "cho-xac-nhan"
-    };
+  // 8.1. Gửi lịch hẹn lên máy chủ (KHÔNG gửi số tiền: máy chủ tự tính)
+  let booking;
+  try {
+    const result = await callApi("/api/bookings", {
+      method: "POST",
+      body: {
+        doctorId: pendingBooking.doctorId,
+        serviceId: pendingBooking.serviceId,
+        date: pendingBooking.date,
+        time: pendingBooking.time,
+        patientName: pendingBooking.patientName,
+        relation: pendingBooking.relation,
+        contactPhone: pendingBooking.contactPhone || "",
+        symptoms: pendingBooking.symptoms || [],
+        symptomOther: pendingBooking.symptomOther || "",
+        ward: pendingBooking.ward,
+        street: pendingBooking.street,
+        note: pendingBooking.note,
+        promoCode: appliedPromo || "",
+        paymentMethod: getPaymentMethod()
+      }
+    });
+    booking = result.booking;
+  } catch (error) {
+    setConfirmLoading(false);
 
-    // Thêm lịch hẹn mới lên ĐẦU danh sách (unshift), rồi lưu lại
-    const appointments = getAppointments();
-    appointments.unshift(appointment);
-    saveAppointments(appointments);
+    // 401: chưa đăng nhập / phiên hết hạn -> sang trang đăng nhập rồi quay lại đây (đơn tạm vẫn còn)
+    if (error.status === 401) {
+      window.location.href = "dang-nhap.html?next=thanh-toan.html&ly-do=het-phien";
+      return;
+    }
+    submitError.textContent = error.message;
+    return;
+  }
 
-    // Đã đặt xong -> xóa đơn tạm
-    removeStorage("homecare_pending");
+  // 8.2. Đã lưu xong -> xóa đơn tạm, lưu bản sao cho trang hồ sơ
+  removeStorage("homecare_pending");
+  saveLocalCopy(booking);
 
-    showSuccess(appointment);
-  }, 800);
+  showResult(booking);
 });
 
 
 /* ---------- 9. MÀN HÌNH THÀNH CÔNG ---------- */
-function showSuccess(appointment) {
+function showResult(booking) {
   document.getElementById("payment-area").hidden = true;
   document.getElementById("success-view").hidden = false;
 
@@ -296,13 +327,22 @@ function showSuccess(appointment) {
   stepItems[1].querySelector(".step-number").innerHTML = `<i class="fa-solid fa-check"></i>`;
   stepItems[2].className = "current";
 
-  document.getElementById("success-code").textContent = appointment.code;
+  const paymentText = formatMoney(booking.total) + " – " + booking.paymentName;
+
+  let symptomRow = "";
+  const symptomText = getSymptomText(booking.symptoms, booking.symptomOther);
+  if (symptomText !== "") {
+    symptomRow = `<dt>Triệu chứng</dt><dd>${escapeHTML(symptomText)}</dd>`;
+  }
+
+  document.getElementById("success-code").textContent = booking.code;
   document.getElementById("success-list").innerHTML = `
-    <dt>Bác sĩ</dt><dd>${payDoctor.name}</dd>
-    <dt>Dịch vụ</dt><dd>${payService.name}</dd>
-    <dt>Thời gian</dt><dd>${appointment.time} · ${formatDate(appointment.date)}</dd>
-    <dt>Địa điểm</dt><dd>${escapeHTML(appointment.address)}</dd>
-    <dt>Thanh toán</dt><dd>${formatMoney(appointment.total)} – ${appointment.payment}</dd>`;
+    <dt>Bác sĩ</dt><dd>${escapeHTML(booking.doctorName)}</dd>
+    <dt>Dịch vụ</dt><dd>${escapeHTML(booking.serviceName)}</dd>
+    <dt>Thời gian</dt><dd>${booking.time} · ${formatDate(booking.date)}</dd>
+    <dt>Địa điểm</dt><dd>${escapeHTML(booking.address)}</dd>
+    ${symptomRow}
+    <dt>Thanh toán</dt><dd>${escapeHTML(paymentText)}</dd>`;
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
