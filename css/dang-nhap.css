@@ -295,18 +295,145 @@
   display: none;
 }
 
-.otp-link {
-  display: block;
-  margin-bottom: 14px;
-  text-align: right;
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   AI prompt: "Có thể đăng nhập bằng số điện thoại kèm mã OTP" –
+   phần CSS bên dưới (tab chọn cách đăng nhập, form OTP) được viết
+   với sự hỗ trợ của AI.
+   ========================================================= */
+
+/* Thuộc tính hidden luôn thắng các display: flex/grid ở trên */
+.login-right [hidden] {
+  display: none !important;
+}
+
+/* Thông báo lý do phải đăng nhập */
+.login-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background-color: var(--accent-light);
+  color: #9a5b0b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login-notice::before {
+  content: "05a";                 /* icon "i" của Font Awesome */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+
+/* --- 2 tab: Số điện thoại + OTP / Mật khẩu --- */
+.method-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 4px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+}
+
+.method-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 8px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.method-tab:hover {
+  color: var(--text);
+}
+
+.method-tab.active {
+  background-color: var(--white);
+  color: var(--primary-dark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Nút nhỏ nằm trong ô nhập: "Đổi số", "Gửi lại" --- */
+.change-phone,
+.resend-otp {
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
   font-size: 13px;
   font-weight: 600;
   color: var(--primary);
+  white-space: nowrap;
 }
 
-.otp-link:hover,
-.forgot-link:hover {
-  text-decoration: underline;
+.resend-otp:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.otp-info {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* Ô nhập mã: chữ số giãn rộng cho dễ đọc (chỉ khi đã gõ, không giãn dòng gợi ý) */
+#otp-code:not(:placeholder-shown) {
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+
+/* Hộp hiện mã ở chế độ demo */
+.otp-demo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+  background-color: var(--accent-light);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7c4a06;
+}
+
+.otp-demo i {
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.otp-demo-code {
+  padding: 1px 8px;
+  border-radius: 6px;
+  background-color: var(--white);
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+/* Ghi chú ở tab mật khẩu */
+.password-note {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.password-note i {
+  margin-top: 3px;
+  color: var(--primary);
 }
 
 .btn-login {
