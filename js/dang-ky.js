@@ -342,8 +342,46 @@ registerForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Đồ án chưa có máy chủ (backend) nên chỉ thông báo rồi chuyển trang
-  alert("Đăng ký thành công! Chào mừng " + fullnameInput.value.trim() + " đến với HomeCare.");
-  window.location.href = "dang-nhap.html";
+  // Lưu tài khoản đã đăng ký vào localStorage để có thể đăng nhập bằng mật khẩu
+  const fullname = fullnameInput.value.trim();
+  const email = emailInput.value.trim();
+  const phone = phoneInput.value.trim();
+  const password = passwordInput.value;
+  const role = certificateGroup !== null ? "bac-si" : "khach-hang";
+
+  let accounts = [];
+  try {
+    accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
+  } catch (e) {
+    accounts = [];
+  }
+
+  const newAccount = {
+    fullname: fullname,
+    email: email,
+    phone: phone,
+    password: password,
+    role: role,
+    registeredAt: new Date().toISOString()
+  };
+
+  const existingIndex = accounts.findIndex(function (acc) {
+    return acc.phone === phone || (acc.email && acc.email.toLowerCase() === email.toLowerCase());
+  });
+
+  if (existingIndex !== -1) {
+    accounts[existingIndex] = newAccount;
+  } else {
+    accounts.push(newAccount);
+  }
+
+  try {
+    localStorage.setItem("homecare_accounts", JSON.stringify(accounts));
+  } catch (e) {
+    // Trình duyệt ẩn danh
+  }
+
+  alert("Đăng ký thành công! Chào mừng " + fullname + " đến với HomeCare. Chuyển sang trang đăng nhập...");
+  window.location.href = "dang-nhap.html?phone=" + encodeURIComponent(phone) + "&method=password";
 });
 

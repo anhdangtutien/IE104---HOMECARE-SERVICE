@@ -148,18 +148,51 @@ loginForm.addEventListener("submit", function (event) {
     return;
   }
 
-  const selectedRole = getSelectedRole();
-
-  let roleName = "Khách hàng";
-  if (selectedRole === "bac-si") {
-    roleName = "Bác sĩ";
+  // Lấy danh sách tài khoản đã đăng ký để kiểm tra
+  let accounts = [];
+  try {
+    accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
+  } catch (e) {
+    accounts = [];
   }
 
-  // Cách này chưa kiểm tra mật khẩu với máy chủ (mô phỏng), nên verified: false
-  // -> muốn đặt lịch vẫn phải xác thực số điện thoại bằng OTP
-  saveUser({ username: username, role: selectedRole, verified: false });
+  // Tài khoản mẫu có sẵn dự phòng để test nhanh
+  const defaultAccounts = [
+    { phone: "0912345678", email: "khachhang@gmail.com", fullname: "Nguyễn Văn A", password: "password123", role: "khach-hang" },
+    { phone: "0901234567", email: "bacsi@gmail.com", fullname: "ThS.BS Trần Ngọc C", password: "password123", role: "bac-si" }
+  ];
 
-  alert("Đăng nhập thành công với vai trò: " + roleName);
+  // Tìm tài khoản khớp theo SĐT hoặc Email
+  const matched = accounts.find(function (acc) {
+    return acc.phone === username || (acc.email && acc.email.toLowerCase() === username.toLowerCase());
+  }) || defaultAccounts.find(function (acc) {
+    return acc.phone === username || (acc.email && acc.email.toLowerCase() === username.toLowerCase());
+  });
+
+  if (!matched) {
+    showError("username-box", "username-error", "Tài khoản (SĐT/Email) chưa được đăng ký trong hệ thống");
+    return;
+  }
+
+  if (matched.password !== password) {
+    showError("password-box", "password-error", "Mật khẩu không chính xác");
+    return;
+  }
+
+  // Đăng nhập thành công khi mật khẩu khớp
+  const selectedRole = getSelectedRole();
+  let roleName = selectedRole === "bac-si" ? "Bác sĩ" : "Khách hàng";
+
+  saveUser({
+    username: matched.phone || username,
+    phone: matched.phone || username,
+    email: matched.email || undefined,
+    name: matched.fullname,
+    role: selectedRole,
+    verified: true            // đã xác thực đầy đủ -> được đặt lịch và quản lý hồ sơ
+  });
+
+  alert("Đăng nhập thành công! Chào mừng " + (matched.fullname || username) + " (" + roleName + ").");
   goToNextPage();
 });
 
@@ -365,6 +398,19 @@ if (loginReasons[reason] !== undefined) {
   const notice = document.getElementById("login-notice");
   notice.textContent = loginReasons[reason];
   notice.hidden = false;
+}
+
+// Điền sẵn số điện thoại và chuyển tab mật khẩu nếu vừa đăng ký xong
+const queryParams = new URLSearchParams(window.location.search);
+const redirectPhone = queryParams.get("phone");
+const redirectMethod = queryParams.get("method");
+
+if (redirectPhone) {
+  otpPhoneInput.value = redirectPhone;
+  usernameInput.value = redirectPhone;
+}
+if (redirectMethod === "password") {
+  showMethod("password");
 }
 
 
