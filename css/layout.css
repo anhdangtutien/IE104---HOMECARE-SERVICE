@@ -65,6 +65,15 @@
 }
 
 
+/* Chỗ giữ sẵn cho header trong lúc js/layout.js chưa kịp chèn header thật.
+   Không giữ chỗ thì trang hiện ra trước, header chèn vào sau sẽ đẩy cả nội dung
+   xuống (Lighthouse trừ điểm CLS - "độ xô lệch bố cục").
+   128px = chiều cao thật của topbar + header (đo bằng DevTools). */
+#site-header {
+  min-height: 128px;
+}
+
+
 /* =============== 3. LOGO + HOTLINE =============== */
 .site-logo {
   display: flex;
@@ -400,6 +409,10 @@
 /* Máy tính bảng + điện thoại: menu thu gọn, bấm nút ☰ để mở
    (nút ☰ gắn sự kiện trong js/layout.js, dùng classList.toggle("open")) */
 @media (max-width: 1100px) {
+  #site-header {
+    min-height: 125px;        /* header thu gọn thấp hơn một chút */
+  }
+
   .header-inner {
     flex-wrap: wrap;           /* cho menu rớt xuống dòng dưới logo */
   }
