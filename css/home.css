@@ -7,7 +7,7 @@
 /* =============== 1. BANNER (HERO) =============== */
 .hero {
   background-color: var(--primary-light);
-  padding: 64px 0 110px;       /* dưới dày hơn để chừa chỗ cho thẻ dịch vụ đè lên */
+  padding: 64px 0;
 }
 
 /* Chia 2 cột: chữ bên trái, ảnh bên phải */
@@ -24,14 +24,19 @@
 
 .hero h1 {
   margin-bottom: 28px;
-  font-size: 46px;
+  font-size: 44px;
   font-weight: 800;
   line-height: 1.25;
   color: var(--primary-dark);
+  /* AI prompt: "Tiêu đề banner bị rớt chữ 'nhà' xuống dòng riêng, sửa cách ngắt dòng".
+     text-wrap: balance -> trình duyệt chia các dòng dài gần bằng nhau, không để 1 chữ lẻ loi.
+     Kết hợp &nbsp; trong HTML ("tại&nbsp;nhà") để 2 chữ này luôn đi cùng nhau. */
+  text-wrap: balance;
 }
 
 /* --- Ô tìm kiếm --- */
 .hero-search {
+  position: relative;          /* làm mốc cho danh sách gợi ý xổ xuống */
   display: flex;
   align-items: center;
   gap: 12px;
@@ -73,6 +78,114 @@
   display: block;
 }
 
+/* --- Danh sách gợi ý xổ xuống ---
+   AI prompt: "Ô tìm kiếm: hiển thị danh sách gợi ý xổ xuống khi nhập" –
+   phần CSS này được viết với sự hỗ trợ của AI. */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);       /* ngay dưới ô tìm kiếm */
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 6px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(13, 60, 45, 0.16);
+}
+
+.search-suggestions[hidden] {
+  display: none;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+/* Rê chuột hoặc chọn bằng phím mũi tên (JS thêm class .active) */
+.suggestion:hover,
+.search-suggestions .active .suggestion {
+  background-color: var(--primary-light);
+}
+
+.suggestion > i {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--bg-light);
+  color: var(--primary);       /* ghi đè màu xám của icon kính lúp ở ô tìm kiếm */
+}
+
+.suggestion-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-text strong {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-text small {
+  font-size: 13px;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-text small:empty {
+  display: none;
+}
+
+/* Phần chữ khớp từ khóa */
+.suggestion mark {
+  background: none;
+  color: var(--primary);
+}
+
+.suggestion-type {
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: var(--bg-light);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+/* Dòng cuối "Tìm ... trong danh sách bác sĩ" */
+.suggestion-all {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.suggestion-all strong {
+  color: var(--primary-dark);
+}
+
+.suggestion-empty {
+  padding: 12px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
 /* --- Danh sách có dấu tích --- */
 .hero-checks {
   margin-top: 24px;
@@ -101,9 +214,13 @@
 }
 
 
-/* =============== 2. DỊCH VỤ NHANH =============== */
+/* =============== 3. DỊCH VỤ (nằm dưới khối bác sĩ tiêu biểu) =============== */
 .services {
-  margin-top: -56px;           /* số âm -> kéo lên đè lên banner */
+  padding-bottom: 64px;
+}
+
+.services .section-title {
+  margin-bottom: 28px;
 }
 
 .services-grid {
@@ -140,7 +257,7 @@
 }
 
 
-/* =============== 3. BÁC SĨ TIÊU BIỂU =============== */
+/* =============== 2. BÁC SĨ TIÊU BIỂU (ngay dưới banner) =============== */
 .featured-doctors {
   padding: 64px 0;
 }
@@ -159,12 +276,25 @@
 }
 
 .see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 600;
   color: var(--primary);
 }
 
 .see-all:hover {
   text-decoration: underline;
+}
+
+/* Mũi tên xoay ngược khi danh sách đang mở */
+.see-all i {
+  font-size: 13px;
+  transition: transform 0.3s;
+}
+
+.see-all[aria-expanded="true"] i {
+  transform: rotate(180deg);
 }
 
 .doctor-grid {
@@ -196,8 +326,62 @@
   color: var(--text-light);
 }
 
-.doctor-card .rating {
+.doctor-visits {
   margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.doctor-visits i {
+  margin-right: 4px;
+  color: var(--primary);
+}
+
+/* --- Danh sách bác sĩ trượt xuống ---
+   AI prompt: "Bác sĩ tiêu biểu: bấm vào thì danh sách bác sĩ trượt xuống ngay trong
+   trang chủ" – phần CSS này được viết với sự hỗ trợ của AI.
+   Mẹo: grid-template-rows từ 0fr -> 1fr thì trình duyệt tạo được hiệu ứng trượt
+   theo đúng chiều cao nội dung (height: auto thì không có hiệu ứng). */
+.more-doctors {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.5s ease, opacity 0.4s ease;
+}
+
+.more-doctors.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.more-doctors-inner {
+  overflow: hidden;            /* giấu phần nội dung khi hàng đang cao 0 */
+  min-height: 0;
+  /* chừa chỗ 2 bên + dưới để bóng đổ của thẻ không bị overflow cắt mất */
+  margin: 0 -16px;
+  padding: 0 16px 16px;
+}
+
+.more-doctors-inner .doctor-grid {
+  padding-top: 24px;
+}
+
+.more-doctors-link {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.more-doctors-link a {
+  margin-left: 6px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.more-doctors-link a:hover {
+  text-decoration: underline;
 }
 
 
@@ -260,15 +444,15 @@
 /* Điện thoại */
 @media (max-width: 576px) {
   .hero {
-    padding: 40px 0 90px;
+    padding: 40px 0;
   }
 
   .hero h1 {
     font-size: 28px;
   }
 
-  .hero h1 br {
-    display: none;             /* bỏ xuống dòng cho chữ tự chảy */
+  .suggestion-type {
+    display: none;             /* màn hình nhỏ: ẩn nhãn loại cho đỡ chật */
   }
 
   .services-grid {

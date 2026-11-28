@@ -3,7 +3,7 @@
   =========================================================
   TRANG CHỦ - index.html
   Người phụ trách: THÀNH VIÊN 2
-  File liên quan: css/home.css, js/home.js, thư mục images/
+  File liên quan: css/home.css, js/du-lieu.js, js/home.js, thư mục images/
   =========================================================
 -->
 <html lang="vi">
@@ -11,8 +11,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HomeCare - Chăm sóc sức khỏe tại nhà</title>
+  <meta name="description" content="HomeCare – đặt lịch bác sĩ, điều dưỡng khám chữa bệnh tại nhà ở TP. Thủ Đức. Tư vấn video, xét nghiệm tận nơi và gói chăm sóc sức khỏe định kỳ cho gia đình.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 
   <!-- Font chữ Be Vietnam Pro (lấy từ Google Fonts) -->
+  <!-- Kết nối sớm tới máy chủ font / icon để tải nhanh hơn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
   <!-- Bộ icon Font Awesome. Cách dùng: <i class="fa-solid fa-house"></i> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -37,12 +43,19 @@
 
         <!-- Cột trái: chữ + ô tìm kiếm -->
         <div class="hero-text">
-          <h1>Chăm sóc sức khỏe tại nhà <br>cho cả gia đình bạn</h1>
+          <!-- AI prompt: "Tiêu đề banner: chữ 'nhà' bị rớt xuống dòng riêng, sửa lại cách ngắt dòng" –
+               bỏ <br>, dùng &nbsp; (dấu cách không ngắt dòng) giữ các cụm "sức khỏe", "tại nhà", "gia đình bạn"
+               luôn đi liền nhau, CSS text-wrap: balance chia các dòng dài gần bằng nhau -->
+          <h1>Chăm sóc sức&nbsp;khỏe tại&nbsp;nhà cho cả gia&nbsp;đình&nbsp;bạn</h1>
 
-          <form class="hero-search" id="hero-search">
+          <!-- AI prompt: "Ô tìm kiếm: hiển thị danh sách gợi ý xổ xuống khi nhập" –
+               danh sách #search-suggestions do js/home.js tạo khi người dùng gõ -->
+          <form class="hero-search" id="hero-search" autocomplete="off">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-input" placeholder="Tìm bác sĩ, dịch vụ, gói chăm sóc...">
+            <input type="text" id="search-input" placeholder="Tìm bác sĩ, dịch vụ, gói chăm sóc..."
+                   role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <ul class="search-suggestions" id="search-suggestions" role="listbox" aria-label="Gợi ý tìm kiếm" hidden></ul>
           </form>
           <p class="search-error" id="search-error">Vui lòng nhập từ khóa cần tìm</p>
 
@@ -55,46 +68,33 @@
 
         <!-- Cột phải: ảnh đội ngũ bác sĩ -->
         <div class="hero-image">
-          <img src="images/hero-bac-si.png" alt="Đội ngũ bác sĩ HomeCare">
+          <!-- <picture>: trình duyệt hỗ trợ WebP (nhẹ hơn ~10 lần) thì dùng WebP, không thì dùng PNG.
+               fetchpriority="high": ưu tiên tải ảnh này trước vì là ảnh lớn nhất màn hình đầu -->
+          <picture>
+            <source srcset="images/hero-bac-si.webp" type="image/webp">
+            <img src="images/hero-bac-si.png" alt="Đội ngũ bác sĩ HomeCare" width="820" height="335" fetchpriority="high">
+          </picture>
         </div>
 
       </div>
     </section>
 
 
-    <!-- ===================== 2. DỊCH VỤ NHANH ===================== -->
-    <section class="services">
-      <div class="container services-grid">
-        <a href="dat-kham.html" class="service-card">
-          <i class="fa-solid fa-house-medical"></i>
-          <span>Đặt khám tại nhà</span>
-        </a>
-        <a href="dich-vu.html#goi-video" class="service-card">
-          <i class="fa-solid fa-video"></i>
-          <span>Gọi video với bác sĩ</span>
-        </a>
-        <a href="dich-vu.html#xet-nghiem" class="service-card">
-          <i class="fa-solid fa-syringe"></i>
-          <span>Đặt lịch xét nghiệm</span>
-        </a>
-        <a href="goi-cham-soc.html" class="service-card">
-          <i class="fa-solid fa-kit-medical"></i>
-          <span>Gói chăm sóc định kỳ</span>
-        </a>
-      </div>
-    </section>
-
-
-    <!-- ===================== 3. BÁC SĨ TIÊU BIỂU ===================== -->
+    <!-- ===================== 2. BÁC SĨ TIÊU BIỂU ===================== -->
+    <!-- AI prompt: "Đưa khối Bác sĩ tiêu biểu lên ngay dưới banner; bấm vào thì danh sách
+         bác sĩ trượt xuống ngay trong trang chủ, không chuyển trang" -->
     <section class="featured-doctors">
       <div class="container">
 
         <div class="section-head">
           <h2 class="section-title">Bác sĩ tiêu biểu</h2>
-          <a href="dat-kham.html" class="see-all">Xem tất cả →</a>
+          <!-- Nút mở danh sách đầy đủ ngay tại trang (js/home.js) -->
+          <button type="button" class="see-all" id="toggle-doctors" aria-expanded="false" aria-controls="more-doctors">
+            <span>Xem tất cả</span> <i class="fa-solid fa-chevron-down"></i>
+          </button>
         </div>
 
-        <!-- data-id: id của bác sĩ (giống trong js/dat-kham.js),
+        <!-- data-id: id của bác sĩ (giống trong js/du-lieu.js),
              home.js dùng để tạo link sang trang hồ sơ bác sĩ -->
         <div class="doctor-grid">
           <!-- Thẻ bác sĩ 1 -->
@@ -102,7 +102,7 @@
             <div class="avatar">C</div>
             <h3>ThS. Trần Ngọc C</h3>
             <p class="doctor-specialty">Nội tổng quát &amp; Lão khoa</p>
-            <p class="rating">★ 4.9 · 128 lượt khám</p>
+            <p class="doctor-visits"><i class="fa-solid fa-user-check"></i> 128 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
@@ -111,7 +111,7 @@
             <div class="avatar">D</div>
             <h3>BS. Trần Lê Trung D</h3>
             <p class="doctor-specialty">Cơ xương khớp &amp; Phục hồi chức năng</p>
-            <p class="rating">★ 4.8 · 94 lượt khám</p>
+            <p class="doctor-visits"><i class="fa-solid fa-user-check"></i> 94 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
@@ -120,7 +120,7 @@
             <div class="avatar">E</div>
             <h3>BS. Phạm Thị E</h3>
             <p class="doctor-specialty">Nhi khoa &amp; Dinh dưỡng lâm sàng</p>
-            <p class="rating">★ 5.0 · 150 lượt khám</p>
+            <p class="doctor-visits"><i class="fa-solid fa-user-check"></i> 150 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
 
@@ -129,11 +129,51 @@
             <div class="avatar">Đ</div>
             <h3>BS. Nguyễn Tuấn Đ</h3>
             <p class="doctor-specialty">Tai Mũi Họng &amp; Hô hấp</p>
-            <p class="rating">★ 4.9 · 82 lượt khám</p>
+            <p class="doctor-visits"><i class="fa-solid fa-user-check"></i> 82 lượt khám</p>
             <a href="dat-kham.html" class="btn btn-outline btn-small">Đặt lịch</a>
           </div>
         </div>
 
+        <!-- Danh sách bác sĩ / điều dưỡng còn lại: ẩn sẵn, bấm "Xem tất cả" thì trượt xuống.
+             inert: khi đang đóng, không bấm / Tab vào được các nút bên trong -->
+        <div class="more-doctors" id="more-doctors" inert>
+          <div class="more-doctors-inner">
+            <div class="doctor-grid" id="more-doctor-grid"></div>
+            <p class="more-doctors-link">
+              Muốn lọc theo chuyên khoa, giá khám?
+              <a href="dat-kham.html">Mở trang Đặt khám <i class="fa-solid fa-arrow-right"></i></a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ===================== 3. DỊCH VỤ ===================== -->
+    <!-- AI prompt: "Khối Dịch vụ lùi xuống dưới khối Bác sĩ tiêu biểu" -->
+    <section class="services">
+      <div class="container">
+        <h2 class="section-title">Dịch vụ của HomeCare</h2>
+
+        <div class="services-grid">
+          <a href="dat-kham.html" class="service-card">
+            <i class="fa-solid fa-house-medical"></i>
+            <span>Đặt khám tại nhà</span>
+          </a>
+          <a href="dich-vu.html#goi-video" class="service-card">
+            <i class="fa-solid fa-video"></i>
+            <span>Gọi video với bác sĩ</span>
+          </a>
+          <a href="dich-vu.html#xet-nghiem" class="service-card">
+            <i class="fa-solid fa-syringe"></i>
+            <span>Đặt lịch xét nghiệm</span>
+          </a>
+          <a href="goi-cham-soc.html" class="service-card">
+            <i class="fa-solid fa-kit-medical"></i>
+            <span>Gói chăm sóc định kỳ</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -144,12 +184,12 @@
         <h2 class="section-title">Được tin tưởng hợp tác và đồng hành</h2>
 
         <div class="partner-grid">
-          <div class="partner-item"><img src="images/doi-tac/vinmec.png" alt="Vinmec"></div>
-          <div class="partner-item"><img src="images/doi-tac/medpro.png" alt="Medpro"></div>
-          <div class="partner-item"><img src="images/doi-tac/bhxh.png" alt="Bảo hiểm xã hội Việt Nam"></div>
-          <div class="partner-item"><img src="images/doi-tac/doi-tac-4.png" alt="Đối tác"></div>
-          <div class="partner-item"><img src="images/doi-tac/chu-thap-do.png" alt="Hội Chữ thập đỏ Việt Nam"></div>
-          <div class="partner-item"><img src="images/doi-tac/hoan-my.png" alt="Hoàn Mỹ"></div>
+          <div class="partner-item"><img src="images/doi-tac/vinmec.png" width="178" height="80" loading="lazy" alt="Vinmec"></div>
+          <div class="partner-item"><img src="images/doi-tac/medpro.png" width="178" height="80" loading="lazy" alt="Medpro"></div>
+          <div class="partner-item"><img src="images/doi-tac/bhxh.png" width="178" height="80" loading="lazy" alt="Bảo hiểm xã hội Việt Nam"></div>
+          <div class="partner-item"><img src="images/doi-tac/doi-tac-4.png" width="178" height="80" loading="lazy" alt="Đối tác"></div>
+          <div class="partner-item"><img src="images/doi-tac/chu-thap-do.png" width="178" height="80" loading="lazy" alt="Hội Chữ thập đỏ Việt Nam"></div>
+          <div class="partner-item"><img src="images/doi-tac/hoan-my.png" width="178" height="86" loading="lazy" alt="Hoàn Mỹ"></div>
         </div>
       </div>
     </section>
@@ -161,6 +201,7 @@
 
   <!-- JavaScript: đặt cuối body để HTML tải xong rồi mới chạy -->
   <script src="js/layout.js"></script>
+  <script src="js/du-lieu.js"></script>
   <script src="js/home.js"></script>
 </body>
 </html>
