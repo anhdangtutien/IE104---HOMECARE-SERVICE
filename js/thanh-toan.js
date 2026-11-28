@@ -23,6 +23,11 @@ if (pendingBooking !== null) {
   }
 }
 
+// Kết quả VNPay trả về (khi quay lại từ cổng thanh toán)
+const pageParams = new URLSearchParams(window.location.search);
+const returnCode = pageParams.get("ma");            // VD: HC204517
+const returnResult = pageParams.get("ket-qua");     // thanh-cong | that-bai | loi
+
 const PAYMENT_NAMES = {
   cash: "Tiền mặt khi khám xong",
   bank: "Chuyển khoản ngân hàng",
@@ -240,7 +245,7 @@ promoInput.addEventListener("keydown", function (event) {
 
 /* =========================================================
    AI prompt: "Tạo database lưu thông tin đặt lịch khám; tích hợp cổng
-   thanh toán ở chế độ test (sandbox)" – mục 8 -> 9 bên dưới được viết
+   thanh toán ở chế độ test (sandbox)" – mục 8 -> 10 bên dưới được viết
    với sự hỗ trợ của AI.
    ========================================================= */
 
@@ -387,8 +392,55 @@ function showResult(booking, failMessage) {
 }
 
 
-/* ---------- 10. CHẠY KHI MỞ TRANG ---------- */
-if (pendingBooking === null || payDoctor === null || payService === null) {
+/* ---------- 10. QUAY VỀ TỪ VNPAY ----------
+   api/vnpay-return.js đã kiểm tra chữ ký và cập nhật database,
+   trang này chỉ đọc lại lịch hẹn để hiển thị */
+async function showVnpayReturn() {
+  const paymentArea = document.getElementById("payment-area");
+  paymentArea.innerHTML = `
+    <div class="empty-box">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <h3>Đang kiểm tra kết quả thanh toán...</h3>
+    </div>`;
+
+  try {
+    const result = await callApi("/api/bookings?code=" + encodeURIComponent(returnCode));
+    const booking = result.booking;
+    saveLocalCopy(booking);
+
+    if (booking.paymentStatus === "da-thanh-toan") {
+      showResult(booking, null);
+    } else {
+      showResult(booking, "Thanh toán VNPay chưa thành công hoặc đã bị hủy. Bạn có thể thanh toán lại hoặc thanh toán tiền mặt khi khám.");
+    }
+  } catch (error) {
+    // 401: phiên đăng nhập hết hạn -> đăng nhập lại rồi quay về đúng trang kết quả này
+    const button = error.status === 401
+      ? `<a href="${getLoginLink("het-phien")}" class="btn btn-primary">Đăng nhập lại để xem kết quả</a>`
+      : `<a href="ho-so.html#lich-hen" class="btn btn-primary">Xem lịch hẹn của tôi</a>`;
+    paymentArea.innerHTML = `
+      <div class="empty-box">
+        <i class="fa-regular fa-circle-xmark"></i>
+        <h3>Không đọc được kết quả thanh toán</h3>
+        <p>${escapeHTML(error.message)}</p>
+        ${button}
+      </div>`;
+  }
+}
+
+
+/* ---------- 11. CHẠY KHI MỞ TRANG ---------- */
+if (returnCode !== null) {
+  showVnpayReturn();
+} else if (returnResult === "loi") {
+  document.getElementById("payment-area").innerHTML = `
+    <div class="empty-box">
+      <i class="fa-regular fa-circle-xmark"></i>
+      <h3>Kết quả thanh toán không hợp lệ</h3>
+      <p>Dữ liệu VNPay trả về sai chữ ký hoặc sai số tiền. Lịch hẹn chưa được cập nhật.</p>
+      <a href="ho-so.html#lich-hen" class="btn btn-primary">Xem lịch hẹn của tôi</a>
+    </div>`;
+} else if (pendingBooking === null || payDoctor === null || payService === null) {
   // Vào thẳng trang này mà chưa chọn lịch -> báo và dẫn về trang đặt khám
   document.getElementById("payment-area").innerHTML = `
     <div class="empty-box">
