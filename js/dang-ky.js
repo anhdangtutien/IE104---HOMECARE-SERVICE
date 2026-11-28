@@ -318,7 +318,7 @@ uploadBox.addEventListener("drop", function (event) {
 
 
 /* ---------- 6. KHI BẤM "ĐĂNG KÝ NGAY" ---------- */
-registerForm.addEventListener("submit", function (event) {
+registerForm.addEventListener("submit", async function (event) {
   event.preventDefault();          // chặn form tải lại trang
 
   // Gọi TẤT CẢ hàm kiểm tra (không dừng ở lỗi đầu tiên)
@@ -342,13 +342,30 @@ registerForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Lưu tài khoản đã đăng ký vào localStorage để có thể đăng nhập bằng mật khẩu
+  const submitButton = registerForm.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = "Đang xử lý...";
+
   const fullname = fullnameInput.value.trim();
   const email = emailInput.value.trim();
   const phone = phoneInput.value.trim();
   const password = passwordInput.value;
   const role = certificateGroup !== null ? "bac-si" : "khach-hang";
 
+  // 1. Lưu vào máy chủ / Supabase (nếu có API)
+  try {
+    if (typeof callApi === "function") {
+      await callApi("/api/auth?action=register", {
+        method: "POST",
+        body: { phone: phone, password: password, name: fullname, role: role }
+      });
+    }
+  } catch (error) {
+    console.warn("Lưu lên máy chủ:", error);
+  }
+
+  // 2. Lưu dự phòng vào localStorage
   let accounts = [];
   try {
     accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
@@ -380,6 +397,9 @@ registerForm.addEventListener("submit", function (event) {
   } catch (e) {
     // Trình duyệt ẩn danh
   }
+
+  submitButton.disabled = false;
+  submitButton.textContent = originalText;
 
   alert("Đăng ký thành công! Chào mừng " + fullname + " đến với HomeCare. Chuyển sang trang đăng nhập...");
   window.location.href = "dang-nhap.html?phone=" + encodeURIComponent(phone) + "&method=password";

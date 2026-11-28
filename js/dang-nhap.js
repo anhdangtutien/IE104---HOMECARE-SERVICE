@@ -117,7 +117,7 @@ function saveUser(user) {
 
 
 /* ---------- 6. ĐĂNG NHẬP BẰNG MẬT KHẨU (KIỂM TRA KHI BẤM "ĐĂNG NHẬP") ---------- */
-loginForm.addEventListener("submit", function (event) {
+loginForm.addEventListener("submit", async function (event) {
   event.preventDefault();   // chặn form tải lại trang
 
   const username = usernameInput.value.trim();
@@ -148,7 +148,46 @@ loginForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Lấy danh sách tài khoản đã đăng ký để kiểm tra
+  const selectedRole = getSelectedRole();
+  let roleName = selectedRole === "bac-si" ? "Bác sĩ" : "Khách hàng";
+
+  // 1. Thử xác thực trực tiếp qua Backend Supabase
+  let serverLoggedIn = false;
+  let serverUser = null;
+  try {
+    if (typeof callApi === "function") {
+      const res = await callApi("/api/auth?action=login-password", {
+        method: "POST",
+        body: { username: username, password: password, role: selectedRole }
+      });
+      serverLoggedIn = true;
+      serverUser = res.user;
+    }
+  } catch (apiError) {
+    if (apiError.status === 400) {
+      if (apiError.message.includes("mật khẩu") || apiError.message.includes("Mật khẩu")) {
+        showError("password-box", "password-error", apiError.message);
+      } else {
+        showError("username-box", "username-error", apiError.message);
+      }
+      return;
+    }
+  }
+
+  if (serverLoggedIn && serverUser) {
+    saveUser({
+      username: serverUser.phone,
+      phone: serverUser.phone,
+      name: serverUser.name || username,
+      role: selectedRole,
+      verified: true
+    });
+    alert("Đăng nhập thành công! Chào mừng " + (serverUser.name || serverUser.phone) + " (" + roleName + ").");
+    goToNextPage();
+    return;
+  }
+
+  // 2. Dự phòng kiểm tra qua localStorage (nếu offline hoặc chạy tĩnh)
   let accounts = [];
   try {
     accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
@@ -156,13 +195,11 @@ loginForm.addEventListener("submit", function (event) {
     accounts = [];
   }
 
-  // Tài khoản mẫu có sẵn dự phòng để test nhanh
   const defaultAccounts = [
     { phone: "0912345678", email: "khachhang@gmail.com", fullname: "Nguyễn Văn A", password: "password123", role: "khach-hang" },
     { phone: "0901234567", email: "bacsi@gmail.com", fullname: "ThS.BS Trần Ngọc C", password: "password123", role: "bac-si" }
   ];
 
-  // Tìm tài khoản khớp theo SĐT hoặc Email
   const matched = accounts.find(function (acc) {
     return acc.phone === username || (acc.email && acc.email.toLowerCase() === username.toLowerCase());
   }) || defaultAccounts.find(function (acc) {
@@ -179,17 +216,13 @@ loginForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Đăng nhập thành công khi mật khẩu khớp
-  const selectedRole = getSelectedRole();
-  let roleName = selectedRole === "bac-si" ? "Bác sĩ" : "Khách hàng";
-
   saveUser({
     username: matched.phone || username,
     phone: matched.phone || username,
     email: matched.email || undefined,
     name: matched.fullname,
     role: selectedRole,
-    verified: true            // đã xác thực đầy đủ -> được đặt lịch và quản lý hồ sơ
+    verified: true
   });
 
   alert("Đăng nhập thành công! Chào mừng " + (matched.fullname || username) + " (" + roleName + ").");

@@ -132,6 +132,11 @@ function hashOtp(phone, code) {
   return crypto.createHmac("sha256", SECRET).update(phone + ":" + code).digest("hex");
 }
 
+// Băm mật khẩu tài khoản kèm khóa bí mật SECRET
+function hashPassword(password) {
+  return crypto.createHmac("sha256", SECRET).update("hc_pwd:" + String(password || "")).digest("hex");
+}
+
 module.exports = {
   OTP_DEMO,
   normalizePhone,
@@ -143,5 +148,6 @@ module.exports = {
   getSessionUser,
   requireUser,
   createOtpCode,
-  hashOtp
+  hashOtp,
+  hashPassword
 };

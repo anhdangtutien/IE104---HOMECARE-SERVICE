@@ -16,6 +16,7 @@ create table if not exists public.users (
   name          text,
   role          text not null default 'khach-hang'
                 check (role in ('khach-hang', 'bac-si')),
+  password_hash text,                                     -- bản băm mật khẩu (HMAC-SHA256)
   created_at    timestamptz not null default now(),
   last_login_at timestamptz
 );

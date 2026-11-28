@@ -101,6 +101,73 @@ async function verifyOtp(req, res) {
   sendJson(res, 200, { user: publicUser(user) });
 }
 
+async function register(req, res) {
+  const body = await readJson(req);
+  const phone = auth.normalizePhone(body.phone);
+  const password = String(body.password || "");
+  const name = body.name ? String(body.name).trim() : null;
+  const role = body.role === "bac-si" ? "bac-si" : "khach-hang";
+
+  if (auth.isValidPhone(phone) === false) {
+    throw new HttpError(400, "Số điện thoại phải gồm đúng 10 hoặc 11 chữ số");
+  }
+  if (password.length < 6) {
+    throw new HttpError(400, "Mật khẩu phải có ít nhất 6 ký tự");
+  }
+
+  const password_hash = auth.hashPassword(password);
+  const user = await db.upsert("users", {
+    phone: phone,
+    name: name,
+    role: role,
+    password_hash: password_hash,
+    last_login_at: new Date().toISOString()
+  }, "phone");
+
+  auth.setSessionCookie(req, res, auth.createSessionToken(user));
+  sendJson(res, 200, { ok: true, user: publicUser(user) });
+}
+
+async function loginPassword(req, res) {
+  const body = await readJson(req);
+  const phone = auth.normalizePhone(body.username);
+  const password = String(body.password || "");
+  const role = body.role === "bac-si" ? "bac-si" : "khach-hang";
+
+  if (auth.isValidPhone(phone) === false) {
+    throw new HttpError(400, "Vui lòng nhập số điện thoại hợp lệ (10 hoặc 11 chữ số)");
+  }
+  if (password === "") {
+    throw new HttpError(400, "Vui lòng nhập mật khẩu");
+  }
+
+  const found = await db.select("users", { phone: phone }, { limit: 1 });
+  const user = found[0];
+
+  if (user === undefined) {
+    throw new HttpError(400, "Số điện thoại này chưa được đăng ký trong hệ thống");
+  }
+
+  if (!user.password_hash) {
+    throw new HttpError(400, "Tài khoản chưa cài đặt mật khẩu. Vui lòng đăng nhập bằng mã OTP.");
+  }
+
+  if (auth.safeEqual(user.password_hash, auth.hashPassword(password)) === false) {
+    throw new HttpError(400, "Mật khẩu không chính xác");
+  }
+
+  // Cập nhật vai trò và thời gian đăng nhập
+  const updated = await db.update("users", { id: user.id }, {
+    role: role,
+    last_login_at: new Date().toISOString()
+  });
+  const currentUser = updated[0] || user;
+  currentUser.role = role;
+
+  auth.setSessionCookie(req, res, auth.createSessionToken(currentUser));
+  sendJson(res, 200, { ok: true, user: publicUser(currentUser) });
+}
+
 module.exports = handle(async function (req, res) {
   const action = getQuery(req).get("action");
 
@@ -121,6 +188,10 @@ module.exports = handle(async function (req, res) {
     await sendOtp(req, res);
   } else if (action === "verify-otp") {
     await verifyOtp(req, res);
+  } else if (action === "register") {
+    await register(req, res);
+  } else if (action === "login-password") {
+    await loginPassword(req, res);
   } else if (action === "logout") {
     auth.clearSessionCookie(req, res);
     sendJson(res, 200, { ok: true });
