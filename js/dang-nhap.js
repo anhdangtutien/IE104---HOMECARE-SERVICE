@@ -182,6 +182,25 @@ loginForm.addEventListener("submit", async function (event) {
       role: selectedRole,
       verified: true
     });
+
+    // Đồng bộ vào hồ sơ cá nhân nếu là khách hàng
+    if (selectedRole === "khach-hang") {
+      let accounts = [];
+      try { accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || []; } catch (e) {}
+      const acc = accounts.find(function (a) { return a.phone === serverUser.phone; });
+      let currentProf = {};
+      try { currentProf = JSON.parse(localStorage.getItem("homecare_profile")) || {}; } catch (e) {}
+      localStorage.setItem("homecare_profile", JSON.stringify({
+        name: serverUser.name || (acc ? acc.fullname : "") || currentProf.name || "Khách hàng HomeCare",
+        phone: serverUser.phone,
+        email: (acc ? acc.email : "") || currentProf.email || "",
+        birthday: (acc ? acc.birthday : "") || currentProf.birthday || "",
+        gender: (acc ? acc.gender : "") || currentProf.gender || "",
+        ward: currentProf.ward || "",
+        street: (acc ? acc.street : "") || currentProf.street || ""
+      }));
+    }
+
     alert("Đăng nhập thành công! Chào mừng " + (serverUser.name || serverUser.phone) + " (" + roleName + ").");
     goToNextPage();
     return;
@@ -224,6 +243,21 @@ loginForm.addEventListener("submit", async function (event) {
     role: selectedRole,
     verified: true
   });
+
+  // Đồng bộ vào hồ sơ cá nhân nếu là khách hàng
+  if (selectedRole === "khach-hang") {
+    let currentProf = {};
+    try { currentProf = JSON.parse(localStorage.getItem("homecare_profile")) || {}; } catch (e) {}
+    localStorage.setItem("homecare_profile", JSON.stringify({
+      name: matched.fullname || currentProf.name || "Khách hàng HomeCare",
+      phone: matched.phone || username,
+      email: matched.email || currentProf.email || "",
+      birthday: matched.birthday || currentProf.birthday || "",
+      gender: matched.gender || currentProf.gender || "",
+      ward: currentProf.ward || "",
+      street: matched.street || currentProf.street || ""
+    }));
+  }
 
   alert("Đăng nhập thành công! Chào mừng " + (matched.fullname || username) + " (" + roleName + ").");
   goToNextPage();

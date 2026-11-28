@@ -351,6 +351,10 @@ registerForm.addEventListener("submit", async function (event) {
   const email = emailInput.value.trim();
   const phone = phoneInput.value.trim();
   const password = passwordInput.value;
+  const birthday = birthdayInput ? birthdayInput.value : "";
+  const genderRadio = document.querySelector('input[name="gender"]:checked');
+  const gender = genderRadio ? genderRadio.value : "";
+  const city = citySelect && citySelect.selectedIndex > 0 ? citySelect.options[citySelect.selectedIndex].text : "";
   const role = certificateGroup !== null ? "bac-si" : "khach-hang";
 
   // 1. Lưu vào máy chủ / Supabase (nếu có API)
@@ -378,6 +382,9 @@ registerForm.addEventListener("submit", async function (event) {
     email: email,
     phone: phone,
     password: password,
+    birthday: birthday,
+    gender: gender,
+    street: city,
     role: role,
     registeredAt: new Date().toISOString()
   };
@@ -394,6 +401,18 @@ registerForm.addEventListener("submit", async function (event) {
 
   try {
     localStorage.setItem("homecare_accounts", JSON.stringify(accounts));
+    // Lưu thẳng vào hồ sơ cá nhân để khi mở trang ho-so.html có ngay thông tin
+    if (role === "khach-hang") {
+      localStorage.setItem("homecare_profile", JSON.stringify({
+        name: fullname,
+        phone: phone,
+        email: email,
+        birthday: birthday,
+        gender: gender,
+        ward: "",
+        street: city
+      }));
+    }
   } catch (e) {
     // Trình duyệt ẩn danh
   }

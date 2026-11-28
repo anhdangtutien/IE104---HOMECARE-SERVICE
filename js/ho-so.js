@@ -136,20 +136,46 @@ function clearFieldErrors(form) {
 
 /* ---------- 4. DỮ LIỆU CỦA TỪNG VAI TRÒ ---------- */
 
-// Hồ sơ khách hàng. Chưa lưu lần nào -> tạo từ tên đăng nhập
+// Hồ sơ khách hàng. Chưa lưu lần nào -> tạo từ tài khoản đăng ký hoặc tên đăng nhập
 function getProfile() {
   const saved = readStorage("homecare_profile", null);
-  if (saved !== null) {
+  if (saved !== null && saved.name && saved.name !== "Khách hàng HomeCare") {
     return saved;
   }
 
+  // Tìm trong danh sách tài khoản đã đăng ký để lấy họ tên, email, ngày sinh, giới tính
+  const phone = currentUser.phone || currentUser.username;
+  let accounts = [];
+  try {
+    accounts = JSON.parse(localStorage.getItem("homecare_accounts")) || [];
+  } catch (e) {
+    accounts = [];
+  }
+  const matched = accounts.find(function (acc) {
+    return acc.phone === phone || acc.phone === currentUser.username;
+  });
+
   const username = currentUser.username;
   const isPhone = /^\d{10,11}$/.test(username);
-  return {
-    name: isPhone ? "Khách hàng HomeCare" : username,
-    phone: isPhone ? username : "",
-    email: "", birthday: "", gender: "", ward: "", street: ""
+  const name = (matched && matched.fullname) || currentUser.name || (saved && saved.name) || (isPhone ? "Khách hàng HomeCare" : username);
+  const email = (matched && matched.email) || (saved && saved.email) || "";
+  const birthday = (matched && matched.birthday) || (saved && saved.birthday) || "";
+  const gender = (matched && matched.gender) || (saved && saved.gender) || "";
+  const street = (matched && matched.street) || (saved && saved.street) || "";
+  const ward = (saved && saved.ward) || "";
+
+  const profile = {
+    name: name,
+    phone: isPhone ? username : (phone || ""),
+    email: email,
+    birthday: birthday,
+    gender: gender,
+    ward: ward,
+    street: street
   };
+
+  writeStorage("homecare_profile", profile);
+  return profile;
 }
 
 // Lịch hẹn mà bệnh nhân khác đã đặt với bác sĩ (dữ liệu mẫu, tạo 1 lần)
