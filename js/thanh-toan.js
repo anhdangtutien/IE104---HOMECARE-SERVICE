@@ -30,7 +30,7 @@ const PAYMENT_NAMES = {
   cash: "Tiền mặt khi khám xong",
   bank: "Chuyển khoản ngân hàng",
   momo: "Ví MoMo",
-  card: "Thẻ ATM / Visa / Mastercard"
+  vnpay: "VNPay (sandbox)"
 };
 
 // Mã giảm giá đang áp dụng (null = chưa có)
@@ -46,6 +46,7 @@ const promoMessage = document.getElementById("promo-message");
 const agreeCheckbox = document.getElementById("agree-checkbox");
 const agreeError = document.getElementById("agree-error");
 const confirmButton = document.getElementById("confirm-button");
+const submitError = document.getElementById("submit-error");
 
 
 /* ---------- 3. CÁC HÀM TÍNH TOÁN ---------- */
@@ -163,11 +164,18 @@ function renderPayDetail() {
       <div class="qr-box"><i class="fa-solid fa-qrcode"></i></div>
       <p>Mở ứng dụng MoMo, quét mã QR để thanh toán <strong>${total}</strong>.
          Ưu đãi giảm 5% đã được trừ vào tổng tiền.</p>`;
-  } else if (method === "card") {
+  } else if (method === "vnpay") {
+    // AI prompt: "Tích hợp cổng thanh toán ở chế độ test (sandbox)"
     payDetail.innerHTML = `
-      <p><i class="fa-solid fa-circle-info"></i>
-         Sau khi xác nhận, bạn sẽ được chuyển sang cổng VNPAY để nhập thông tin thẻ.
-         HomeCare không lưu số thẻ của bạn.</p>`;
+      <div>
+        <p><i class="fa-solid fa-circle-info"></i>
+           Sau khi xác nhận, bạn được chuyển sang <strong>cổng VNPay (môi trường thử nghiệm)</strong>
+           để thanh toán <strong>${total}</strong>. Không trừ tiền thật.</p>
+        <div class="test-card">
+          <strong>Thẻ test của VNPay:</strong> ngân hàng NCB · số thẻ <code>9704198526191432198</code> ·
+          tên <code>NGUYEN VAN A</code> · ngày phát hành <code>07/15</code> · OTP <code>123456</code>
+        </div>
+      </div>`;
   } else {
     payDetail.innerHTML = `
       <p><i class="fa-solid fa-circle-info"></i>
@@ -179,6 +187,7 @@ function renderPayDetail() {
 const paymentRadios = document.querySelectorAll('input[name="payment"]');
 for (const radio of paymentRadios) {
   radio.addEventListener("change", function () {
+    submitError.textContent = "";
     updateMoney();
     renderPayDetail();
   });
