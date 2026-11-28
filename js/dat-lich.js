@@ -1,25 +1,18 @@
-/* =========================================================
-   DAT-LICH.JS - TRANG ĐẶT LỊCH KHÁM & CHỌN GÓI DỊCH VỤ
-   Người phụ trách: THÀNH VIÊN 2
-   Cần nạp js/du-lieu.js trước file này.
-
-   Chức năng:
-   1. Đọc bác sĩ, gói, ngày, giờ từ link (dat-lich.html?id=1&dv=...&ngay=...&gio=...)
-   2. Tạo các lựa chọn: gói dịch vụ, 7 ngày tới, khung giờ trống
-   3. Cập nhật khung tóm tắt + tính tiền mỗi khi chọn
-   4. Kiểm tra form, lưu đơn tạm vào localStorage rồi sang trang thanh toán
-   ========================================================= */
 
 
 /* ---------- 1. ĐỌC THAM SỐ TRÊN LINK ---------- */
 const bookingParams = new URLSearchParams(window.location.search);
 const bookingDoctor = findDoctor(bookingParams.get("id"));
 
+// Tài khoản đang đăng nhập (dang-nhap.js lưu). Đăng nhập OTP thì có verified: true + phone
+const bookingUser = getCurrentUser();
+
 
 /* ---------- 2. BIẾN LƯU LỰA CHỌN HIỆN TẠI ---------- */
 let selectedServiceId = null;   // VD: "kham-tai-nha"
 let selectedDate = null;        // VD: "2026-11-25"
 let selectedTime = null;        // VD: "09:00"
+let serverBookedSlots = [];     // khung giờ đã có người đặt (từ database), VD: [{ date, time }]
 
 
 /* ---------- 3. LẤY CÁC PHẦN TỬ HTML ---------- */
@@ -35,6 +28,11 @@ const patientWard = document.getElementById("patient-ward");
 const patientAddress = document.getElementById("patient-address");
 const patientNote = document.getElementById("patient-note");
 const addressFields = document.querySelectorAll(".address-field");
+
+const symptomSelect = document.getElementById("symptom-select");
+const symptomSummary = document.getElementById("symptom-summary");
+const symptomCheckboxes = document.querySelectorAll('input[name="symptom"]');
+const symptomOther = document.getElementById("symptom-other");
 
 
 /* ---------- 4. HIỆN / XÓA LỖI ---------- */
@@ -59,7 +57,7 @@ function renderDoctorMini(doctor) {
     <div class="avatar">${doctor.letter}</div>
     <div class="doctor-mini-info">
       <h3>${doctor.name}</h3>
-      <p>${escapeHTML(doctor.specialty)} · <span class="rating">★ ${doctor.rating.toFixed(1)}</span> · ${escapeHTML(doctor.workplace)}</p>
+      <p>${escapeHTML(doctor.specialty)} · ${escapeHTML(doctor.workplace)}</p>
     </div>
     <div class="doctor-mini-links">
       <a href="chi-tiet-bac-si.html?id=${doctor.id}" class="btn btn-outline btn-small">Xem hồ sơ</a>
@@ -174,7 +172,7 @@ function renderSlots() {
     button.className = "slot-option";
     button.textContent = time;
 
-    if (isSlotBooked(bookingDoctor, selectedDate, index)) {
+    if (isSlotBooked(bookingDoctor, selectedDate, index) || isServerBooked(selectedDate, time)) {
       button.disabled = true;
       button.title = "Đã có người đặt";
     }
@@ -200,16 +198,40 @@ function renderSlots() {
   });
 }
 
-// Khung giờ có hợp lệ không: phải có trong ca làm VÀ chưa bị đặt
+
 function isFreeSlot(dateKey, time) {
-  const index = getTimeSlots(bookingDoctor).indexOf(time);   // không có thì indexOf trả về -1
-  return index !== -1 && isSlotBooked(bookingDoctor, dateKey, index) === false;
+  const index = getTimeSlots(bookingDoctor).indexOf(time);   
+  return index !== -1 && isSlotBooked(bookingDoctor, dateKey, index) === false &&
+    isServerBooked(dateKey, time) === false;
 }
 
-// Chọn sẵn ngày + giờ nếu còn hợp lệ:
-// ngày nằm trong 7 ngày tới, bác sĩ có làm, giờ còn trống
+// AI prompt: "Tạo database lưu thông tin đặt lịch khám" – khung giờ đã có người đặt thật
+// (lưu trong database) cũng bị khóa, ngoài các khung giả lập bằng isSlotBooked() ở du-lieu.js
+function isServerBooked(dateKey, time) {
+  return serverBookedSlots.some(function (slot) {
+    return slot.date === dateKey && slot.time === time;
+  });
+}
+
+async function loadServerSlots() {
+  try {
+    const data = await callApi("/api/bookings?doctorId=" + bookingDoctor.id + "&slots=1");
+    serverBookedSlots = data.slots;
+
+    // Giờ đang chọn vừa bị người khác đặt -> bỏ chọn
+    if (selectedDate !== null && selectedTime !== null && isServerBooked(selectedDate, selectedTime)) {
+      selectedTime = null;
+      updateSummary();
+    }
+    renderSlots();
+  } catch (error) {
+   
+  }
+}
+
+
 function preselectDateTime(dateKey, time) {
-  // Kiểm tra đúng dạng "2026-11-25" trước khi đưa vào querySelector
+ 
   if (dateKey === null || /^\d{4}-\d{2}-\d{2}$/.test(dateKey) === false) {
     return;
   }
@@ -289,10 +311,18 @@ function validateBooking() {
     markError(patientName);
   }
 
-  // Regex: bắt đầu bằng 0, theo sau là đúng 9 chữ số -> tổng 10 số
-  if (/^0\d{9}$/.test(patientPhone.value.trim()) === false) {
-    showError(patientPhone, "patient-phone-error", "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0");
+  // SĐT liên hệ khác: KHÔNG bắt buộc (đã có SĐT đăng nhập),
+  // nhưng nếu có nhập thì phải đúng 10 hoặc 11 chữ số
+  const phone = patientPhone.value.trim();
+  if (phone !== "" && /^\d{10,11}$/.test(phone) === false) {
+    showError(patientPhone, "patient-phone-error", "Số điện thoại phải gồm đúng 10 hoặc 11 chữ số");
     markError(patientPhone);
+  }
+
+  
+  if (getSelectedSymptoms().includes("Khác") && symptomOther.value.trim() === "") {
+    showError(symptomOther, "symptom-error", "Vui lòng mô tả triệu chứng khác");
+    markError(symptomOther);
   }
 
   // Chỉ kiểm tra địa chỉ khi ô địa chỉ đang hiện (không phải tư vấn video)
@@ -310,13 +340,19 @@ function validateBooking() {
   return firstError;
 }
 
-// Gõ lại vào ô nào thì xóa lỗi của ô đó
+
 const fieldsToWatch = [
   [patientName, "patient-name-error"],
   [patientPhone, "patient-phone-error"],
   [patientWard, "patient-ward-error"],
-  [patientAddress, "patient-address-error"]
+  [patientAddress, "patient-address-error"],
+  [symptomOther, "symptom-error"]
 ];
+
+
+patientPhone.addEventListener("input", function () {
+  patientPhone.value = patientPhone.value.replace(/\D/g, "");
+});
 
 for (const pair of fieldsToWatch) {
   const input = pair[0];
@@ -324,6 +360,74 @@ for (const pair of fieldsToWatch) {
   input.addEventListener("input", function () {
     clearError(input, errorId);
   });
+}
+
+
+/* ---------- 10b. TRIỆU CHỨNG (DANH SÁCH XỔ XUỐNG CÓ Ô TÍCH) ----------
+   AI prompt: "Triệu chứng: dạng danh sách xổ xuống có ô vuông để tích chọn,
+   kèm mục 'Khác' (Other) để tự nhập" – mục này được viết với sự hỗ trợ của AI. */
+
+// Mảng các triệu chứng đang được tích, VD: ["Sốt", "Ho", "Khác"]
+function getSelectedSymptoms() {
+  const selected = [];
+  for (const checkbox of symptomCheckboxes) {
+    if (checkbox.checked) {
+      selected.push(checkbox.value);
+    }
+  }
+  return selected;
+}
+
+
+function updateSymptoms() {
+  const selected = getSelectedSymptoms();
+
+  if (selected.length === 0) {
+    symptomSummary.textContent = "-- Chọn triệu chứng --";
+    symptomSummary.classList.remove("has-value");
+  } else {
+    symptomSummary.textContent = selected.join(", ");
+    symptomSummary.classList.add("has-value");
+  }
+
+  const hasOther = selected.includes("Khác");
+  symptomOther.hidden = hasOther === false;
+  if (hasOther === false) {
+    clearError(symptomOther, "symptom-error");
+  }
+}
+
+for (const checkbox of symptomCheckboxes) {
+  checkbox.addEventListener("change", function () {
+    updateSymptoms();
+    
+    if (checkbox.value === "Khác" && checkbox.checked) {
+      symptomOther.focus();
+    }
+  });
+}
+
+
+document.addEventListener("click", function (event) {
+  if (symptomSelect.open && symptomSelect.contains(event.target) === false) {
+    symptomSelect.open = false;
+  }
+});
+
+symptomSelect.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    symptomSelect.open = false;
+    symptomSelect.querySelector("summary").focus();
+  }
+});
+
+
+function restoreSymptoms(symptoms, otherText) {
+  for (const checkbox of symptomCheckboxes) {
+    checkbox.checked = symptoms.includes(checkbox.value);
+  }
+  symptomOther.value = otherText || "";
+  updateSymptoms();
 }
 
 
@@ -340,15 +444,18 @@ bookingForm.addEventListener("submit", function (event) {
   const service = findService(bookingDoctor, selectedServiceId);
   const isOnline = service.online === true;
 
-  // Đơn tạm: lưu lại để trang thanh toán đọc
+  
   const pendingBooking = {
     doctorId: bookingDoctor.id,
     serviceId: service.id,
     date: selectedDate,
     time: selectedTime,
     patientName: patientName.value.trim(),
-    phone: patientPhone.value.trim(),
+    accountPhone: bookingUser.phone,            // SĐT đăng nhập
+    contactPhone: patientPhone.value.trim(),    // SĐT khác, có thể để trống
     relation: patientRelation.value,
+    symptoms: getSelectedSymptoms(),
+    symptomOther: getSelectedSymptoms().includes("Khác") ? symptomOther.value.trim() : "",
     ward: isOnline ? "" : patientWard.value,
     street: isOnline ? "" : patientAddress.value.trim(),
     note: patientNote.value.trim(),
@@ -373,12 +480,16 @@ function fillSavedData() {
     selectService(pending.serviceId);
     preselectDateTime(pending.date, pending.time);
   } else if (profile !== null) {
-    source = { patientName: profile.name, phone: profile.phone, ward: profile.ward, street: profile.street };
+   
+    source = { patientName: profile.name, ward: profile.ward, street: profile.street };
   }
 
   if (source !== null) {
-    patientName.value = source.patientName || "";   // || "": nếu không có thì để chuỗi rỗng
-    patientPhone.value = source.phone || "";
+    patientName.value = source.patientName || "";   
+    patientPhone.value = source.contactPhone || "";
+    if (Array.isArray(source.symptoms)) {
+      restoreSymptoms(source.symptoms, source.symptomOther);
+    }
     patientWard.value = source.ward || "";
     patientAddress.value = source.street || "";
     if (source.relation) {
@@ -392,7 +503,22 @@ function fillSavedData() {
 
 
 /* ---------- 13. CHẠY KHI MỞ TRANG ---------- */
-if (bookingDoctor === null) {
+// AI prompt: "Bắt buộc đăng nhập mới được đặt lịch khám" – chưa đăng nhập bằng
+// số điện thoại + OTP thì thay cả form bằng lời mời đăng nhập
+if (isVerifiedUser(bookingUser) === false) {
+  const notLoggedIn = bookingUser === null;
+  document.getElementById("booking-area").innerHTML = `
+    <div class="empty-box">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <h3>${notLoggedIn ? "Vui lòng đăng nhập để đặt lịch khám" : "Cần xác thực số điện thoại"}</h3>
+      <p>${notLoggedIn
+        ? "Bạn cần đăng nhập bằng số điện thoại (nhận mã OTP) trước khi đặt lịch. Sau khi đăng nhập sẽ quay lại đúng trang này."
+        : "Tài khoản đăng nhập bằng mật khẩu chưa xác thực số điện thoại. Vui lòng đăng nhập bằng số điện thoại + mã OTP để đặt lịch."}</p>
+      <a href="${getLoginLink(notLoggedIn ? "dat-lich" : "otp")}" class="btn btn-primary">
+        <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập bằng số điện thoại
+      </a>
+    </div>`;
+} else if (bookingDoctor === null) {
   document.getElementById("booking-area").innerHTML = `
     <div class="empty-box">
       <i class="fa-solid fa-user-doctor"></i>
@@ -406,12 +532,18 @@ if (bookingDoctor === null) {
   renderDates(bookingDoctor);
   renderSlots();
 
-  // Mặc định chọn gói đầu tiên
+  
+  document.getElementById("account-note").innerHTML = `
+    <i class="fa-solid fa-circle-check"></i>
+    <span>Đặt lịch bằng tài khoản <strong>${escapeHTML(bookingUser.phone)}</strong> –
+    HomeCare sẽ gọi xác nhận qua số này.</span>`;
+
+  
   selectService(getServices(bookingDoctor)[0].id);
 
   fillSavedData();
 
-  // Link có gói / ngày / giờ (từ trang hồ sơ bác sĩ) -> chọn sẵn, ưu tiên hơn dữ liệu cũ
+  
   const serviceFromLink = bookingParams.get("dv");
   if (findService(bookingDoctor, serviceFromLink) !== null) {
     selectService(serviceFromLink);
@@ -419,7 +551,7 @@ if (bookingDoctor === null) {
 
   preselectDateTime(bookingParams.get("ngay"), bookingParams.get("gio"));
 
-  // Ghi chú gửi từ trang dịch vụ xét nghiệm (&ghi-chu=...)
+  
   const noteFromLink = bookingParams.get("ghi-chu");
   if (noteFromLink !== null) {
     patientNote.value = noteFromLink;
@@ -427,4 +559,7 @@ if (bookingDoctor === null) {
 
   updateAddressFields();
   updateSummary();
+
+  
+  loadServerSlots();
 }
