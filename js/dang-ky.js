@@ -18,6 +18,8 @@ const emailInput = document.getElementById("email");
 const phoneInput = document.getElementById("phone");
 const birthdayInput = document.getElementById("birthday");
 const citySelect = document.getElementById("city");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirm-password");
 const termsCheckbox = document.getElementById("terms");
 
 // Ô này CHỈ có ở trang bác sĩ. Ở trang khách hàng sẽ là null (không tìm thấy)
@@ -136,6 +138,43 @@ function checkCity() {
 }
 
 
+function checkPassword() {
+  const value = passwordInput.value;
+
+  if (value === "") {
+    showError(passwordInput, "password-error", "Mật khẩu không được để trống");
+    return false;
+  }
+
+  if (value.length < 6) {
+    showError(passwordInput, "password-error", "Mật khẩu phải có ít nhất 6 ký tự");
+    return false;
+  }
+
+  clearError(passwordInput, "password-error");
+  return true;
+}
+
+
+function checkConfirmPassword() {
+  const value = confirmPasswordInput.value;
+  const password = passwordInput.value;
+
+  if (value === "") {
+    showError(confirmPasswordInput, "confirm-password-error", "Vui lòng xác nhận lại mật khẩu");
+    return false;
+  }
+
+  if (value !== password) {
+    showError(confirmPasswordInput, "confirm-password-error", "Mật khẩu xác nhận không khớp");
+    return false;
+  }
+
+  clearError(confirmPasswordInput, "confirm-password-error");
+  return true;
+}
+
+
 
 function checkCertificate() {
   // Trang khách hàng không có ô này -> bỏ qua, coi như hợp lệ
@@ -178,7 +217,28 @@ emailInput.addEventListener("blur", checkEmail);
 phoneInput.addEventListener("blur", checkPhone);
 birthdayInput.addEventListener("change", checkBirthday);
 citySelect.addEventListener("change", checkCity);
+passwordInput.addEventListener("blur", checkPassword);
+confirmPasswordInput.addEventListener("blur", checkConfirmPassword);
+passwordInput.addEventListener("input", function () { clearError(passwordInput, "password-error"); });
+confirmPasswordInput.addEventListener("input", function () { clearError(confirmPasswordInput, "confirm-password-error"); });
 termsCheckbox.addEventListener("change", checkTerms);
+
+// Bấm icon mắt để hiện / ẩn mật khẩu
+const togglePasswordButtons = document.querySelectorAll(".toggle-password-btn");
+for (const btn of togglePasswordButtons) {
+  btn.addEventListener("click", function () {
+    const targetId = btn.dataset.target;
+    const input = document.getElementById(targetId);
+    const icon = btn.querySelector("i");
+    if (input.type === "password") {
+      input.type = "text";
+      icon.className = "fa-regular fa-eye";
+    } else {
+      input.type = "password";
+      icon.className = "fa-regular fa-eye-slash";
+    }
+  });
+}
 
 if (certificateGroup !== null) {
   certificateGroup.addEventListener("change", checkCertificate);
@@ -270,6 +330,8 @@ registerForm.addEventListener("submit", function (event) {
   if (checkPhone() === false) isValid = false;
   if (checkBirthday() === false) isValid = false;
   if (checkCity() === false) isValid = false;
+  if (checkPassword() === false) isValid = false;
+  if (checkConfirmPassword() === false) isValid = false;
   if (checkCertificate() === false) isValid = false;
   if (checkTerms() === false) isValid = false;
 

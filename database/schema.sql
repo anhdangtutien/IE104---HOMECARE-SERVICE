@@ -95,3 +95,10 @@ create unique index if not exists bookings_slot_unique
 alter table public.users     enable row level security;
 alter table public.otp_codes enable row level security;
 alter table public.bookings  enable row level security;
+
+-- Cấp toàn quyền cho service_role (backend API máy chủ)
+grant all on table public.users to service_role;
+grant all on table public.otp_codes to service_role;
+grant all on table public.bookings to service_role;
+grant all on all sequences in schema public to service_role;
+
