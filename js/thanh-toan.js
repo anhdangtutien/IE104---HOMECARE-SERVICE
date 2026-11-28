@@ -262,6 +262,12 @@ function saveLocalCopy(booking) {
   saveAppointments(appointments);
 }
 
+// Gọi máy chủ tạo link VNPay rồi chuyển trang
+async function goToVnpay(code) {
+  const result = await callApi("/api/payment", { method: "POST", body: { code: code } });
+  window.location.href = result.url;
+}
+
 paymentForm.addEventListener("submit", async function (event) {
   event.preventDefault();
   submitError.textContent = "";
@@ -312,6 +318,18 @@ paymentForm.addEventListener("submit", async function (event) {
   removeStorage("homecare_pending");
   saveLocalCopy(booking);
 
+  // 8.3. VNPay: chuyển sang cổng thanh toán. Cách khác: hiện màn hình thành công luôn
+  if (booking.paymentMethod === "vnpay") {
+    setConfirmLoading(true, "Đang chuyển sang VNPay...");
+    try {
+      await goToVnpay(booking.code);
+    } catch (error) {
+      setConfirmLoading(false);
+      submitError.textContent = error.message;
+    }
+    return;
+  }
+
   showResult(booking);
 });
 
@@ -327,7 +345,10 @@ function showResult(booking) {
   stepItems[1].querySelector(".step-number").innerHTML = `<i class="fa-solid fa-check"></i>`;
   stepItems[2].className = "current";
 
-  const paymentText = formatMoney(booking.total) + " – " + booking.paymentName;
+  let paymentText = formatMoney(booking.total) + " – " + booking.paymentName;
+  if (booking.paymentMethod === "vnpay") {
+    paymentText += " (" + booking.paymentStatusName + ")";
+  }
 
   let symptomRow = "";
   const symptomText = getSymptomText(booking.symptoms, booking.symptomOther);
