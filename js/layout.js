@@ -44,15 +44,8 @@
     },
     { page: "bac-si", text: "Bác sĩ", link: "dat-kham.html" },
     { page: "goi-cham-soc", text: "Gói chăm sóc", link: "goi-cham-soc.html" },
-    {
-      page: "tin-tuc",
-      text: "Tin tức",
-      link: "tin-tuc.html",
-      children: [
-        { text: "Tin y tế", link: "tin-tuc.html?loai=tin-y-te" },
-        { text: "Cẩm nang sức khỏe", link: "tin-tuc.html?loai=cam-nang" }
-      ]
-    },
+    // AI prompt: "Header và điều hướng: bỏ trang Tin tức" – đã xóa mục "Tin tức"
+    // cùng các file tin-tuc.html, css/tin-tuc.css, js/tin-tuc.js
     {
       page: "huong-dan",
       text: "Hướng dẫn",
