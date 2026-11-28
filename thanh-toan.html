@@ -4,8 +4,10 @@
   TRANG THANH TOÁN & XÁC NHẬN - thanh-toan.html
   Người phụ trách: THÀNH VIÊN 2
   File liên quan: css/trang-con.css, css/dat-lich.css (khung tóm tắt),
-                  css/thanh-toan.css, js/du-lieu.js, js/thanh-toan.js
-  Đọc "đơn tạm" do trang dat-lich.html lưu trong localStorage
+                  css/thanh-toan.css, js/du-lieu.js, js/api.js, js/thanh-toan.js
+  Đọc "đơn tạm" do trang dat-lich.html lưu trong localStorage,
+  bấm xác nhận thì lưu lịch hẹn vào database (api/bookings.js),
+  chọn VNPay thì chuyển sang cổng thanh toán sandbox (api/payment.js)
   =========================================================
 -->
 <html lang="vi">
@@ -181,6 +183,7 @@
 
   <script src="js/layout.js"></script>
   <script src="js/du-lieu.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/thanh-toan.js"></script>
 </body>
 </html>
