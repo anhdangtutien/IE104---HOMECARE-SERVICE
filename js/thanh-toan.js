@@ -1,13 +1,17 @@
 /* =========================================================
    THANH-TOAN.JS - TRANG THANH TOÁN & XÁC NHẬN
    Người phụ trách: THÀNH VIÊN 2
-   Cần nạp js/du-lieu.js trước file này.
+   Cần nạp js/du-lieu.js và js/api.js trước file này.
 
    Chức năng:
    1. Đọc đơn tạm (do dat-lich.js lưu) và hiện thông tin lịch hẹn
    2. Đổi phương thức thanh toán -> hiện hướng dẫn tương ứng
    3. Áp dụng mã giảm giá, tính lại tổng tiền
-   4. Xác nhận: tạo mã lịch hẹn, lưu vào danh sách lịch hẹn, hiện màn hình thành công
+   4. Xác nhận: gửi lịch hẹn lên máy chủ để LƯU VÀO DATABASE
+      (máy chủ tạo mã lịch hẹn, tự tính lại tiền, kiểm tra trùng giờ)
+   5. Chọn VNPay: chuyển sang cổng thanh toán sandbox, xong quay về trang này
+      (thanh-toan.html?ma=HC123456&ket-qua=thanh-cong | that-bai)
+   6. Hiện màn hình thành công / thanh toán thất bại
    ========================================================= */
 
 
