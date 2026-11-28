@@ -87,22 +87,38 @@ function calculateMoney() {
   };
 }
 
+// Danh sách triệu chứng để hiển thị: ["Sốt", "Khác"] + "đau vai" -> "Sốt, đau vai"
+function getSymptomText(symptoms, otherText) {
+  const list = (symptoms || []).filter(function (item) { return item !== "Khác"; });
+  if (otherText) {
+    list.push(otherText);
+  }
+  return list.join(", ");
+}
+
 
 /* ---------- 4. HIỆN THÔNG TIN LỊCH HẸN ---------- */
 function renderAppointmentInfo() {
   document.getElementById("edit-link").href = "dat-lich.html?id=" + payDoctor.id;
 
   // Chữ do người dùng gõ (tên, địa chỉ, ghi chú) phải qua escapeHTML trước khi đưa vào innerHTML
-  let noteRow = "";
-  if (pendingBooking.note !== "") {
-    noteRow = `<dt>Ghi chú</dt><dd>${escapeHTML(pendingBooking.note)}</dd>`;
+  let extraRows = "";
+  if (pendingBooking.contactPhone) {
+    extraRows += `<dt>SĐT liên hệ khác</dt><dd>${escapeHTML(pendingBooking.contactPhone)}</dd>`;
+  }
+  const symptomText = getSymptomText(pendingBooking.symptoms, pendingBooking.symptomOther);
+  if (symptomText !== "") {
+    extraRows += `<dt>Triệu chứng</dt><dd>${escapeHTML(symptomText)}</dd>`;
+  }
+  if (pendingBooking.note) {
+    extraRows += `<dt>Ghi chú</dt><dd>${escapeHTML(pendingBooking.note)}</dd>`;
   }
 
   document.getElementById("appointment-info").innerHTML = `
     <div class="info-doctor">
-      <div class="avatar">${payDoctor.letter}</div>
+      <div class="avatar">${escapeHTML(payDoctor.letter)}</div>
       <div>
-        <strong>${payDoctor.name}</strong>
+        <strong>${escapeHTML(payDoctor.name)}</strong>
         <small>${escapeHTML(payDoctor.specialty)}</small>
       </div>
     </div>
@@ -110,9 +126,9 @@ function renderAppointmentInfo() {
       <dt>Dịch vụ</dt><dd>${payService.name}</dd>
       <dt>Thời gian</dt><dd>${pendingBooking.time} · ${formatDate(pendingBooking.date)}</dd>
       <dt>Địa điểm</dt><dd>${escapeHTML(getFullAddress(pendingBooking))}</dd>
-      <dt>Người được khám</dt><dd>${escapeHTML(pendingBooking.patientName)} (${pendingBooking.relation})</dd>
-      <dt>Số điện thoại</dt><dd>${escapeHTML(pendingBooking.phone)}</dd>
-      ${noteRow}
+      <dt>Người được khám</dt><dd>${escapeHTML(pendingBooking.patientName)} (${escapeHTML(pendingBooking.relation)})</dd>
+      <dt>Tài khoản đặt lịch</dt><dd>${escapeHTML(pendingBooking.accountPhone || "")}</dd>
+      ${extraRows}
     </dl>`;
 }
 
